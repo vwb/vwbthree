@@ -1,28 +1,14 @@
 import React from "react";
 import Link from "next/link";
 
-const links = [
-    { href: "https://zeit.co/now", label: "ZEIT" },
-    { href: "https://github.com/vwb", label: "GitHub" },
-    {}
-].map(link => {
-    link.key = `nav-link-${link.href}-${link.label}`;
-    return link;
-});
-
 const Nav = () => (
     <nav>
         <ul>
             <li>
                 <Link href="/">
-                    <a>Home</a>
+                    <a>vwbthree</a>
                 </Link>
             </li>
-            {links.map(({ key, href, label }) => (
-                <li key={key}>
-                    <a href={href}>{label}</a>
-                </li>
-            ))}
         </ul>
         <style jsx>{`
             :global(body) {

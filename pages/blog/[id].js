@@ -1,18 +1,8 @@
 import matter from "gray-matter";
 import ReactMarkdown from "react-markdown";
-import Link from "next/link";
 
 const Post = props => {
-    return (
-        <div>
-            <Link href="/">
-                <a>Home</a>
-            </Link>
-            <div>
-                <ReactMarkdown source={props.post.content} />
-            </div>
-        </div>
-    );
+    return <ReactMarkdown source={props.post.content} />;
 };
 
 Post.getInitialProps = async context => {
