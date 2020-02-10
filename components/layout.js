@@ -39,6 +39,9 @@ const Layout = ({ children }) => {
                 a:hover {
                     text-decoration: underline;
                 }
+                code {
+                    color: #666;
+                }
             `}</style>
         </>
     );
