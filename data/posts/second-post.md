@@ -4,7 +4,7 @@ author: Vincent B.
 date: 2020-01-09
 ---
 
-# Mobile Styling with Styled JSX
+# Responsive Design with Next.js and Styled JSX
 
 If you go to the [homepage](https://vwbthree.me) and play with the screen width, the content will properly update accordingly. While this was relatively straight forward there was a gotcha or two I ran into while implementing. What I came up with may not be the best option in terms of scalability but it is working well enough for me so figured could be worth sharing.
 
