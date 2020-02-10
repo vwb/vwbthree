@@ -1,13 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-const NavCard = ({
-    img,
-    linkHref,
-    linkText,
-    containerClasses,
-    containerStyles
-}) => {
+const NavCard = ({ img, linkHref, linkText, containerStyles }) => {
     return (
         <div className="navcard" style={containerStyles}>
             <Link href={linkHref}>
@@ -33,7 +27,7 @@ const NavCard = ({
                     background-size: cover;
                     background-position: center;
                     filter: blur(4px);
-                    -webkit-filter: blur(4px);
+                    -webkit-filter: blur(3px);
                     height: 110%;
                     width: 110%;
                 }
