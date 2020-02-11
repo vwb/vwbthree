@@ -1,21 +1,8 @@
 import matter from "gray-matter";
-import ReactMarkdown from "react-markdown";
+import Markdown from "../../components/Markdown";
 
 const Post = props => {
-    return (
-        <div>
-            <section className="post">
-                <ReactMarkdown source={props.post.content} />
-            </section>
-            <style jsx>{`
-                .post {
-                    max-width: 600px;
-                    margin: 0 auto;
-                    padding: 12px 24px;
-                }
-            `}</style>
-        </div>
-    );
+    return <Markdown content={props.post.content} />;
 };
 
 Post.getInitialProps = async context => {
