@@ -34,6 +34,7 @@ const Home = () => {
                 }
                 .landing {
                     display: flex;
+                    background-color: black;
                 }
                 .nav-card {
                     position: fixed;
