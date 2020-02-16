@@ -1,6 +1,6 @@
 import React from "react";
 import matter from "gray-matter";
-import Link from "next/link";
+import PostCard from "../../components/PostCard";
 
 const getPostData = () =>
     (context => {
@@ -32,15 +32,21 @@ const getPostData = () =>
 
 const BlogIndex = ({ posts }) => {
     return (
-        <ul>
-            {posts.map(post => (
-                <li key={post.slug}>
-                    <Link href="/blog/[id]" as={`/blog/${post.slug}`}>
-                        <a>{post.document.data.title}</a>
-                    </Link>
-                </li>
-            ))}
-        </ul>
+        <div className="w-full sm:w-2/3 lg:w-1/2 m-auto">
+            <section className="text-center">
+                <h2 className="pl-2 text-2xl">Blog Posts</h2>
+            </section>
+            <main className="align-middle">
+                {posts.map(post => (
+                    <PostCard
+                        key={post.slug}
+                        title={post.document.data.title}
+                        date={post.document.data.date}
+                        slug={post.slug}
+                    />
+                ))}
+            </main>
+        </div>
     );
 };
 

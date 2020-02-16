@@ -22,7 +22,7 @@ const Layout = ({ children }) => {
                 />
             </Head>
             <Nav />
-            {children}
+            <div className="pt-6 pb-6">{children}</div>
             <style jsx>{layoutStyle}</style>
             <style jsx global>{`
                 ul,
