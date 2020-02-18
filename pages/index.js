@@ -1,9 +1,18 @@
 import React from "react";
 import NavCard from "../components/navCard";
+import Head from "next/head";
 
 const Home = () => {
     return (
         <main className="landing">
+            <Head>
+                <title>Vincent Budrovich</title>
+                <link rel="icon" href="/favicon.ico" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1.0"
+                />
+            </Head>
             <div className="nav-card nav-card--left">
                 <NavCard
                     linkHref="/blog"
@@ -33,7 +42,9 @@ const Home = () => {
                     display flex;
                 }
                 .landing {
-                    display: flex;
+                    position: fixed;
+                    height: 100%;
+                    width: 100%;
                     background-color: black;
                 }
                 .nav-card {

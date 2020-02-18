@@ -1,9 +1,12 @@
 import matter from "gray-matter";
 import Markdown from "../../components/Markdown";
+import Layout from "../../components/layout";
 
-const Post = props => {
-    return <Markdown content={props.post.content} />;
-};
+const Post = props => (
+    <Layout isOpenDefault={true}>
+        <Markdown content={props.post.content} />
+    </Layout>
+);
 
 Post.getInitialProps = async context => {
     const { query } = context;

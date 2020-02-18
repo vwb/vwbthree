@@ -1,16 +1,12 @@
 import React from "react";
 import Head from "next/head";
-import Nav from "../components/nav";
+import Nav from "./nav";
+import SideNav from "./SideNav";
+import { Provider as NavProvider } from "../context/navContext";
 
-const layoutStyle = `
-    :global(body) {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, Avenir Next,
-            Avenir, Helvetica, sans-serif;
-    },
-`;
+const Layout = props => {
+    const { children, isOpenDefault } = props;
 
-const Layout = ({ children }) => {
     return (
         <>
             <Head>
@@ -21,28 +17,11 @@ const Layout = ({ children }) => {
                     content="width=device-width, initial-scale=1.0"
                 />
             </Head>
-            <Nav />
-            <div className="pt-6 pb-6">{children}</div>
-            <style jsx>{layoutStyle}</style>
-            <style jsx global>{`
-                ul,
-                div,
-                body,
-                p {
-                    margin: 0;
-                    padding: 0;
-                    style: none;
-                }
-                a {
-                    text-decoration: none;
-                }
-                a:hover {
-                    text-decoration: underline;
-                }
-                code {
-                    color: #666;
-                }
-            `}</style>
+            <NavProvider>
+                <SideNav isOpenDefault={isOpenDefault} />
+                <Nav />
+                <div className="pt-4 pb-6">{children}</div>
+            </NavProvider>
         </>
     );
 };
