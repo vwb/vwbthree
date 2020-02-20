@@ -4,6 +4,14 @@ import Nav from "./nav";
 import SideNav from "./SideNav";
 import { Provider as NavProvider } from "../context/navContext";
 
+const layoutStyle = `
+    :global(body) {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, Avenir Next,
+            Avenir, Helvetica, sans-serif;
+    },
+`;
+
 const Layout = props => {
     const { children, isOpenDefault } = props;
 
@@ -21,6 +29,13 @@ const Layout = props => {
                 <SideNav isOpenDefault={isOpenDefault} />
                 <Nav />
                 <div className="pt-4 pb-6">{children}</div>
+                <style jsx>{`
+                    :global(body) {
+                        margin: 0;
+                        font-family: -apple-system, BlinkMacSystemFont,
+                            Avenir Next, Avenir, Helvetica, sans-serif;
+                    }
+                `}</style>
             </NavProvider>
         </>
     );
