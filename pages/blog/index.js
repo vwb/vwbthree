@@ -36,7 +36,7 @@ const BlogIndex = ({ posts }) => {
         <Layout isOpenDefault={true}>
             <div className="w-full sm:w-2/3 lg:w-1/2 m-auto">
                 <section className="text-center">
-                    <h2 className="pl-2 text-2xl">Blog Posts</h2>
+                    <h2 className="pl-2 text-2xl font-normal">Blog Posts</h2>
                 </section>
                 <main className="align-middle">
                     {posts.map(post => (

@@ -3,21 +3,54 @@ import { Context as NavContext } from "../context/navContext";
 import Link from "next/link";
 
 const ProfileAvatar = () => (
-    <h1 className="text-xl font-medium">Vincent Budrovich</h1>
+    <div className="flex flex-col items-center py-4 pw-2 border-gray-100 border-solid border-b">
+        <img
+            className="w-20 h-20 rounded-full center"
+            src="/profile_pic.jpg"
+            alt="Profile Photo"
+        />
+        <h1 className="text-lg pt-2 font-thin">Vincent Budrovich</h1>
+        <p className="font-hairline text-center text-xs text-gray-700 px-6 pt-2">
+            Software engineer and photographer. A LA transplant based in San
+            Francisco, CA
+        </p>
+    </div>
 );
 
-const Links = () => {
+const NavLink = ({ onClick, children, href, customClasses }) => (
+    <div className={`pb-2 pl-2 font-light ${customClasses}`}>
+        <Link href={href}>
+            <a onClick={onClick}>{children}</a>
+        </Link>
+    </div>
+);
+
+const Links = ({}) => {
     const testContextThing = useContext(NavContext);
     const { setNavOpen } = testContextThing;
 
+    const linkData = [
+        {
+            href: "/photos",
+            title: "Photography"
+        },
+        {
+            href: "/blog",
+            title: "Developer"
+        }
+    ];
+
     return (
         <>
-            <Link href="/blog">
-                <a onClick={() => setNavOpen(false)}>Developer</a>
-            </Link>
-            <Link href="/photos">
-                <a onClick={() => setNavOpen(false)}>Photography</a>
-            </Link>
+            {linkData.map(({ href, title }, index) => (
+                <NavLink
+                    customClasses={index === 0 ? "pt-4" : ""}
+                    href={href}
+                    onClick={() => setNavOpen(false)}
+                >
+                    {title}
+                </NavLink>
+            ))}
         </>
     );
 };
@@ -44,7 +77,7 @@ const SideNav = ({ isOpenDefault }) => {
 
     return (
         <div
-            className={`transition-all duration-100 fixed inset-y-0 left-0 bg-gray-200 ${width} overflow-hidden`}
+            className={`transition-all duration-100 fixed inset-y-0 left-0 bg-white shadow ${width} overflow-hidden`}
         >
             <div className="flex flex-col p-3">
                 <div

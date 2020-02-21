@@ -5,7 +5,7 @@ const PostCard = props => {
     return (
         <div className="m-4">
             <Card>
-                <div className="p-4">
+                <div className="p-4 font-light">
                     <Link href="/blog/[id]" as={`/blog/${props.slug}`}>
                         <a>{props.title}</a>
                     </Link>

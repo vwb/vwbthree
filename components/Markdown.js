@@ -45,6 +45,9 @@ const Markdown = ({ content }) => {
                     white-space: pre;
                     word-break: normal;
                 }
+                ul {
+                    list-style: inside;
+                }
             `}</style>
         </>
     );
