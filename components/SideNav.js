@@ -47,6 +47,7 @@ const Links = ({}) => {
                     customClasses={index === 0 ? "pt-4" : ""}
                     href={href}
                     onClick={() => setNavOpen(false)}
+                    key={href}
                 >
                     {title}
                 </NavLink>
