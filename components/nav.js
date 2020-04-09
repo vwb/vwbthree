@@ -2,17 +2,21 @@ import React, { useContext } from "react";
 import { Context as NavContext } from "../context/navContext";
 import Link from "next/link";
 
-const Nav = () => {
+const Nav = ({ backgroundColor, textColor }) => {
     const testContextThing = useContext(NavContext);
     const { isNavOpen, setNavOpen } = testContextThing;
 
+    const backgroundColorClass = backgroundColor ? backgroundColor : "bg-white";
+
     return (
-        <nav className="text-center h-12 bg-white border-b border-gray-500">
+        <nav
+            className={`z-10 absolute top-0 right-0 left-0 text-center h-12 ${backgroundColorClass} ${textColor}`}
+        >
             <ul className="flex justify-start">
-                <li className="px-4 py-3 flex">
-                    <button onClick={() => setNavOpen(!isNavOpen)}>
-                        vwbthree
-                    </button>
+                <li className="px-6 py-6 flex">
+                    <Link href="/">
+                        <a>vwbthree</a>
+                    </Link>
                 </li>
             </ul>
         </nav>

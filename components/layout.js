@@ -5,8 +5,8 @@ import SideNav from "./SideNav";
 import { Provider as NavProvider } from "../context/navContext";
 
 const Layout = props => {
-    const { children, isOpenDefault } = props;
-    const mainClasses = `pt-4 pb-6 ${isOpenDefault ? "md:ml-64" : ""}`;
+    const { children, isOpenDefault, navClass, textColor } = props;
+    const mainClasses = `pb-6 ${isOpenDefault ? "md:ml-64" : ""}`;
 
     return (
         <>
@@ -20,7 +20,7 @@ const Layout = props => {
             </Head>
             <NavProvider>
                 <SideNav isOpenDefault={isOpenDefault} />
-                <Nav />
+                <Nav backgroundColor={navClass} textColor={textColor} />
                 <div className={mainClasses}>{children}</div>
                 <style jsx>{`
                     :global(body) {
