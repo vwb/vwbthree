@@ -28,8 +28,8 @@ const NavCard = ({ img, linkHref, linkText, containerStyles }) => {
                     background-position: center;
                     filter: blur(4px);
                     -webkit-filter: blur(3px);
-                    height: 110%;
-                    width: 110%;
+                    height: 100%;
+                    width: 100%;
                 }
             `}</style>
         </div>

@@ -6,7 +6,7 @@ import { Provider as NavProvider } from "../context/navContext";
 
 const Layout = props => {
     const { children, isOpenDefault, navClass, textColor } = props;
-    const mainClasses = `pb-6 ${isOpenDefault ? "md:ml-64" : ""}`;
+    const mainClasses = `${isOpenDefault ? "md:ml-64" : ""}`;
 
     return (
         <>
