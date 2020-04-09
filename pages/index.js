@@ -35,23 +35,18 @@ const Home = () => {
                     />
                 </div>
                 <style jsx>{`
-                    html,
-                    body {
-                        overflow: hidden;
-                        height: 100vh;
-                    }
                     .landing {
                         background-color: black;
                         scroll-snap-type: mandatory;
                         scroll-snap-points-y: repeat(100vh);
                         scroll-snap-type: y mandatory;
-                        overflow: scroll;
+                        overflow: auto;
                         height: 100vh;
                     }
                     .nav-card {
                         scroll-snap-align: start;
                         width: 100%;
-                        height: 100vh;
+                        height: 100%;
                         position: relative;
                     }
                 `}</style>
