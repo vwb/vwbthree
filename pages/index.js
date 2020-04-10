@@ -13,24 +13,28 @@ const Home = () => {
                 <div className="nav-card nav-card--left">
                     <NavCard
                         linkHref="/photos"
-                        linkText="Photography"
+                        linkText="Photographer ⟶"
                         img="./waterfall.jpg"
                         imgAlt="Waterfall in Yosemite"
                         containerStyles={{
                             width: "100%",
-                            height: "100%"
+                            height: "100%",
+                            fontFamily: "Simsun",
+                            fontSize: "1.45em"
                         }}
                     />
                 </div>
                 <div className="nav-card nav-card--right">
                     <NavCard
                         linkHref="/blog"
-                        linkText="Developer"
+                        linkText="developer >"
                         img="./code.png"
                         imgAlt="Code"
                         containerStyles={{
                             width: "100%",
-                            height: "100%"
+                            height: "100%",
+                            fontFamily: "Consolas",
+                            fontSize: "1.45rem"
                         }}
                     />
                 </div>

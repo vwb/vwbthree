@@ -3,7 +3,7 @@ import { Context as NavContext } from "../context/navContext";
 import Link from "next/link";
 
 const ProfileAvatar = () => (
-    <div className="flex flex-col items-center py-4 pw-2 border-gray-100 border-solid border-b">
+    <div className="flex flex-col items-center py-4 pw-2 border-gray-100">
         <img
             className="w-20 h-20 rounded-full center"
             src="/profile_pic.jpg"
@@ -16,45 +16,6 @@ const ProfileAvatar = () => (
         </p>
     </div>
 );
-
-const NavLink = ({ onClick, children, href, customClasses }) => (
-    <div className={`pb-2 pl-2 font-light ${customClasses}`}>
-        <Link href={href}>
-            <a onClick={onClick}>{children}</a>
-        </Link>
-    </div>
-);
-
-const Links = ({}) => {
-    const testContextThing = useContext(NavContext);
-    const { setNavOpen } = testContextThing;
-
-    const linkData = [
-        {
-            href: "/photos",
-            title: "Photography"
-        },
-        {
-            href: "/blog",
-            title: "Developer"
-        }
-    ];
-
-    return (
-        <>
-            {linkData.map(({ href, title }, index) => (
-                <NavLink
-                    customClasses={index === 0 ? "pt-4" : ""}
-                    href={href}
-                    onClick={() => setNavOpen(false)}
-                    key={href}
-                >
-                    {title}
-                </NavLink>
-            ))}
-        </>
-    );
-};
 
 const SideNav = ({ isOpenDefault }) => {
     const testContextThing = useContext(NavContext);
@@ -78,7 +39,7 @@ const SideNav = ({ isOpenDefault }) => {
 
     return (
         <div
-            className={`transition-all duration-100 fixed inset-y-0 left-0 bg-white shadow ${width} overflow-hidden`}
+            className={`pt-16 transition-all duration-100 fixed inset-y-0 left-0 bg-white shadow ${width} overflow-hidden`}
         >
             <div className="flex flex-col p-3">
                 <div
@@ -87,7 +48,6 @@ const SideNav = ({ isOpenDefault }) => {
                     <button onClick={() => setNavOpen(false)}>Close</button>
                 </div>
                 <ProfileAvatar />
-                <Links />
             </div>
         </div>
     );

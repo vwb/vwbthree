@@ -1,7 +1,11 @@
 import React from "react";
 import Link from "next/link";
 
-const NavCard = ({ img, linkHref, linkText, containerStyles }) => {
+const NavCard = ({ img, linkHref, linkText, containerStyles, blur = true }) => {
+    const imageContainerClasses = `navcard__img__container ${
+        blur ? "navcard__img__container--blur" : ""
+    }`;
+
     return (
         <div className="navcard" style={containerStyles}>
             <div className="link-container">
@@ -9,7 +13,7 @@ const NavCard = ({ img, linkHref, linkText, containerStyles }) => {
                     <a className="navcard__link">{linkText}</a>
                 </Link>
             </div>
-            <div className="navcard__img__container" />
+            <div className={imageContainerClasses} />
             <style jsx>{`
                 .navcard {
                     position: relative;
@@ -24,21 +28,18 @@ const NavCard = ({ img, linkHref, linkText, containerStyles }) => {
                     z-index: 1;
                 }
                 .navcard__link {
-                    padding: 20px 28px;
-                    background-color: rgba(49, 49, 49, 0.67);
-                    border-color: #868585;
-                    border-width: 1px;
-                    border-style: solid;
-                    color: white;
+                    color: #f7fafc;
                 }
                 .navcard__img__container {
                     background-image: url(${img});
                     background-size: cover;
                     background-position: center;
-                    filter: blur(4px);
-                    -webkit-filter: blur(3px);
                     height: 100%;
                     width: 100%;
+                }
+                .navcard__img__container--blur {
+                    filter: blur(4px);
+                    -webkit-filter: blur(3px);
                 }
             `}</style>
         </div>
