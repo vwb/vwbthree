@@ -28,8 +28,6 @@ const PhotoGroupCard = props => (
     </div>
 );
 
-//TODO: View with responsive cards. Should take majority of screen width
-
 const PhotosIndex = () => {
     return (
         <Layout isOpenDefault={false}>
