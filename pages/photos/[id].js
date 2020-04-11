@@ -15,7 +15,7 @@ import autoprefixer from "autoprefixer";
 //     -webkit-filter: blur(3px);
 // }
 
-const PhotoCard = ({ url, title, isLast }) => {
+const PhotoCard = ({ url, title, isLast, index }) => {
     const backgroundStyles = {
         backgroundColor: "black",
         background: `-webkit-linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), url(${url})`,
@@ -28,9 +28,10 @@ const PhotoCard = ({ url, title, isLast }) => {
 
     return (
         <div
+            id={`photo-card-${index}`}
             className="h-screen w-full relative flex items-center content-center overflow-hidden"
             style={{
-                scrollSnapAlign: "center"
+                scrollSnapAlign: "start"
             }}
         >
             <div className="z-10 absolute w-full">
@@ -39,7 +40,7 @@ const PhotoCard = ({ url, title, isLast }) => {
                     className="h-full max-w-md mx-auto"
                     style={{
                         boxShadow: "1px 1px 20px rgba(0,0,0,0.5)",
-                        width: "85%"
+                        width: "80%"
                     }}
                     src={url}
                     title={title}
@@ -49,22 +50,15 @@ const PhotoCard = ({ url, title, isLast }) => {
             {!isLast && (
                 <div
                     className="absolute w-full text-center text-gray-700 z-20"
-                    style={{ bottom: "10%" }}
+                    style={{ bottom: "5%" }}
                 >
                     <button
+                        className="focus:outline-none"
                         onClick={() =>
-                            window.scrollBy({
-                                left: 0,
-                                top: window.innerHeight,
-                                behavior: "smooth"
-                            })
+                            document
+                                .getElementById(`photo-card-${index + 1}`)
+                                .scrollIntoView({ behavior: "smooth" })
                         }
-                        className="focus:outline-none shadow-lg focus:bg-white focus:shadow-2xl text-black rounded-full h-8 w-8"
-                        style={{
-                            backgroundColor: "white",
-                            background:
-                                "-webkit-linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45))"
-                        }}
                     >
                         ↓
                     </button>
@@ -76,9 +70,7 @@ const PhotoCard = ({ url, title, isLast }) => {
 
 const PhotoGroupPage = props => {
     const style = {
-        scrollSnapType: "mandatory",
-        scrollSnapPointsY: "repeat(100vh)",
-        scrollSnapType: "mandatory y"
+        scrollSnapType: "y mandatory"
     };
 
     return (
@@ -94,6 +86,7 @@ const PhotoGroupPage = props => {
                         url={url}
                         title={title}
                         isLast={index === props.photos.length - 1}
+                        index={index}
                     />
                 ))}
             </section>
