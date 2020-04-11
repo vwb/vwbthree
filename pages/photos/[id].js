@@ -57,7 +57,8 @@ const PhotoGroupPage = props => {
         scrollSnapType: "mandatory",
         scrollSnapPointsY: "repeat(100vh)",
         scrollSnapType: "y mandatory",
-        overflow: "auto"
+        overflow: "auto",
+        WebkitOverflowScrolling: "touch"
     };
 
     useEffect(() => {
