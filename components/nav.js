@@ -18,8 +18,6 @@ const Nav = ({ backgroundColor, textColor }) => {
         }))
     ];
 
-    console.log(formattedCleanedPath);
-
     const backgroundColorClass = backgroundColor
         ? backgroundColor
         : "bg-white shadow";
