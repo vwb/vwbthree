@@ -25,7 +25,7 @@ const Home = () => {
                     />
                     <div
                         className="absolute w-full text-center text-gray-500 z-20"
-                        style={{ bottom: "10%" }}
+                        style={{ bottom: "20%" }}
                     >
                         ↓
                     </div>
