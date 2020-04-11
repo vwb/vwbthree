@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { PHOTOS_JSON, PHOTO_GROUPS } from "../../data/photos";
 import Layout from "../../components/layout";
 import autoprefixer from "autoprefixer";
@@ -59,6 +59,10 @@ const PhotoGroupPage = props => {
         scrollSnapType: "y mandatory",
         overflow: "auto"
     };
+
+    useEffect(() => {
+        window.scrollTo(0, 1);
+    });
 
     return (
         <Layout
