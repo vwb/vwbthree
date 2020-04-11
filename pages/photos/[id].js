@@ -30,7 +30,7 @@ const PhotoCard = ({ url, title, isLast }) => {
         <div
             className="h-full w-full relative flex items-center content-center overflow-hidden"
             style={{
-                scrollSnapAlign: "start"
+                scrollSnapAlign: "center"
             }}
         >
             <div className="z-10 absolute w-full">
