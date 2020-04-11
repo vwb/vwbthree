@@ -28,7 +28,7 @@ const PhotoCard = ({ url, title, isLast }) => {
 
     return (
         <div
-            className="h-full w-full relative flex items-center content-center overflow-hidden"
+            className="h-screen w-full relative flex items-center content-center overflow-hidden"
             style={{
                 scrollSnapAlign: "center"
             }}
@@ -36,8 +36,11 @@ const PhotoCard = ({ url, title, isLast }) => {
             <div className="z-10 absolute w-full">
                 <img
                     key={url}
-                    className="h-full w-full max-w-md mx-auto"
-                    style={{ boxShadow: "1px 1px 20px rgba(0,0,0,0.5)" }}
+                    className="h-full max-w-md mx-auto"
+                    style={{
+                        boxShadow: "1px 1px 20px rgba(0,0,0,0.5)",
+                        width: "85%"
+                    }}
                     src={url}
                     title={title}
                 />
@@ -45,10 +48,26 @@ const PhotoCard = ({ url, title, isLast }) => {
             <div style={backgroundStyles} />
             {!isLast && (
                 <div
-                    className="absolute w-full text-center text-gray-700"
-                    style={{ bottom: "20px" }}
+                    className="absolute w-full text-center text-gray-700 z-20"
+                    style={{ bottom: "10%" }}
                 >
-                    V
+                    <button
+                        onClick={() =>
+                            window.scrollBy({
+                                left: 0,
+                                top: window.innerHeight,
+                                behavior: "smooth"
+                            })
+                        }
+                        className="focus:outline-none shadow-lg focus:bg-white focus:shadow-2xl text-black rounded-full h-8 w-8"
+                        style={{
+                            backgroundColor: "white",
+                            background:
+                                "-webkit-linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45))"
+                        }}
+                    >
+                        ↓
+                    </button>
                 </div>
             )}
         </div>
@@ -59,15 +78,8 @@ const PhotoGroupPage = props => {
     const style = {
         scrollSnapType: "mandatory",
         scrollSnapPointsY: "repeat(100vh)",
-        scrollSnapType: "y mandatory",
-        overflow: "auto",
-        WebkitOverflowScrolling: "touch",
-        scrollPaddingBottom: "1vh"
+        scrollSnapType: "mandatory y"
     };
-
-    useEffect(() => {
-        window.scrollTo(0, 1);
-    });
 
     return (
         <Layout
@@ -75,7 +87,7 @@ const PhotoGroupPage = props => {
             navClass="bg-transparent"
             textColor="text-gray-800"
         >
-            <section className="h-screen" style={style}>
+            <section style={style}>
                 {props.photos.map(({ url, title }, index) => (
                     <PhotoCard
                         key={url}
