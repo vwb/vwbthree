@@ -23,21 +23,18 @@ const PhotoCard = ({ url, title, isLast }) => {
         backgroundPosition: "center",
         height: "100%",
         width: "100%",
-        filter: "blur(5px)"
+        filter: "blur(15px)"
     };
 
     return (
         <div
-            className="h-full w-full relative flex items-center overflow-hidden"
+            className="h-full w-full relative flex items-center content-center overflow-hidden"
             style={{ scrollSnapAlign: "start" }}
         >
-            <div
-                className="z-10 flex items-center justify-center absolute"
-                // style={{ boxShadow: "1px 1px 3px gray" }}
-            >
+            <div className="z-10 absolute w-full ">
                 <img
                     key={url}
-                    className="h-full w-full"
+                    className="h-full w-full max-w-md mx-auto"
                     src={url}
                     title={title}
                 />
@@ -62,6 +59,7 @@ const PhotoGroupPage = props => {
         scrollSnapType: "y mandatory",
         overflow: "auto"
     };
+
     return (
         <Layout
             isOpenDefault={false}
