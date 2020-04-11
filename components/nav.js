@@ -24,7 +24,7 @@ const Nav = ({ backgroundColor, textColor }) => {
 
     return (
         <nav
-            className={`z-10 fixed top-0 right-0 left-0 text-center h-12 ${backgroundColorClass} ${textColor}`}
+            className={`z-50 fixed top-0 right-0 left-0 text-center h-12 ${backgroundColorClass} ${textColor}`}
         >
             <BreadCrumbs crumbs={formattedCleanedPath} />
         </nav>
