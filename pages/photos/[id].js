@@ -1,19 +1,6 @@
 import React, { useEffect } from "react";
 import { PHOTOS_JSON, PHOTO_GROUPS } from "../../data/photos";
 import Layout from "../../components/layout";
-import autoprefixer from "autoprefixer";
-
-// .navcard__img__container {
-//     background-image: url(${img});
-//     background-size: cover;
-//     background-position: center;
-//     height: 100%;
-//     width: 100%;
-// }
-// .navcard__img__container--blur {
-//     filter: blur(4px);
-//     -webkit-filter: blur(3px);
-// }
 
 const PhotoCard = ({ url, title, isLast, index }) => {
     const backgroundStyles = {
@@ -40,7 +27,8 @@ const PhotoCard = ({ url, title, isLast, index }) => {
                     className="h-full max-w-md mx-auto"
                     style={{
                         boxShadow: "1px 1px 20px rgba(0,0,0,0.5)",
-                        width: "80%"
+                        width: "80%",
+                        marginTop: "-30px"
                     }}
                     src={url}
                     title={title}
@@ -72,6 +60,10 @@ const PhotoGroupPage = props => {
     const style = {
         scrollSnapType: "y mandatory"
     };
+
+    useEffect(() => {
+        window.scrollTo(0, 1);
+    });
 
     return (
         <Layout
