@@ -13,7 +13,7 @@ const Nav = ({ backgroundColor, textColor }) => {
     const formattedCleanedPath = [
         { route: "/", display: "vwbthree" },
         ...cleanedPath.map(path => ({
-            route: (constructedRoute += path),
+            route: (constructedRoute += `${path}/`),
             display: path
         }))
     ];
