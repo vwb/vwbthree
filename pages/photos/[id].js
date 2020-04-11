@@ -62,7 +62,7 @@ const PhotoGroupPage = props => {
     };
 
     useEffect(() => {
-        window.scrollTo(0, 1);
+        window.scrollTo(0, 10);
     });
 
     return (

@@ -40,7 +40,8 @@ const Home = () => {
                             width: "100%",
                             height: "100%",
                             fontFamily: "Consolas",
-                            fontSize: "1.45rem"
+                            fontSize: "1.45rem",
+                            marginTop: "-26px"
                         }}
                     />
                 </div>
