@@ -1,12 +1,12 @@
 export const PHOTO_GROUPS = {
-    0: {
+    yosemite: {
         name: "Yosemite",
         ids: [0, 1, 2],
         coverPhotoUrl:
             "https://vwbthree-photos.s3-us-west-1.amazonaws.com/yosemite_small_img.jpg",
         slug: "yosemite"
     },
-    1: {
+    "san-francisco": {
         name: "San Francisco",
         ids: [],
         coverPhotoUrl:

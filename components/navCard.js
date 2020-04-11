@@ -9,9 +9,13 @@ const NavCard = ({ img, linkHref, linkText, containerStyles, blur = true }) => {
     return (
         <div className="navcard" style={containerStyles}>
             <div className="link-container">
-                <Link href={linkHref}>
-                    <a className="navcard__link">{linkText}</a>
-                </Link>
+                {linkHref ? (
+                    <Link href={linkHref}>
+                        <a className="navcard__link">{linkText}</a>
+                    </Link>
+                ) : (
+                    linkText
+                )}
             </div>
             <div className={imageContainerClasses} />
             <style jsx>{`
@@ -26,8 +30,6 @@ const NavCard = ({ img, linkHref, linkText, containerStyles, blur = true }) => {
                     justify-content: center;
                     position: absolute;
                     z-index: 1;
-                }
-                .navcard__link {
                     color: #f7fafc;
                 }
                 .navcard__img__container {

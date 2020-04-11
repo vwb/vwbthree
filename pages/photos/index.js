@@ -9,7 +9,6 @@ const PhotoGroupCard = props => (
             <a>
                 <NavCard
                     blur={false}
-                    linkHref={props.slug}
                     linkText={props.name}
                     img={props.url}
                     imgAlt={props.name}

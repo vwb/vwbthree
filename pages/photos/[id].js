@@ -1,21 +1,24 @@
 import React from "react";
-import { PHOTOS_JSON } from "../../data/images";
+import { PHOTOS_JSON, PHOTO_GROUPS } from "../../data/photos";
 import Layout from "../../components/layout";
 import Link from "next/link";
 
 const PhotoPage = props => {
     return (
-        <Layout>
-            {/* Link back to photos here */}
+        <Layout
+            isOpenDefault={false}
+            navClass="bg-transparent"
+            textColor="text-white"
+        >
             <section className="max-w-md mx-auto">
-                <Link href="/photos">
-                    <a>{"< Photos"}</a>
-                </Link>
-                <img
-                    className="pt-4 w-full"
-                    src={props.photo.url}
-                    title={props.photo.title}
-                />
+                {props.photos.map(({ url, title }) => (
+                    <img
+                        key={url}
+                        className="pb-4 w-full"
+                        src={url}
+                        title={title}
+                    />
+                ))}
             </section>
         </Layout>
     );
@@ -23,8 +26,10 @@ const PhotoPage = props => {
 
 PhotoPage.getInitialProps = async context => {
     const { query } = context;
-    const photo = PHOTOS_JSON[query.id];
-    return { photo };
+    const { ids: photoIds } = PHOTO_GROUPS[query.id];
+    const photos = photoIds.map(id => PHOTOS_JSON[id]);
+
+    return { photos };
 };
 
 export default PhotoPage;

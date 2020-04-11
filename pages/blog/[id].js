@@ -4,7 +4,9 @@ import Layout from "../../components/layout";
 
 const Post = props => (
     <Layout isOpenDefault={true}>
-        <Markdown content={props.post.content} />
+        <main className="pt-12">
+            <Markdown content={props.post.content} />
+        </main>
     </Layout>
 );
 
