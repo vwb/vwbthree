@@ -1,7 +1,7 @@
 export const PHOTO_GROUPS = {
     yosemite: {
         name: "Yosemite",
-        ids: [3, 0, 1, 2],
+        ids: [3, 0, 1, 2, 5],
         coverPhotoUrl:
             "https://vwbthree-photos.s3-us-west-1.amazonaws.com/yosemite_small_img.jpg",
         slug: "yosemite"
@@ -44,6 +44,12 @@ export const PHOTOS_JSON = {
         url:
             "https://vwbthree-photos.s3-us-west-1.amazonaws.com/san_fran_small.jpg",
         id: 4,
+        title: ""
+    },
+    5: {
+        url:
+            "https://vwbthree-photos.s3-us-west-1.amazonaws.com/yosemite_waterfall.jpg",
+        id: 5,
         title: ""
     }
 };
