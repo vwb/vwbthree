@@ -66,11 +66,7 @@ const PhotoGroupPage = props => {
     });
 
     return (
-        <Layout
-            isOpenDefault={false}
-            navClass="bg-transparent"
-            textColor="text-gray-800"
-        >
+        <Layout isOpenDefault={false} navClass="bg-transparent">
             <section style={style}>
                 {props.photos.map(({ url, title }, index) => (
                     <PhotoCard
