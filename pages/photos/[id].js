@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
-import { PHOTOS_JSON, PHOTO_GROUPS } from "../../data/photos";
+import React from "react";
 import Layout from "../../components/layout";
+
+import PHOTO_COLLECTIONS from "../../data/photos/collections.json";
+import PHOTOS_JSON from "../../data/photos/images.json";
 
 const PhotoCard = ({ url, title, isLast, index }) => {
     const backgroundStyles = {
@@ -61,10 +63,6 @@ const PhotoGroupPage = props => {
         scrollSnapType: "y mandatory"
     };
 
-    useEffect(() => {
-        window.scrollTo(0, 10);
-    });
-
     return (
         <Layout isOpenDefault={false} navClass="bg-transparent">
             <section style={style}>
@@ -84,7 +82,8 @@ const PhotoGroupPage = props => {
 
 PhotoGroupPage.getInitialProps = async context => {
     const { query } = context;
-    const { ids: photoIds } = PHOTO_GROUPS[query.id];
+
+    const { ids: photoIds } = PHOTO_COLLECTIONS[query.id];
     const photos = photoIds.map(id => PHOTOS_JSON[id]);
 
     return { photos };

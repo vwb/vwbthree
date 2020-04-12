@@ -1,1 +1,14 @@
-{"yosemite":{"name":"Yosemite","ids":[3,0,1,2,5],"coverPhotoUrl":"https://vwbthree-photos.s3-us-west-1.amazonaws.com/yosemite_small_img.jpg","slug":"yosemite"},"san-francisco":{"name":"San Francisco","ids":[4,6],"coverPhotoUrl":"https://vwbthree-photos.s3-us-west-1.amazonaws.com/san_fran_small.jpg","slug":"san-francisco"}}
+{
+    "yosemite": {
+        "name": "Yosemite",
+        "ids": [3, 0, 1, 2, 5],
+        "coverPhotoUrl": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/yosemite_small_img.jpg",
+        "slug": "yosemite"
+    },
+    "san-francisco": {
+        "name": "San Francisco",
+        "ids": [4, 6],
+        "coverPhotoUrl": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/san_fran_small.jpg",
+        "slug": "san-francisco"
+    }
+}

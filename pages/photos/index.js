@@ -1,7 +1,8 @@
-import { PHOTO_GROUPS } from "../../data/photos";
 import Layout from "../../components/layout";
 import NavCard from "../../components/navCard";
 import Link from "next/link";
+
+import PHOTO_COLLECTIONS from "../../data/photos/collections.json";
 
 const PhotoGroupCard = props => (
     <div style={{ height: "450px" }} className="pt-6 px-4 object-center">
@@ -31,7 +32,7 @@ const PhotosIndex = () => {
     return (
         <Layout isOpenDefault={false}>
             <div className="pt-12 pb-6">
-                {Object.values(PHOTO_GROUPS).map(data => (
+                {Object.values(PHOTO_COLLECTIONS).map(data => (
                     <PhotoGroupCard
                         key={data.slug}
                         slug={data.slug}
