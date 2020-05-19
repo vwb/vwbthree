@@ -1,5 +1,6 @@
 import React from "react";
 import Layout from "../../components/Layout";
+import Blur from "../../components/Blur";
 
 import PHOTO_COLLECTIONS from "../../data/photos/collections.json";
 import PHOTOS_JSON from "../../data/photos/images.json";
@@ -22,7 +23,7 @@ const PhotoCard = ({ url, title, isLast, index }) => {
                 scrollSnapAlign: "start"
             }}
         >
-            <div style={{backdropFilter: 'blur(7px)', height: '100%', width: '100%', position: 'absolute'}}/>
+            <Blur />
             <div className="z-10 absolute w-full">
                 <img
                     key={url}
