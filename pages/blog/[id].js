@@ -1,6 +1,6 @@
 import matter from "gray-matter";
 import Markdown from "../../components/Markdown";
-import Layout from "../../components/layout";
+import Layout from "../../components/Layout";
 
 const Post = props => (
     <Layout isOpenDefault={true}>

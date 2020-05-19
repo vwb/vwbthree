@@ -1,7 +1,7 @@
 import React from "react";
 import matter from "gray-matter";
 import PostCard from "../../components/PostCard";
-import Layout from "../../components/layout";
+import Layout from "../../components/Layout";
 
 const getPostData = () =>
     (context => {
