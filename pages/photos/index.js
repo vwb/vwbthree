@@ -1,4 +1,4 @@
-import Layout from "../../components/layout";
+import Layout from "../../components/Layout";
 import NavCard from "../../components/navCard";
 import Link from "next/link";
 
