@@ -33,5 +33,30 @@
         "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/baybridge_small.jpg",
         "title": "A Golden Gate",
         "id": 6
+    },
+    "8": {
+        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/headlands/above-and-below.jpg",
+        "title": "Above and Below",
+        "id": 8
+    },
+    "9": {
+        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/headlands/diablo.jpg",
+        "title": "Diablo",
+        "id": 9
+    },
+    "10": {
+        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/headlands/sin.jpg",
+        "title": "Sin",
+        "id": 10
+    },
+    "11": {
+        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/headlands/small.jpg",
+        "title": "Small",
+        "id": 11
+    },
+    "12": {
+        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/headlands/three.jpg",
+        "title": "Three",
+        "id": 12
     }
 }

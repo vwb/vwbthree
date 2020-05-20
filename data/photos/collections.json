@@ -10,5 +10,11 @@
         "ids": [4, 6],
         "coverPhotoUrl": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/san_fran_small.jpg",
         "slug": "san-francisco"
+    },
+    "headlands": {
+        "name": "Headlands",
+        "ids": [8, 9, 10, 11, 12],
+        "coverPhotoUrl": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/headlands/above-and-below.jpg",
+        "slug": "headlands"
     }
 }
