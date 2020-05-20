@@ -16,5 +16,11 @@
         "ids": [8, 9, 10, 11, 12],
         "coverPhotoUrl": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/headlands/above-and-below.jpg",
         "slug": "headlands"
+    },
+    "woods": {
+        "name": "Woods",
+        "ids": [16, 7, 12, 13, 14, 15, 17],
+        "coverPhotoUrl": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/woods/moss.jpg",
+        "slug": "woods"
     }
 }
