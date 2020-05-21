@@ -5,7 +5,10 @@ import Link from "next/link";
 import PHOTO_COLLECTIONS from "../../data/photos/collections.json";
 
 const PhotoGroupCard = props => (
-    <div style={{ height: "450px" }} className="pt-6 px-4 object-center">
+    <div
+        style={{ height: "450px", width: "400px" }}
+        className="pt-6 px-4 object-center"
+    >
         <Link href="/photos/[props.slug]" as={`/photos/${props.slug}`}>
             <a>
                 <NavCard
@@ -31,7 +34,7 @@ const PhotoGroupCard = props => (
 const PhotosIndex = () => {
     return (
         <Layout isOpenDefault={false}>
-            <div className="pt-12 pb-6">
+            <div className="flex justify-center flex-wrap pt-12 pb-6 max-w-screen-xl mx-auto">
                 {Object.values(PHOTO_COLLECTIONS).map(data => (
                     <PhotoGroupCard
                         key={data.slug}

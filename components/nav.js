@@ -8,12 +8,12 @@ const Nav = ({ backgroundColor, textColor }) => {
     const path = router.asPath.split("/");
     const cleanedPath = path.filter(crumb => crumb);
 
-    let constructedRoute = "/";
+    let constructedRoute = "";
 
     const formattedCleanedPath = [
         { route: "/", display: "vwbthree" },
         ...cleanedPath.map(path => ({
-            route: (constructedRoute += `${path}/`),
+            route: (constructedRoute += `/${path}`),
             display: path.replace(/-/g, " ")
         }))
     ];
