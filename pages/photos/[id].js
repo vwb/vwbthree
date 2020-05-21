@@ -12,7 +12,7 @@ const PhotoCard = ({ url, title, isLast, index }) => {
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100%",
-        width: "100%",
+        width: "100%"
     };
 
     return (
@@ -27,7 +27,7 @@ const PhotoCard = ({ url, title, isLast, index }) => {
             <div className="z-10 absolute w-full">
                 <img
                     key={url}
-                    className="h-full max-w-md mx-auto"
+                    className="h-full max-w-xl mx-auto"
                     style={{
                         boxShadow: "1px 1px 20px rgba(0,0,0,0.5)",
                         width: "80%",
