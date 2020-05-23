@@ -1,6 +1,10 @@
 import React from "react";
+import Link from "next/link";
+
 import Layout from "../../components/Layout";
 import Blur from "../../components/Blur";
+
+import { generatePhotoSlug } from "../../lib/photos";
 
 import {
     getAllCollectionPaths,
@@ -28,8 +32,8 @@ const Image = ({ url, title, isRaised }) => (
     />
 );
 
-const PhotoView = ({ url, title, isLast, index, isDarkBg = true }) => {
-    const DARK_BACKGROUND = `-webkit-linear-gradient(rgba(85, 85, 85, 0.45), rgba(85, 85, 85, 0.45)), url(${url})`;
+const PhotoView = ({ photo, isLast, index }) => {
+    const DARK_BACKGROUND = `-webkit-linear-gradient(rgba(85, 85, 85, 0.45), rgba(85, 85, 85, 0.45)), url(${photo.url})`;
 
     const backgroundStyles = {
         background: DARK_BACKGROUND,
@@ -49,7 +53,18 @@ const PhotoView = ({ url, title, isLast, index, isDarkBg = true }) => {
         >
             <Blur />
             <div className="z-10 absolute w-full">
-                <Image url={url} title={title} isRaised={true} />
+                <Link
+                    href="/photo/[slug]"
+                    as={`/photo/${generatePhotoSlug(photo)}`}
+                >
+                    <a>
+                        <Image
+                            url={photo.url}
+                            title={photo.title}
+                            isRaised={true}
+                        />
+                    </a>
+                </Link>
             </div>
             <div style={backgroundStyles} />
             {!isLast && (
@@ -73,11 +88,10 @@ const PhotoGroupPage = props => {
     return (
         <Layout isOpenDefault={false} navClass="bg-transparent">
             <section style={style}>
-                {props.photos.map(({ url, title }, index) => (
+                {props.photos.map((photo, index) => (
                     <PhotoView
-                        key={url}
-                        url={url}
-                        title={title}
+                        key={photo.url}
+                        photo={photo}
                         isLast={index === props.photos.length - 1}
                         index={index}
                     />
