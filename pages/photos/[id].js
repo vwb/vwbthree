@@ -5,9 +5,26 @@ import Blur from "../../components/Blur";
 import PHOTO_COLLECTIONS from "../../data/photos/collections.json";
 import PHOTOS_JSON from "../../data/photos/images.json";
 
+const ScrollToNext = ({ index }) => (
+    <div
+        className="absolute w-full text-center text-gray-700 z-20"
+        style={{ bottom: "5%" }}
+    >
+        <button
+            className="focus:outline-none"
+            onClick={() =>
+                document
+                    .getElementById(`photo-card-${index + 1}`)
+                    .scrollIntoView({ behavior: "smooth" })
+            }
+        >
+            ↓
+        </button>
+    </div>
+);
+
 const PhotoCard = ({ url, title, isLast, index }) => {
     const backgroundStyles = {
-        backgroundColor: "black",
         background: `-webkit-linear-gradient(rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.45)), url(${url})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
@@ -30,31 +47,15 @@ const PhotoCard = ({ url, title, isLast, index }) => {
                     className="h-full max-w-xl mx-auto"
                     style={{
                         boxShadow: "1px 1px 20px rgba(0,0,0,0.5)",
-                        width: "80%",
-                        marginTop: "-30px"
+                        marginTop: "-15px",
+                        height: "auto"
                     }}
                     src={url}
                     title={title}
                 />
             </div>
             <div style={backgroundStyles} />
-            {!isLast && (
-                <div
-                    className="absolute w-full text-center text-gray-700 z-20"
-                    style={{ bottom: "5%" }}
-                >
-                    <button
-                        className="focus:outline-none"
-                        onClick={() =>
-                            document
-                                .getElementById(`photo-card-${index + 1}`)
-                                .scrollIntoView({ behavior: "smooth" })
-                        }
-                    >
-                        ↓
-                    </button>
-                </div>
-            )}
+            {!isLast && <ScrollToNext index={index} />}
         </div>
     );
 };
