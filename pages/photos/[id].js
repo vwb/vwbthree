@@ -56,9 +56,7 @@ const PhotoView = ({ url, title, isLast, index, isDarkBg = true }) => {
         >
             <Blur />
             <div className="z-10 absolute w-full">
-                <button onClick={() => alert("Clicked")}>
-                    <Image url={url} title={title} isRaised={true} />
-                </button>
+                <Image url={url} title={title} isRaised={true} />
             </div>
             <div style={backgroundStyles} />
             {!isLast && <ScrollToNext index={index} />}
