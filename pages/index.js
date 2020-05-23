@@ -14,7 +14,7 @@ const Home = () => {
                     <NavCard
                         linkHref="/photos"
                         linkText="Photographer ⟶"
-                        img="./waterfall.jpg"
+                        img="/waterfall.jpg"
                         imgAlt="Waterfall in Yosemite"
                         containerStyles={{
                             width: "100%",
@@ -34,7 +34,7 @@ const Home = () => {
                     <NavCard
                         linkHref="/blog"
                         linkText="developer >"
-                        img="./code.png"
+                        img="/code.png"
                         imgAlt="Code"
                         containerStyles={{
                             width: "100%",
