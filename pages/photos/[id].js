@@ -44,10 +44,9 @@ const PhotoCard = ({ url, title, isLast, index }) => {
             <div className="z-10 absolute w-full">
                 <img
                     key={url}
-                    className="h-full max-w-xl mx-auto"
+                    className="h-full max-w-xl mx-auto w-4/5 sm:w-3/5 md:w-auto"
                     style={{
                         boxShadow: "1px 1px 20px rgba(0,0,0,0.5)",
-                        marginTop: "-15px",
                         height: "auto"
                     }}
                     src={url}
