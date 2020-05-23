@@ -7,19 +7,12 @@ import {
     getCollectionData
 } from "../../lib/collections";
 
-const ScrollToNext = ({ index }) => (
+const ScrollToNext = ({ onClick }) => (
     <div
         className="absolute w-full text-center text-gray-900 z-20"
         style={{ bottom: "5%" }}
     >
-        <button
-            className="focus:outline-none"
-            onClick={() =>
-                document
-                    .getElementById(`photo-view-${index + 1}`)
-                    .scrollIntoView({ behavior: "smooth" })
-            }
-        >
+        <button className="focus:outline-none" onClick={onClick}>
             ↓
         </button>
     </div>
@@ -59,7 +52,15 @@ const PhotoView = ({ url, title, isLast, index, isDarkBg = true }) => {
                 <Image url={url} title={title} isRaised={true} />
             </div>
             <div style={backgroundStyles} />
-            {!isLast && <ScrollToNext index={index} />}
+            {!isLast && (
+                <ScrollToNext
+                    onClick={() =>
+                        document
+                            .getElementById(`photo-view-${index + 1}`)
+                            .scrollIntoView({ behavior: "smooth" })
+                    }
+                />
+            )}
         </div>
     );
 };
