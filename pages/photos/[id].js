@@ -2,8 +2,10 @@ import React from "react";
 import Layout from "../../components/Layout";
 import Blur from "../../components/Blur";
 
-import PHOTO_COLLECTIONS from "../../data/photos/collections.json";
-import PHOTOS_JSON from "../../data/photos/images.json";
+import {
+    getAllCollectionPaths,
+    getCollectionData
+} from "../../lib/collections";
 
 const ScrollToNext = ({ index }) => (
     <div
@@ -54,7 +56,9 @@ const PhotoView = ({ url, title, isLast, index, isDarkBg = true }) => {
         >
             <Blur />
             <div className="z-10 absolute w-full">
-                <Image url={url} title={title} isRaised={true} />
+                <button onClick={() => alert("Clicked")}>
+                    <Image url={url} title={title} isRaised={true} />
+                </button>
             </div>
             <div style={backgroundStyles} />
             {!isLast && <ScrollToNext index={index} />}
@@ -84,13 +88,17 @@ const PhotoGroupPage = props => {
     );
 };
 
-PhotoGroupPage.getInitialProps = async context => {
-    const { query } = context;
+export async function getStaticPaths() {
+    const paths = getAllCollectionPaths();
+    return {
+        paths,
+        fallback: false
+    };
+}
 
-    const { ids: photoIds } = PHOTO_COLLECTIONS[query.id];
-    const photos = photoIds.map(id => PHOTOS_JSON[id]);
-
-    return { photos };
-};
+export async function getStaticProps({ params }) {
+    const photos = getCollectionData(params.id);
+    return { props: { photos } };
+}
 
 export default PhotoGroupPage;
