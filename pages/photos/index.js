@@ -34,16 +34,18 @@ const PhotoGroupCard = props => (
 const PhotosIndex = () => {
     return (
         <Layout isOpenDefault={false}>
-            <div className="flex justify-center flex-wrap pt-12 pb-6 max-w-screen-xl mx-auto">
-                {Object.values(PHOTO_COLLECTIONS).map(data => (
-                    <PhotoGroupCard
-                        key={data.slug}
-                        slug={data.slug}
-                        url={data.coverPhotoUrl}
-                        name={data.name}
-                    />
-                ))}
-            </div>
+            <main className="pt-12 pb-6 max-w-screen-xl mx-auto">
+                <div className="flex justify-center flex-wrap">
+                    {Object.values(PHOTO_COLLECTIONS).map(data => (
+                        <PhotoGroupCard
+                            key={data.slug}
+                            slug={data.slug}
+                            url={data.coverPhotoUrl}
+                            name={data.name}
+                        />
+                    ))}
+                </div>
+            </main>
         </Layout>
     );
 };
