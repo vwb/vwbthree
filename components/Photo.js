@@ -11,7 +11,11 @@ const Image = ({ url, title, isRaised }) => (
 );
 
 const Photo = props => {
-    const DARK_BACKGROUND = `-webkit-linear-gradient(rgba(85, 85, 85, 0.45), rgba(85, 85, 85, 0.45)), url(${props.photo.url})`;
+    const DEFAULT_BACKGROUND =
+        "rgba(85, 85, 85, 0.45), rgba(85, 85, 85, 0.45))";
+    const DARK_BACKGROUND = `-webkit-linear-gradient(${
+        props.backgroundOverlay ? props.backgroundOverlay : DEFAULT_BACKGROUND
+    }, url(${props.photo.url})`;
     const backgroundStyles = {
         background: DARK_BACKGROUND,
         backgroundSize: "cover",
