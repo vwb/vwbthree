@@ -1,7 +1,6 @@
 import React from "react";
 import Head from "next/head";
 import Nav from "./nav";
-import SideNav from "./SideNav";
 import { Provider as NavProvider } from "../context/navContext";
 
 const Layout = props => {
@@ -19,7 +18,6 @@ const Layout = props => {
                 />
             </Head>
             <NavProvider>
-                <SideNav isOpenDefault={isOpenDefault} />
                 <Nav backgroundColor={navClass} textColor={textColor} />
                 <div className={mainClasses}>{children}</div>
                 <style jsx>{`

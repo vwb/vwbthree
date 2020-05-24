@@ -14,7 +14,7 @@ const Nav = ({ backgroundColor, textColor }) => {
         { route: "/", display: "vwbthree" },
         ...cleanedPath.map(path => ({
             route: (constructedRoute += `/${path}`),
-            display: path.replace(/-/g, " ")
+            display: path.split("--")[0].replace(/-/g, " ")
         }))
     ];
 
