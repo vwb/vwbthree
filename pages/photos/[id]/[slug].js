@@ -80,7 +80,7 @@ const PhotoDetailPage = ({ photo }) => {
                             </button>
                         </div>
                         <div className="w-3/4 pt-6 text-sm">
-                            <div className>About the photo:</div>
+                            <div>About the photo:</div>
                             {FAKE_DESCRIPTION}
                         </div>
                     </div>
