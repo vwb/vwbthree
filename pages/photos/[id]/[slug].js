@@ -72,7 +72,7 @@ const PhotoDetailPage = ({ photo }) => {
                     photo={photo}
                     backgroundOverlay="rgba(15, 15, 15, 0.65), rgba(15, 15, 15, 0.65))"
                     render={image => (
-                        <div style={{ marginTop: "-30px" }}>{image}</div>
+                        <div style={{ marginTop: "-50px" }}>{image}</div>
                     )}
                 />
             </BackGround>
