@@ -49,7 +49,7 @@ const BackGround = props => (
 const DetailPanel = props => (
     <div
         className="z-20 h-300 relative bg-opacity-0"
-        style={{ marginTop: "-120px", height: "200px" }}
+        style={{ marginTop: "-160px", height: "200px" }}
     >
         <div className="w-full sm:w-3/4 lg:w-1/2 xl:x-1/3 bg-gray-800 mx-auto h-full rounded-md shadow relative text-gray-200">
             {props.children}
@@ -75,14 +75,12 @@ const PhotoDetailPage = ({ photo }) => {
                         <h1 className="text-2xl">{photo.title}</h1>
                     </DetailHeader>
                     <div className="flex flex-col items-center p-4">
-                        <div className="pt-6">
-                            <button
-                                className="rounded bg-teal-700 p-3 hover:shadow-xl "
-                                onClick={() => alert("Cool")}
-                            >
-                                Contact for Purchase
-                            </button>
-                        </div>
+                        <button
+                            className="rounded bg-teal-700 p-3 hover:shadow-xl "
+                            onClick={() => alert("Cool")}
+                        >
+                            Contact for Purchase
+                        </button>
                         {/* <div className="w-3/4 pt-6 text-sm">
                             <div>About the photo:</div>
                             {FAKE_DESCRIPTION}
