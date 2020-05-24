@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Layout from "../../../components/Layout";
 import PhotoView from "../../../components/Photo";
 import { getAllPhotoPaths, getPhotoData } from "../../../lib/photos";
@@ -49,7 +50,7 @@ const BackGround = props => (
 const DetailPanel = props => (
     <div
         className="z-20 h-300 relative bg-opacity-0"
-        style={{ marginTop: "-160px", height: "200px" }}
+        style={{ marginTop: "-60px", height: "220px" }}
     >
         <div className="w-full sm:w-3/4 lg:w-1/2 xl:x-1/3 bg-gray-800 mx-auto h-full rounded-md shadow relative text-gray-200">
             {props.children}
@@ -58,6 +59,12 @@ const DetailPanel = props => (
 );
 
 const PhotoDetailPage = ({ photo }) => {
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+    }, []);
+
     return (
         <Layout isOpenDefault={false} navClass="bg-transparent text-gray-200">
             <BackGround>
@@ -74,13 +81,19 @@ const PhotoDetailPage = ({ photo }) => {
                     <DetailHeader>
                         <h1 className="text-2xl">{photo.title}</h1>
                     </DetailHeader>
-                    <div className="flex flex-col items-center p-4">
+                    <div className="flex flex-col items-center pt-6 pb-4 px-4">
                         <button
                             className="rounded bg-teal-700 p-3 hover:shadow-xl "
                             onClick={() => alert("Cool")}
                         >
                             Contact for Purchase
                         </button>
+                        <p
+                            className="pt-2 text-gray-400 text-xs text-center"
+                            style={{ maxWidth: "160px" }}
+                        >
+                            Custom prints and digital download available
+                        </p>
                         {/* <div className="w-3/4 pt-6 text-sm">
                             <div>About the photo:</div>
                             {FAKE_DESCRIPTION}
