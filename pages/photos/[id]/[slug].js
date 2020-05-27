@@ -82,7 +82,7 @@ const ContactForm = props => {
                         <input
                             id="email-input"
                             className="p-3 mt-4 flex-grow rounded text-gray-800 focus:outline-none"
-                            type="text"
+                            type="email"
                             placeholder="example@domain.com"
                             value={emailInput}
                             onChange={e => setEmailInput(e.target.value)}
