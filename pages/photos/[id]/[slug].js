@@ -46,11 +46,23 @@ const FadeIn = props => {
 };
 
 const ContactForm = () => {
+    const handleSubmit = e => {
+        e.preventDefault;
+
+        alert(
+            "Thank you for your interest. \n This feature is still in development, please try again soon"
+        );
+    };
+
     return (
         <section className="pt-4 px-4 w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto">
-            <form className="flex flex-col items-center">
+            <form
+                className="flex flex-col items-center"
+                onSubmit={handleSubmit}
+            >
                 <p className="text-center">
-                    Enter your email below and I will contact you shortly
+                    Enter your email below to be contacted regarding purchasing
+                    options
                 </p>
                 <div className="w-full flex px-4">
                     <label htmlFor="email-input" className="hidden">
@@ -58,7 +70,7 @@ const ContactForm = () => {
                     </label>
                     <input
                         id="email-input"
-                        className="p-3 mt-4 flex-grow rounded text-gray-800 focus:outline-none"
+                        className="p-3 mt-4 flex-grow rounded text-gray-800 focus:outline-none focus:border-teal-200"
                         type="text"
                         placeholder="example@domain.com"
                     />
@@ -66,7 +78,10 @@ const ContactForm = () => {
                 <p className="text-xs pt-2">
                     Digital download and custom prints available
                 </p>
-                <button className="w-3/4 mt-5 p-3 hover:shadow-xl text-gray-300 focus:outline-none bg-teal-700 rounded">
+                <button
+                    className="w-3/4 mt-5 p-3 hover:shadow-xl text-gray-300 focus:outline-none bg-teal-700 rounded"
+                    type="submit"
+                >
                     Submit
                 </button>
             </form>
@@ -92,7 +107,7 @@ const PanelContent = props => {
                             style={{ transition: "all .4s" }}
                             onClick={() => setPanelOpen(!isPanelOpen)}
                         >
-                            {isPanelOpen ? "⬇" : "Contact for Purchase"}
+                            {isPanelOpen ? "⇣" : "Purchase"}
                         </button>
                     </div>
                 </div>
