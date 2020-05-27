@@ -47,7 +47,7 @@ const ContactForm = props => {
     const [isSubmitted, setSubmitted] = useState(false);
 
     const handleSubmit = e => {
-        e.preventDefault;
+        e.preventDefault();
 
         //TODO: Contact Form
         //validate input is a valid email
