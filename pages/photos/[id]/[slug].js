@@ -1,6 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useContext, useState } from "react";
 import Layout from "../../../components/Layout";
 import PhotoView from "../../../components/Photo";
+import Panel, { PanelContext } from "../../../components/Panel";
+import Divider from "../../../components/Divider";
 import { getAllPhotoPaths, getPhotoData } from "../../../lib/photos";
 
 const FAKE_DESCRIPTION =
@@ -9,25 +11,6 @@ const FAKE_DESCRIPTION =
 const DetailHeader = props => (
     <div className="mx-4">
         <div
-            style={{
-                position: "absolute",
-                left: "24px",
-                top: "20px"
-            }}
-        >
-            ⇣
-        </div>
-        <div
-            style={{
-                position: "absolute",
-                right: "24px",
-                top: "20px"
-            }}
-        >
-            ⇣
-        </div>
-        <div
-            className="text-center pt-2"
             style={{
                 fontFamily: "Gill Sans"
             }}
@@ -47,24 +30,86 @@ const BackGround = props => (
     </div>
 );
 
-const DetailPanel = props => (
-    <div
-        className="z-20 h-300 relative bg-opacity-0"
-        style={{ marginTop: "-60px", height: "220px" }}
-    >
-        <div className="w-full sm:w-3/4 lg:w-1/2 xl:x-1/3 bg-gray-800 mx-auto h-full rounded-md shadow relative text-gray-200">
-            {props.children}
-        </div>
-    </div>
-);
-
-const PhotoDetailPage = ({ photo }) => {
+const FadeIn = props => {
+    const [isMounted, setMounted] = useState(false);
     useEffect(() => {
-        if (typeof window !== "undefined") {
-            window.scrollTo(0, document.body.scrollHeight);
-        }
+        setMounted(true);
     }, []);
 
+    return (
+        <div
+            style={{ opacity: `${isMounted ? 1 : 0}`, transition: "all 0.4s" }}
+        >
+            {props.children}
+        </div>
+    );
+};
+
+const ContactForm = () => {
+    return (
+        <section className="pt-4 px-4 w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto">
+            <form className="flex flex-col items-center">
+                <p className="text-center">
+                    Enter your email below and I will contact you shortly
+                </p>
+                <div className="w-full flex px-4">
+                    <label htmlFor="email-input" className="hidden">
+                        Email
+                    </label>
+                    <input
+                        id="email-input"
+                        className="p-3 mt-4 flex-grow rounded text-gray-800 focus:outline-none"
+                        type="text"
+                        placeholder="example@domain.com"
+                    />
+                </div>
+                <p className="text-xs pt-2">
+                    Digital download and custom prints available
+                </p>
+                <button className="w-3/4 mt-5 p-3 hover:shadow-xl text-gray-300 focus:outline-none bg-teal-700 rounded">
+                    Submit
+                </button>
+            </form>
+        </section>
+    );
+};
+
+const PanelContent = props => {
+    const [isPanelOpen, setPanelOpen] = useContext(PanelContext);
+
+    return (
+        <section className="pt-2">
+            <DetailHeader>
+                <div className="flex items-center justify-between">
+                    <h1 className="text-2xl pl-6">{props.photo.title}</h1>
+                    <div className="flex flex-col items-center">
+                        <button
+                            className={`${
+                                isPanelOpen
+                                    ? "bg-transparent"
+                                    : "bg-teal-700 rounded"
+                            }   p-3 hover:shadow-xl text-gray-300 focus:outline-none`}
+                            style={{ transition: "all .4s" }}
+                            onClick={() => setPanelOpen(!isPanelOpen)}
+                        >
+                            {isPanelOpen ? "⬇" : "Contact for Purchase"}
+                        </button>
+                    </div>
+                </div>
+            </DetailHeader>
+            {isPanelOpen && (
+                <div className="pt-4">
+                    <FadeIn>
+                        <Divider />
+                        <ContactForm />
+                    </FadeIn>
+                </div>
+            )}
+        </section>
+    );
+};
+
+const PhotoDetailPage = ({ photo }) => {
     return (
         <Layout isOpenDefault={false} navClass="bg-transparent text-gray-200">
             <BackGround>
@@ -76,31 +121,9 @@ const PhotoDetailPage = ({ photo }) => {
                     )}
                 />
             </BackGround>
-            <DetailPanel>
-                <section className="pt-2">
-                    <DetailHeader>
-                        <h1 className="text-2xl">{photo.title}</h1>
-                    </DetailHeader>
-                    <div className="flex flex-col items-center pt-6 pb-4 px-4">
-                        <button
-                            className="rounded bg-teal-700 p-3 hover:shadow-xl "
-                            onClick={() => alert("Cool")}
-                        >
-                            Contact for Purchase
-                        </button>
-                        <p
-                            className="pt-2 text-gray-400 text-xs text-center"
-                            style={{ maxWidth: "160px" }}
-                        >
-                            Custom prints and digital download available
-                        </p>
-                        {/* <div className="w-3/4 pt-6 text-sm">
-                            <div>About the photo:</div>
-                            {FAKE_DESCRIPTION}
-                        </div> */}
-                    </div>
-                </section>
-            </DetailPanel>
+            <Panel>
+                <PanelContent photo={photo} />
+            </Panel>
         </Layout>
     );
 };
