@@ -4,6 +4,7 @@ import PhotoView from "../../../components/Photo";
 import Panel, { PanelContext } from "../../../components/Panel";
 import Divider from "../../../components/Divider";
 import { getAllPhotoPaths, getPhotoData } from "../../../lib/photos";
+import { getCollection } from "../../../lib/collections";
 
 const DetailHeader = props => (
     <div className="mx-4">
@@ -43,61 +44,27 @@ const FadeIn = props => {
 };
 
 const ContactForm = props => {
-    const [emailInput, setEmailInput] = useState("");
     const [isSubmitted, setSubmitted] = useState(false);
-
-    const handleSubmit = e => {
-        e.preventDefault();
-
-        //TODO: Contact Form
-        //validate input is a valid email
-
-        //post at to be created endpoint
-
-        //store "submitted:photo-id" in local storage and
-        //leverage that value for usestate on mount
-
-        alert(
-            "Thank you for your interest. \n This feature is still in development, please try again soon"
-        );
-
-        setSubmitted(true);
-    };
 
     return (
         <section className="pt-4 px-4 w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto">
             {!isSubmitted && (
-                <form
-                    className="flex flex-col items-center"
-                    onSubmit={handleSubmit}
-                >
+                <section className="flex flex-col items-center">
                     <p className="text-center">
-                        Enter your email below to be contacted regarding
-                        purchasing options
+                        Contact via email and I will reach out shortly to
+                        finalize purchasing options!
+                        <p className="text-xs pt-2">
+                            Digital download and custom prints available
+                        </p>
                     </p>
-                    <div className="w-full flex px-4">
-                        <label htmlFor="email-input" className="hidden">
-                            Email
-                        </label>
-                        <input
-                            id="email-input"
-                            className="p-3 mt-4 flex-grow rounded text-gray-800 focus:outline-none"
-                            type="email"
-                            placeholder="example@domain.com"
-                            value={emailInput}
-                            onChange={e => setEmailInput(e.target.value)}
-                        />
-                    </div>
-                    <p className="text-xs pt-2">
-                        Digital download and custom prints available
-                    </p>
-                    <button
-                        className="w-3/4 mt-5 p-3 hover:shadow-xl text-gray-300 focus:outline-none bg-teal-700 rounded"
-                        type="submit"
+                    <a
+                        className="my-3 p-3 hover:shadow-xl text-gray-300 focus:outline-none bg-teal-700 rounded"
+                        href={`mailto:vwbthree.photos@gmail.com?subject=Interested%20in:%20${props.photo.title}%20in%20the%20${props.collection.name}%20Collection`}
+                        onClick={() => setSubmitted(true)}
                     >
-                        Submit
-                    </button>
-                </form>
+                        Contact
+                    </a>
+                </section>
             )}
             {isSubmitted && (
                 <section className="flex flex-col items-center pt-4">
@@ -147,7 +114,11 @@ const PanelContent = props => {
                 <div className="pt-4">
                     <FadeIn>
                         <Divider />
-                        <ContactForm setPanelOpen={setPanelOpen} />
+                        <ContactForm
+                            setPanelOpen={setPanelOpen}
+                            photo={props.photo}
+                            collection={props.collection}
+                        />
                     </FadeIn>
                 </div>
             )}
@@ -155,7 +126,7 @@ const PanelContent = props => {
     );
 };
 
-const PhotoDetailPage = ({ photo }) => {
+const PhotoDetailPage = ({ photo, collection }) => {
     return (
         <Layout isOpenDefault={false} navClass="bg-transparent text-gray-200">
             <Background>
@@ -168,7 +139,7 @@ const PhotoDetailPage = ({ photo }) => {
                 />
             </Background>
             <Panel>
-                <PanelContent photo={photo} />
+                <PanelContent photo={photo} collection={collection} />
             </Panel>
         </Layout>
     );
@@ -184,10 +155,11 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-    const id = params.slug.split("--")[1];
-    const photo = getPhotoData(id);
+    const photoId = params.slug.split("--")[1];
+    const photo = getPhotoData(photoId);
+    const collection = getCollection(params.id);
 
-    return { props: { photo } };
+    return { props: { photo, collection } };
 }
 
 export default PhotoDetailPage;
