@@ -10,7 +10,11 @@ const Layout = props => {
     return (
         <>
             <Head>
-                <title>Vincent Budrovich</title>
+                <title>
+                    {props.title
+                        ? `${props.title} | Vincent Budrovich`
+                        : "Vincent Budrovich"}
+                </title>
                 <link rel="icon" href="/favicon.ico" />
                 <meta
                     name="viewport"

@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import NavCard from "../components/navCard";
 import Layout from "../components/Layout";
 
@@ -12,8 +13,6 @@ const Home = () => {
             <section className="landing">
                 <div className="nav-card nav-card--left">
                     <NavCard
-                        linkHref="/photos"
-                        linkText="Photographer ⟶"
                         img="/waterfall.jpg"
                         imgAlt="Waterfall in Yosemite"
                         containerStyles={{
@@ -22,27 +21,16 @@ const Home = () => {
                             fontFamily: "Simsun",
                             fontSize: "1.45em"
                         }}
-                    />
-                    <div
-                        className="absolute w-full text-center text-gray-500 z-20"
-                        style={{ bottom: "20%" }}
                     >
-                        ↓
-                    </div>
-                </div>
-                <div className="nav-card nav-card--right">
-                    <NavCard
-                        linkHref="/blog"
-                        linkText="developer >"
-                        img="/code.png"
-                        imgAlt="Code"
-                        containerStyles={{
-                            width: "100%",
-                            height: "100%",
-                            fontFamily: "Consolas",
-                            fontSize: "1.45rem"
-                        }}
-                    />
+                        {/* <div
+                            className="flex flex-col items-center rounded-lg shadow py-20 px-12"
+                            style={{ backgroundColor: "rgba(30, 30, 30, 0.6)" }}
+                        > */}
+                        <Link href="/photos">
+                            <a className="navcard__link pb-4">Photography ⟶</a>
+                        </Link>
+                        {/* </div> */}
+                    </NavCard>
                 </div>
                 <style jsx>{`
                     .landing {

@@ -33,7 +33,7 @@ const getPostData = () =>
 
 const BlogIndex = ({ posts }) => {
     return (
-        <Layout isOpenDefault={true}>
+        <Layout isOpenDefault={true} title="Blog">
             <div className="pt-16 w-full sm:w-2/3 lg:w-1/2 m-auto">
                 <section className="text-center">
                     <h2 className="pl-2 text-2xl font-normal">Blog Posts</h2>

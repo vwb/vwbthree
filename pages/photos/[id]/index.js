@@ -8,7 +8,8 @@ import { generatePhotoSlug } from "../../../lib/photos";
 
 import {
     getAllCollectionPaths,
-    getCollectionData
+    getCollectionData,
+    getCollection
 } from "../../../lib/collections";
 
 const ScrollToNext = ({ onClick }) => (
@@ -33,7 +34,9 @@ const PhotoContainer = ({ photo, isLast, index, collection }) => {
                 render={image => (
                     <Link
                         href="/photos/[id]/[slug]"
-                        as={`/photos/${collection}/${generatePhotoSlug(photo)}`}
+                        as={`/photos/${collection.slug}/${generatePhotoSlug(
+                            photo
+                        )}`}
                     >
                         <a>{image}</a>
                     </Link>
@@ -53,7 +56,11 @@ const PhotoContainer = ({ photo, isLast, index, collection }) => {
 };
 
 const PhotoGroupPage = props => (
-    <Layout isOpenDefault={false} navClass="bg-transparent">
+    <Layout
+        isOpenDefault={false}
+        navClass="bg-transparent"
+        title={props.collection.name}
+    >
         {props.photos.map((photo, index) => (
             <PhotoContainer
                 key={photo.url}
@@ -76,7 +83,8 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
     const photos = getCollectionData(params.id);
-    return { props: { photos, collection: params.id } };
+    const collection = getCollection(params.id);
+    return { props: { photos, collection } };
 }
 
 export default PhotoGroupPage;

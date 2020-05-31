@@ -128,7 +128,11 @@ const PanelContent = props => {
 
 const PhotoDetailPage = ({ photo, collection }) => {
     return (
-        <Layout isOpenDefault={false} navClass="bg-transparent text-gray-200">
+        <Layout
+            isOpenDefault={false}
+            navClass="bg-transparent text-gray-200"
+            title={photo.title}
+        >
             <Background>
                 <PhotoView
                     photo={photo}

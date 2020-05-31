@@ -1,20 +1,10 @@
 import React from "react";
-import Link from "next/link";
 
-import Blur from './Blur';
+import Blur from "./Blur";
 
-const NavCard = ({ img, linkHref, linkText, containerStyles, blur = true }) => (
+const NavCard = ({ img, children, containerStyles, blur = true }) => (
     <div className="navcard" style={containerStyles}>
-        {blur && <Blur />}
-        <div className="link-container">
-            {linkHref ? (
-                <Link href={linkHref}>
-                    <a className="navcard__link">{linkText}</a>
-                </Link>
-            ) : (
-                linkText
-            )}
-        </div>
+        <div className="link-container">{children}</div>
         <div className="navcard__img__container" />
         <style jsx>{`
             .navcard {
@@ -36,6 +26,7 @@ const NavCard = ({ img, linkHref, linkText, containerStyles, blur = true }) => (
                 background-position: center;
                 height: 100%;
                 width: 100%;
+                filter: blur(${blur ? "5px" : ""});
             }
         `}</style>
     </div>

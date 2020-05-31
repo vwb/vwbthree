@@ -13,7 +13,6 @@ const PhotoGroupCard = props => (
             <a>
                 <NavCard
                     blur={false}
-                    linkText={props.name}
                     img={props.url}
                     imgAlt={props.name}
                     containerStyles={{
@@ -25,7 +24,9 @@ const PhotoGroupCard = props => (
                         fontSize: "1.15rem",
                         margin: "0 auto"
                     }}
-                />
+                >
+                    {props.name}
+                </NavCard>
             </a>
         </Link>
     </div>
@@ -33,7 +34,7 @@ const PhotoGroupCard = props => (
 
 const PhotosIndex = () => {
     return (
-        <Layout isOpenDefault={false}>
+        <Layout isOpenDefault={false} title="Photos">
             <main className="pt-12 pb-6 max-w-screen-xl mx-auto">
                 <div className="flex justify-center flex-wrap">
                     {Object.values(PHOTO_COLLECTIONS).map(data => (
