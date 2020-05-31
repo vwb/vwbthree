@@ -83,7 +83,22 @@ const addPhoto = ({ title, collection }) => {
     }
 };
 
+const removePhotos = ({ ids }) => {
+    const images = loadImages();
+    const imageIds = Object.keys(images).filter(
+        imageId => ids.indexOf(imageId) === -1
+    );
+    const newImages = imageIds.reduce((memo, id) => {
+        memo[id] = images[id];
+
+        return memo;
+    }, {});
+
+    saveImages(newImages);
+};
+
 module.exports = {
     addPhoto,
-    parseArgs
+    parseArgs,
+    removePhotos
 };
