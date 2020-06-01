@@ -19,7 +19,7 @@
     },
     "woods": {
         "name": "Woods",
-        "ids": [16, 12, 13, 15, 56, 57],
+        "ids": [74, 75, 76, 77, 78, 79, 81, 82, 83],
         "coverPhotoUrl": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/woods/moss.jpg",
         "slug": "woods"
     },

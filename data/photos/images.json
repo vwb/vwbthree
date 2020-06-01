@@ -19,26 +19,6 @@
         "title": "Small",
         "id": 11
     },
-    "12": {
-        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/woods/reflections.jpg",
-        "title": "Reflections",
-        "id": 12
-    },
-    "13": {
-        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/woods/moss.jpg",
-        "title": "Moss",
-        "id": 13
-    },
-    "15": {
-        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/woods/waterfall.jpg",
-        "title": "Waterfall",
-        "id": 15
-    },
-    "16": {
-        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/woods/lunch.jpg",
-        "title": "Lunch",
-        "id": 16
-    },
     "34": {
         "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/san-francisco/above.jpg",
         "title": "Above",
@@ -149,16 +129,6 @@
         "title": "Two",
         "id": 55
     },
-    "56": {
-        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/woods/new-growth.jpg",
-        "title": "New Growth",
-        "id": 56
-    },
-    "57": {
-        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/woods/clover.jpg",
-        "title": "Clover",
-        "id": 57
-    },
     "58": {
         "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/yosemite/ansel-dome.jpg",
         "title": "Ansel Dome",
@@ -233,5 +203,50 @@
         "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/yosemite/the-cap.jpg",
         "title": "The Cap",
         "id": 73
+    },
+    "74": {
+        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/woods/among-giants.jpg",
+        "title": "Among Giants",
+        "id": 74
+    },
+    "75": {
+        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/woods/clover.jpg",
+        "title": "Clover",
+        "id": 75
+    },
+    "76": {
+        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/woods/creek-in-the-woods.jpg",
+        "title": "Creek In The Woods",
+        "id": 76
+    },
+    "77": {
+        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/woods/hello.jpg",
+        "title": "Hello",
+        "id": 77
+    },
+    "78": {
+        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/woods/lunch.jpg",
+        "title": "Lunch",
+        "id": 78
+    },
+    "79": {
+        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/woods/moss.jpg",
+        "title": "Moss",
+        "id": 79
+    },
+    "81": {
+        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/woods/reflections.jpg",
+        "title": "Reflections",
+        "id": 81
+    },
+    "82": {
+        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/woods/resurrection.jpg",
+        "title": "Resurrection",
+        "id": 82
+    },
+    "83": {
+        "url": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/woods/standing-tall.jpg",
+        "title": "Standing Tall",
+        "id": 83
     }
 }
