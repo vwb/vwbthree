@@ -1,4 +1,5 @@
 import Layout from "../components/Layout";
+import { useEffect, useState } from "react";
 
 const Avatar = () => (
     <div className="rounded-full">
@@ -10,24 +11,30 @@ const Avatar = () => (
     </div>
 );
 
-const AboutBackground = props => (
-    <div
-        className="h-screen w-screen fixed flex justify-center items-center"
-        style={{
-            backgroundImage: "url(/Background.jpg)",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            backgroundColor: "black",
-            backgroundSize: "cover"
-        }}
-    >
-        {props.children}
-    </div>
-);
+const AboutBackground = props => {
+    return (
+        <div
+            className="fixed flex justify-center items-center"
+            style={{
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                backgroundImage: "url(/Background.jpg)",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                backgroundColor: "black",
+                backgroundSize: "cover"
+            }}
+        >
+            {props.children}
+        </div>
+    );
+};
 
 const AboutContainer = props => (
     <div
-        className="flex flex-col items-center p-6 rounded-md shadow"
+        className="flex flex-col items-center p-6 rounded-md shadow my-6"
         style={{ backgroundColor: "rgba(25, 25, 25, 0.65)", maxWidth: "315px" }}
     >
         {props.children}
