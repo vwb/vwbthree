@@ -1,8 +1,9 @@
 import Layout from "../components/Layout";
 import { useEffect, useState } from "react";
+import autoprefixer from "autoprefixer";
 
 const Avatar = () => (
-    <div className="rounded-full">
+    <div className="rounded-full h-20 w-20 sm:h-40 sm:w-40">
         <img
             className="rounded-full shadow"
             src="/profile.png"
@@ -34,15 +35,20 @@ const AboutBackground = props => {
 
 const AboutContainer = props => (
     <div
-        className="flex flex-col items-center p-6 rounded-md shadow my-6"
-        style={{ backgroundColor: "rgba(25, 25, 25, 0.65)", maxWidth: "315px" }}
+        className="flex flex-col items-center px-4 py-6 rounded-md shadow my-6"
+        style={{
+            backgroundColor: "rgba(25, 25, 25, 0.65)",
+            maxWidth: "300px",
+            width: "auto",
+            maxHeight: "80%"
+        }}
     >
         {props.children}
     </div>
 );
 
 const AboutText = props => (
-    <div className="pt-6 text-center text-gray-300 font-light">
+    <div className="pt-6 text-center text-gray-300 font-light sm:text-base text-sm">
         <p className="m-2">Hello.</p>
         <p className="m-2">
             My name is Vincent Budrovich. I am a software developer and
