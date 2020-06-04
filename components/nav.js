@@ -2,7 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import BreadCrumbs from "./BreadCrumbs";
 
-const Nav = ({ backgroundColor, textColor }) => {
+const Nav = ({ navClas, textColor }) => {
     const router = useRouter();
 
     const path = router.asPath.split("/");
@@ -18,13 +18,9 @@ const Nav = ({ backgroundColor, textColor }) => {
         }))
     ];
 
-    const backgroundColorClass = backgroundColor
-        ? backgroundColor
-        : "bg-white shadow";
-
     return (
         <nav
-            className={`z-50 fixed top-0 right-0 left-0 text-center h-12 ${backgroundColorClass} ${textColor}`}
+            className={`${navClas} z-50 fixed top-0 right-0 left-0 text-center h-12  ${textColor}`}
         >
             <BreadCrumbs crumbs={formattedCleanedPath} />
         </nav>

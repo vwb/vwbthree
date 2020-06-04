@@ -64,14 +64,10 @@ const Landing = () => {
             <style jsx>{`
                 .landing {
                     background-color: black;
-                    scroll-snap-type: mandatory;
-                    scroll-snap-points-y: repeat(100vh);
-                    scroll-snap-type: y mandatory;
-                    overflow: auto;
+                    scroll-snap-align: start;
                     height: 100vh;
                 }
                 .nav-card {
-                    scroll-snap-align: start;
                     width: 100%;
                     height: 100%;
                     position: relative;
@@ -83,14 +79,18 @@ const Landing = () => {
 
 const Home = () => {
     return (
-        <Layout
-            isOpenDefault={false}
-            navClass="bg-transparent"
-            textColor="text-white"
-        >
+        <>
             <Landing />
-            <section className="h-screen w-screen bg-white"></section>
-        </Layout>
+            <Layout
+                isOpenDefault={false}
+                navClass="absolute t-0 l-10 bg-transparent"
+                textColor="text-white"
+            >
+                <main className="relative">
+                    <section className="h-screen w-screen bg-white"></section>
+                </main>
+            </Layout>
+        </>
     );
 };
 
