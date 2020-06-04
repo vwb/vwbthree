@@ -8,7 +8,7 @@ const Landing = () => {
     const [fadeVal, setFadeVal] = useState(0);
     useEffect(() => {
         setTimeout(() => {
-            setFadeVal(0.6);
+            setFadeVal(0.75);
         }, 500);
     }, []);
 
@@ -32,10 +32,18 @@ const Landing = () => {
                         > */}
                     <button
                         className="focus:outline-none"
-                        onClick={() => window.scrollBy(0, window.innerHeight)}
+                        onClick={() =>
+                            window.scrollBy(
+                                window.scrollBy({
+                                    top: window.outerHeight,
+                                    left: 0,
+                                    behavior: "smooth"
+                                })
+                            )
+                        }
                         style={{
                             position: "absolute",
-                            bottom: "250px",
+                            bottom: "200px",
                             opacity: fadeVal,
                             transition: "opacity 2s ease-in"
                         }}
