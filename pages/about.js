@@ -71,7 +71,7 @@ const AboutText = props => (
 
 const AboutPage = () => {
     return (
-        <Layout navClass="bg-transparent" title="About">
+        <Layout navClass="bg-transparent text-white" title="About">
             <AboutBackground>
                 <AboutContainer>
                     <Avatar />
