@@ -35,7 +35,7 @@ const Landing = () => {
                         onClick={() => window.scrollBy(0, window.innerHeight)}
                         style={{
                             position: "absolute",
-                            bottom: "100px",
+                            bottom: "250px",
                             opacity: fadeVal,
                             transition: "opacity 2s ease-in"
                         }}
