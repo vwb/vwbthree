@@ -22,20 +22,16 @@ const LandingBackground = props => {
         <section
             className="fixed"
             style={{
-                top: 0,
-                right: 0,
-                left: 0,
-                bottom: 0,
-                backgroundColor: "#1B1B1B"
+                height: "100vh",
+                width: "100vw",
+                backgroundColor: "#1B1B1B",
+                backgroundSize: "cover",
+                backgroundPosition: "center"
             }}
         >
             <section
-                className="fixed"
+                className="fixed w-full h-full"
                 style={{
-                    top: 0,
-                    right: 0,
-                    left: 0,
-                    bottom: 0,
                     backgroundImage: "url(/waterfall.jpg)",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
