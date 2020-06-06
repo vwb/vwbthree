@@ -35,10 +35,12 @@ const LandingBackground = props => {
             }}
         >
             <section
-                className="fixed w-full h-full"
+                className="fixed"
                 style={{
+                    height,
+                    width,
                     backgroundImage: "url(/waterfall.jpg)",
-                    backgroundSize: "initial",
+                    backgroundSize: "cover",
                     backgroundPosition: "center",
                     filter: `blur(${blur}px)`
                 }}
