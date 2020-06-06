@@ -20,7 +20,7 @@ const LandingBackground = props => {
 
     useEffect(() => {
         handleScroll();
-        setDimensions({ width: window.outerWidth, height: window.outerHeight });
+        setDimensions({ width: window.innerWidth, height: window.innerHeight });
     }, []);
 
     return (
@@ -89,8 +89,6 @@ const FadeIn = props => {
 };
 
 const Home = () => {
-    useEffect(() => {}, []);
-
     return (
         <>
             <Layout

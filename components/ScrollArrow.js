@@ -26,7 +26,7 @@ const ScrollArrow = () => {
             className="bounce focus:outline-none absolute flex w-full justify-center"
             style={{
                 opacity,
-                bottom: "100px",
+                bottom: "75px",
                 transition: "opacity 0.5s ease-in-out",
                 animationDuration: "2s",
                 animationIterationCount: "infinite"
