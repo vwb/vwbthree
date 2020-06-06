@@ -39,7 +39,7 @@ const LandingBackground = props => {
             <section
                 className="fixed"
                 style={{
-                    marginTop: "-40px",
+                    marginTop: "-100px",
                     height,
                     width,
                     background: DARK_BACKGROUND,
