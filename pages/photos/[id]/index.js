@@ -58,7 +58,7 @@ const PhotoContainer = ({ photo, isLast, index, collection }) => {
 const PhotoGroupPage = props => (
     <Layout
         isOpenDefault={false}
-        navClass="bg-transparent"
+        navClass="bg-transparent text-white"
         title={props.collection.name}
     >
         {props.photos.map((photo, index) => (

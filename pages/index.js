@@ -3,6 +3,7 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import ScrollArrow from "../components/ScrollArrow";
 import LandingBackground from "../components/LandingBackground";
+import FadeIn from "../components/FadeIn";
 
 const Menu = props => {
     const [height, setMenuHeight] = useState(600);
@@ -19,24 +20,6 @@ const Menu = props => {
                 position: "absolute",
                 bottom: `-${height}px`
             }}
-        >
-            {props.children}
-        </div>
-    );
-};
-
-const FadeIn = props => {
-    const [fadeVal, setFadeVal] = useState(0);
-    useEffect(() => {
-        setTimeout(() => {
-            setFadeVal(0.9);
-        }, 600);
-    }, []);
-
-    return (
-        <div
-            className="h-full w-full"
-            style={{ opacity: fadeVal, transition: "opacity 2s" }}
         >
             {props.children}
         </div>

@@ -1,8 +1,11 @@
 import { useEffect, useContext, useState } from "react";
+import { useRouter } from "next/router";
+
 import Layout from "../../../components/Layout";
 import PhotoView from "../../../components/Photo";
 import Panel, { PanelContext } from "../../../components/Panel";
 import Divider from "../../../components/Divider";
+
 import { getAllPhotoPaths, getPhotoData } from "../../../lib/photos";
 import { getCollection } from "../../../lib/collections";
 
@@ -18,15 +21,27 @@ const DetailHeader = props => (
     </div>
 );
 
-const Background = props => (
-    <div className="w-full h-screen">
-        <div style={{ height: "100%" }} className="w-full fixed">
-            <div className="flex items-center overflow-hidden relative h-full">
-                {props.children}
+const Background = props => {
+    const router = useRouter();
+
+    const handleClickBack = () => {
+        if (
+            document.referrer.indexOf(`/photos/${props.collection.slug}`) > -1
+        ) {
+            router.back();
+        }
+    };
+
+    return (
+        <div className="w-full h-screen" onClick={() => handleClickBack()}>
+            <div style={{ height: "100%" }} className="w-full fixed">
+                <div className="flex items-center overflow-hidden relative h-full">
+                    {props.children}
+                </div>
             </div>
         </div>
-    </div>
-);
+    );
+};
 
 const FadeIn = props => {
     const [isMounted, setMounted] = useState(false);
@@ -53,9 +68,9 @@ const ContactForm = props => {
                     <p className="text-center">
                         Contact via email and I will reach out shortly to
                         finalize purchasing options!
-                        <p className="text-xs pt-2">
+                        <span className="text-xs pt-2">
                             Digital download and custom prints available
-                        </p>
+                        </span>
                     </p>
                     <a
                         className="my-3 p-3 hover:shadow-xl text-gray-300 focus:outline-none bg-teal-700 rounded"
@@ -133,12 +148,19 @@ const PhotoDetailPage = ({ photo, collection }) => {
             navClass="bg-transparent text-gray-200"
             title={photo.title}
         >
-            <Background>
+            <Background collection={collection}>
                 <PhotoView
                     photo={photo}
                     backgroundOverlay="rgba(15, 15, 15, 0.65), rgba(15, 15, 15, 0.65))"
                     render={image => (
-                        <div style={{ marginTop: "-50px" }}>{image}</div>
+                        <div
+                            onClick={e => {
+                                e.stopPropagation();
+                            }}
+                            style={{ marginTop: "-50px" }}
+                        >
+                            {image}
+                        </div>
                     )}
                 />
             </Background>

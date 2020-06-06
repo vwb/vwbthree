@@ -1,6 +1,5 @@
 import Layout from "../components/Layout";
-import { useEffect, useState } from "react";
-import autoprefixer from "autoprefixer";
+import FadeIn from "../components/FadeIn";
 
 const Avatar = () => (
     <div className="rounded-full h-20 w-20 sm:h-40 sm:w-40">
@@ -15,36 +14,52 @@ const Avatar = () => (
 const AboutBackground = props => {
     return (
         <div
-            className="fixed flex justify-center items-center"
             style={{
                 top: 0,
                 bottom: 0,
                 left: 0,
                 right: 0,
-                backgroundImage: "url(/Background.jpg)",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-                backgroundColor: "black",
-                backgroundSize: "cover"
+                backgroundColor: "#1B1B1B"
             }}
+            className="fixed"
         >
-            {props.children}
+            <div
+                className="fixed flex justify-center items-center"
+                style={{
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    background:
+                        "-webkit-linear-gradient(bottom, rgba(26, 26, 26, .45), rgba(26, 26, 26, 0.45)), url(/Background.jpg)",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                    backgroundColor: "black",
+                    backgroundSize: "cover",
+                    filter: "blur(10px)"
+                }}
+            >
+                {props.children}
+            </div>
         </div>
     );
 };
 
 const AboutContainer = props => (
+    // <FadeIn transitionTime={"1.75"}>
     <div
-        className="flex flex-col items-center px-4 py-6 rounded-md shadow my-6"
+        className="relative flex flex-col items-center px-4 py-6 my-6 mx-auto"
         style={{
-            backgroundColor: "rgba(25, 25, 25, 0.65)",
+            // backgroundColor: "rgba(25, 25, 25, 0.65)",
             maxWidth: "300px",
             width: "auto",
-            maxHeight: "80%"
+            maxHeight: "80%",
+            transform: "translateY(25%)"
         }}
     >
         {props.children}
     </div>
+    // </FadeIn>
 );
 
 const AboutText = props => (
@@ -70,12 +85,11 @@ const AboutText = props => (
 const AboutPage = () => {
     return (
         <Layout navClass="bg-transparent text-white" title="About">
-            <AboutBackground>
-                <AboutContainer>
-                    <Avatar />
-                    <AboutText />
-                </AboutContainer>
-            </AboutBackground>
+            <AboutBackground />
+            <AboutContainer>
+                <Avatar />
+                <AboutText />
+            </AboutContainer>
         </Layout>
     );
 };
