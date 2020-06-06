@@ -62,9 +62,7 @@ const AboutText = props => (
             className="mx-auto w-1/2 mt-10 mb-4 px-8 py-4 bg-gray-900 active:bg-black rounded-md hover:shadow-lg  focus:outline-none focus:shadow-xl"
             style={{ transition: "all 0.2s" }}
         >
-            <a className href={`mailto:vwbthree@gmail.com?subject=Hello!`}>
-                Contact
-            </a>
+            <a href={`mailto:vwbthree@gmail.com?subject=Hello!`}>Contact</a>
         </div>
     </div>
 );
