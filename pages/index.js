@@ -1,58 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Layout from "../components/Layout";
 import ScrollArrow from "../components/ScrollArrow";
-
-import { useScrollListener } from "../hooks";
-
-const LandingBackground = props => {
-    const [blur, setBlur] = useState(0);
-    const [{ width, height }, setDimensions] = useState({
-        width: "100vw",
-        height: "100vh"
-    });
-
-    const handleScroll = () => {
-        setBlur(window.scrollY / 50);
-    };
-
-    useScrollListener(handleScroll);
-
-    useEffect(() => {
-        handleScroll();
-        setDimensions({ width: window.outerWidth, height: window.outerHeight });
-    }, []);
-
-    const DARK_BACKGROUND = `-webkit-linear-gradient(bottom, rgba(26, 26, 26, 1), rgba(25, 25, 25, 0.0) 15%), url(/waterfall.jpg)`;
-
-    return (
-        <section
-            className="fixed"
-            style={{
-                height,
-                width,
-                backgroundColor: "#1B1B1B",
-                backgroundSize: "cover",
-                backgroundPosition: "center"
-            }}
-        >
-            <section
-                className="fixed"
-                style={{
-                    marginTop: "-120px",
-                    height,
-                    width,
-                    background: DARK_BACKGROUND,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    filter: `blur(${blur}px)`
-                }}
-            >
-                {props.children}
-            </section>
-        </section>
-    );
-};
+import LandingBackground from "../components/LandingBackground";
 
 const Menu = props => {
     const [height, setMenuHeight] = useState(600);
@@ -95,7 +45,7 @@ const FadeIn = props => {
 
 const Home = () => {
     return (
-        <>
+        <div style={{ backgroundColor: "#1B1B1B" }}>
             <Layout
                 isOpenDefault={false}
                 navClass="t-0 l-10 bg-transparent"
@@ -126,7 +76,7 @@ const Home = () => {
                     </Menu>
                 </FadeIn>
             </Layout>
-        </>
+        </div>
     );
 };
 
