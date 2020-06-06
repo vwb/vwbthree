@@ -4,7 +4,7 @@ import Nav from "./nav";
 import { Provider as NavProvider } from "../context/navContext";
 
 const Layout = props => {
-    const { children, isOpenDefault, navClass, textColor } = props;
+    const { children, navClass, textColor } = props;
 
     return (
         <>

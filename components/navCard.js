@@ -13,7 +13,7 @@ const NavCard = ({
     useEffect(() => {
         setTimeout(() => {
             setBlurValue(10);
-        }, 500);
+        }, 600);
     }, []);
 
     // const [bgColor, getBgColor] = useState(gradualBlur ? )/

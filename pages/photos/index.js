@@ -34,7 +34,7 @@ const PhotoGroupCard = props => (
 
 const PhotosIndex = () => {
     return (
-        <Layout isOpenDefault={false} title="Photos">
+        <Layout title="Photos" navClass="shadow bg-white">
             <main className="pt-12 pb-6 max-w-screen-xl mx-auto">
                 <div className="flex justify-center flex-wrap">
                     {Object.values(PHOTO_COLLECTIONS).map(data => (
