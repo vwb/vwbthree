@@ -20,7 +20,7 @@ const LandingBackground = props => {
 
     useEffect(() => {
         handleScroll();
-        setDimensions({ width: window.innerWidth, height: window.innerHeight });
+        setDimensions({ width: window.outerWidth, height: window.outerHeight });
     }, []);
 
     return (
@@ -38,7 +38,7 @@ const LandingBackground = props => {
                 className="fixed w-full h-full"
                 style={{
                     backgroundImage: "url(/waterfall.jpg)",
-                    backgroundSize: "cover",
+                    backgroundSize: "initial",
                     backgroundPosition: "center",
                     filter: `blur(${blur}px)`
                 }}
@@ -53,7 +53,7 @@ const Menu = props => {
     const [height, setMenuHeight] = useState(600);
 
     useEffect(() => {
-        setMenuHeight(window.innerHeight * 0.75);
+        setMenuHeight(window.innerHeight * 0.8);
     }, []);
 
     return (
