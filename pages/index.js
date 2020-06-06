@@ -23,6 +23,8 @@ const LandingBackground = props => {
         setDimensions({ width: window.outerWidth, height: window.outerHeight });
     }, []);
 
+    const DARK_BACKGROUND = `-webkit-linear-gradient(bottom, rgba(26, 26, 26, 1), rgba(25, 25, 25, 0.0) 15%), url(/waterfall.jpg)`;
+
     return (
         <section
             className="fixed"
@@ -37,9 +39,10 @@ const LandingBackground = props => {
             <section
                 className="fixed"
                 style={{
+                    marginTop: "-40px",
                     height,
                     width,
-                    backgroundImage: "url(/waterfall.jpg)",
+                    background: DARK_BACKGROUND,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     filter: `blur(${blur}px)`
