@@ -1,55 +1,82 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import NavCard from "../components/navCard";
 import Layout from "../components/Layout";
+import ScrollArrow from "../components/ScrollArrow";
+import LandingBackground from "../components/LandingBackground";
+
+const Menu = props => {
+    const [height, setMenuHeight] = useState(600);
+
+    useEffect(() => {
+        setMenuHeight(window.innerHeight * 0.8);
+    }, []);
+
+    return (
+        <div
+            style={{
+                width: "100%",
+                height: `${height}px`,
+                position: "absolute",
+                bottom: `-${height}px`
+            }}
+        >
+            {props.children}
+        </div>
+    );
+};
+
+const FadeIn = props => {
+    const [fadeVal, setFadeVal] = useState(0);
+    useEffect(() => {
+        setTimeout(() => {
+            setFadeVal(0.9);
+        }, 600);
+    }, []);
+
+    return (
+        <div
+            className="h-full w-full"
+            style={{ opacity: fadeVal, transition: "opacity 2s" }}
+        >
+            {props.children}
+        </div>
+    );
+};
 
 const Home = () => {
     return (
-        <Layout
-            isOpenDefault={false}
-            navClass="bg-transparent"
-            textColor="text-white"
-        >
-            <section className="landing">
-                <div className="nav-card nav-card--left">
-                    <NavCard
-                        img="/waterfall.jpg"
-                        imgAlt="Waterfall in Yosemite"
-                        containerStyles={{
-                            width: "100%",
-                            height: "100%",
-                            fontFamily: "Simsun",
-                            fontSize: "1.45em"
-                        }}
-                    >
-                        {/* <div
-                            className="flex flex-col items-center rounded-lg shadow py-20 px-12"
-                            style={{ backgroundColor: "rgba(30, 30, 30, 0.6)" }}
-                        > */}
-                        <Link href="/photos">
-                            <a className="navcard__link pb-4">Photography ⟶</a>
-                        </Link>
-                        {/* </div> */}
-                    </NavCard>
-                </div>
-                <style jsx>{`
-                    .landing {
-                        background-color: black;
-                        scroll-snap-type: mandatory;
-                        scroll-snap-points-y: repeat(100vh);
-                        scroll-snap-type: y mandatory;
-                        overflow: auto;
-                        height: 100vh;
-                    }
-                    .nav-card {
-                        scroll-snap-align: start;
-                        width: 100%;
-                        height: 100%;
-                        position: relative;
-                    }
-                `}</style>
-            </section>
-        </Layout>
+        <div style={{ backgroundColor: "#1B1B1B" }}>
+            <Layout
+                isOpenDefault={false}
+                navClass="t-0 l-10 bg-transparent"
+                textColor="text-white"
+            >
+                <LandingBackground />
+                <FadeIn>
+                    <ScrollArrow />
+                    <Menu>
+                        <section className="flex items-center flex-col">
+                            <div
+                                className="text-center text-gray-100 weight-light flex flex-col items-center"
+                                style={{
+                                    height: "200px",
+                                    width: "200px",
+                                    fontFamily: "Simsun"
+                                }}
+                            >
+                                <Link href="/photos">
+                                    <a className="text-2xl my-4">Photography</a>
+                                </Link>
+                                • • •
+                                <Link href="/about">
+                                    <a className="text-2xl my-4">About</a>
+                                </Link>
+                            </div>
+                        </section>
+                    </Menu>
+                </FadeIn>
+            </Layout>
+        </div>
     );
 };
 

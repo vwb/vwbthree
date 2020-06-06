@@ -1,8 +1,10 @@
 import React from "react";
 import App from "next/app";
 import Router from "next/router";
+
 import "../css/tailwind.css";
 import "../css/markdown.css";
+import "../scss/animations.scss";
 
 class MyApp extends App {
     componentDidMount() {

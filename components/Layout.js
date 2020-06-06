@@ -4,8 +4,7 @@ import Nav from "./nav";
 import { Provider as NavProvider } from "../context/navContext";
 
 const Layout = props => {
-    const { children, isOpenDefault, navClass, textColor } = props;
-    const mainClasses = `${isOpenDefault ? "md:ml-64" : ""}`;
+    const { children, navClass, textColor } = props;
 
     return (
         <>
@@ -22,8 +21,8 @@ const Layout = props => {
                 />
             </Head>
             <NavProvider>
-                <Nav backgroundColor={navClass} textColor={textColor} />
-                <div className={mainClasses}>{children}</div>
+                <Nav navClas={navClass} textColor={textColor} />
+                {children}
                 <style jsx>{`
                     :global(body) {
                         margin: 0;
