@@ -7,6 +7,10 @@ import { useScrollListener } from "../hooks";
 
 const LandingBackground = props => {
     const [blur, setBlur] = useState(0);
+    const [{ width, height }, setDimensions] = useState({
+        width: "100vw",
+        height: "100vh"
+    });
 
     const handleScroll = () => {
         setBlur(window.scrollY / 50);
@@ -16,14 +20,15 @@ const LandingBackground = props => {
 
     useEffect(() => {
         handleScroll();
+        setDimensions({ width: window.outerWidth, height: window.outerHeight });
     }, []);
 
     return (
         <section
             className="fixed"
             style={{
-                height: "100vh",
-                width: "100vw",
+                height,
+                width,
                 backgroundColor: "#1B1B1B",
                 backgroundSize: "cover",
                 backgroundPosition: "center"
