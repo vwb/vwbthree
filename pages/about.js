@@ -46,20 +46,17 @@ const AboutBackground = props => {
 };
 
 const AboutContainer = props => (
-    // <FadeIn transitionTime={"1.75"}>
     <div
         className="relative flex flex-col items-center px-4 py-6 my-6 mx-auto"
         style={{
-            // backgroundColor: "rgba(25, 25, 25, 0.65)",
             maxWidth: "300px",
             width: "auto",
             maxHeight: "80%",
-            transform: "translateY(25%)"
+            transform: "translateY(15%)"
         }}
     >
         {props.children}
     </div>
-    // </FadeIn>
 );
 
 const AboutText = props => (
