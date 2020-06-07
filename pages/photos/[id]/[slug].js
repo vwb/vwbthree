@@ -25,9 +25,7 @@ const Background = props => {
     const router = useRouter();
 
     const handleClickBack = () => {
-        if (
-            document.referrer.indexOf(`/photos/${props.collection.slug}`) > -1
-        ) {
+        if (document.referrer.indexOf(`vwbthree`) > -1) {
             router.back();
         }
     };

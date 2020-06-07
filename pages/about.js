@@ -64,12 +64,14 @@ const AboutContainer = props => (
 
 const AboutText = props => (
     <div className="pt-6 text-center text-gray-300 font-light sm:text-base text-sm">
-        <p className="m-2">Hello.</p>
-        <p className="m-2">
-            My name is Vincent Budrovich. I am a software developer and
-            photographer based in San Francisco.
+        <p className="m-3">Hello.</p>
+        <p className="m-3">My name is Vincent Budrovich.</p>
+        <p>
+            I am a software engineer specializing in creating delightful user
+            experiences. The rest of my time ideally involves a camera, fresh
+            air, and a beautiful vista.
         </p>
-        <p className="m-2">
+        <p className="m-3">
             Always ready for the next adventure, reach out and lets get one
             going.
         </p>
