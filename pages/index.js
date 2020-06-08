@@ -26,6 +26,18 @@ const Menu = props => {
     );
 };
 
+const LinkButton = React.forwardRef(({ onClick, href, children }, ref) => (
+    <a
+        href={href}
+        onClick={onClick}
+        ref={ref}
+        style={{ transition: "all 0.4s" }}
+        className="text-xl my-5 px-5 py-3 rounded-sm border border-gray-200 cursor-pointer focus:shadow-lg hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
+    >
+        {children}
+    </a>
+));
+
 const Home = () => {
     return (
         <div style={{ backgroundColor: "#1B1B1B" }}>
@@ -40,7 +52,7 @@ const Home = () => {
                     <Menu>
                         <section className="flex items-center flex-col">
                             <div
-                                className="text-center text-gray-100 weight-light flex flex-col items-center"
+                                className="text-center text-gray-200 font-light flex flex-col items-center"
                                 style={{
                                     height: "200px",
                                     width: "200px",
@@ -48,11 +60,13 @@ const Home = () => {
                                 }}
                             >
                                 <Link href="/photos">
-                                    <a className="text-2xl my-4">Photography</a>
+                                    <LinkButton passHref>
+                                        Photography
+                                    </LinkButton>
                                 </Link>
-                                • • •
+                                <div className="border border-solid border-gray-200 w-6" />
                                 <Link href="/about">
-                                    <a className="text-2xl my-4">About</a>
+                                    <LinkButton passHref>About</LinkButton>
                                 </Link>
                             </div>
                         </section>
