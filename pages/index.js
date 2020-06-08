@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 import ScrollArrow from "../components/ScrollArrow";
 import LandingBackground from "../components/LandingBackground";
 import FadeIn from "../components/FadeIn";
+import { useScrollListener } from "../hooks";
 
 const Menu = props => {
     const [height, setMenuHeight] = useState(600);
@@ -26,17 +27,52 @@ const Menu = props => {
     );
 };
 
-const LinkButton = React.forwardRef(({ onClick, href, children }, ref) => (
-    <a
-        href={href}
-        onClick={onClick}
-        ref={ref}
-        style={{ transition: "all 0.4s" }}
-        className="text-xl my-5 px-5 py-3 rounded-sm border border-gray-200 cursor-pointer focus:shadow-lg hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-    >
-        {children}
-    </a>
-));
+const LinkButton = React.forwardRef(({ onClick, href, children }, ref) => {
+    const [percentage, setPercentage] = useState(0);
+
+    const handleScroll = () => {
+        const difference = window.innerHeight - window.scrollY;
+        const percentageToSet = (window.scrollY / difference) * 100;
+
+        setPercentage(Math.min(percentageToSet, 100));
+    };
+
+    useScrollListener(handleScroll, 20);
+
+    useEffect(() => {
+        handleScroll();
+    }, []);
+
+    return (
+        <a
+            href={href}
+            onClick={onClick}
+            ref={ref}
+            style={{ transition: "all 0.4s" }}
+            className="relative text-xl my-5 rounded-sm cursor-pointer focus:shadow-lg hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
+        >
+            <>
+                <div
+                    className="absolute border border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
+                    style={{ top: 0, right: 0, width: `${percentage}%` }}
+                />
+                <div
+                    className="absolute border border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
+                    style={{ right: 0, bottom: 0, height: `${percentage}%` }}
+                />
+                <div
+                    className="absolute border border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
+                    style={{ bottom: 0, width: `${percentage}%` }}
+                />
+                <div
+                    className="absolute border border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
+                    style={{ left: 0, height: `${percentage}%` }}
+                />
+                <div className="px-5 py-3">{children}</div>
+            </>
+        </a>
+    );
+});
 
 const Home = () => {
     return (
@@ -60,9 +96,7 @@ const Home = () => {
                                 }}
                             >
                                 <Link href="/photos">
-                                    <LinkButton passHref>
-                                        Photography
-                                    </LinkButton>
+                                    <LinkButton passHref>Gallery</LinkButton>
                                 </Link>
                                 <div className="border border-solid border-gray-200 w-6" />
                                 <Link href="/about">
