@@ -1,13 +1,15 @@
 import { useEffect } from "react";
+import { throttle } from "throttle-debounce";
 
-export const useScrollListener = callback => {
+export const useScrollListener = (callback, delay = 100) => {
     const listener = () => {
         callback();
     };
 
     useEffect(() => {
-        window.addEventListener("scroll", listener);
+        const throttledCallback = throttle(delay, listener);
+        window.addEventListener("scroll", throttledCallback);
 
-        return () => window.removeEventListener("scroll", listener);
+        return () => window.removeEventListener("scroll", throttledCallback);
     }, []);
 };

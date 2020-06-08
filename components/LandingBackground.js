@@ -13,7 +13,7 @@ const LandingBackground = props => {
         setBlur(window.scrollY / 50);
     };
 
-    useScrollListener(handleScroll);
+    useScrollListener(handleScroll, 50);
 
     useEffect(() => {
         handleScroll();
