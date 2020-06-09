@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import Link from "next/link";
 import Layout from "../components/Layout";
 import ScrollArrow from "../components/ScrollArrow";
@@ -15,6 +16,7 @@ const Menu = props => {
 
     return (
         <div
+            id="landing-menu"
             style={{
                 width: "100%",
                 height: `${height}px`,
@@ -29,19 +31,16 @@ const Menu = props => {
 
 const LinkButton = React.forwardRef(({ onClick, href, children }, ref) => {
     const [percentage, setPercentage] = useState(0);
-    const [height, setHeight] = useState(600);
+    const [height] = useState(400);
 
     const handleScroll = () => {
         const percentageToSet = (window.scrollY / height) * 100;
-
         setPercentage(Math.min(percentageToSet, 100));
     };
 
     useScrollListener(handleScroll);
 
     useEffect(() => {
-        setHeight(window.innerHeight * 0.8);
-
         handleScroll();
     }, []);
 
