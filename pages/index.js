@@ -29,17 +29,19 @@ const Menu = props => {
 
 const LinkButton = React.forwardRef(({ onClick, href, children }, ref) => {
     const [percentage, setPercentage] = useState(0);
+    const [height, setHeight] = useState(600);
 
     const handleScroll = () => {
-        const difference = window.innerHeight - window.scrollY;
-        const percentageToSet = (window.scrollY / difference) * 100;
+        const percentageToSet = ((window.scrollY * 0.9) / height) * 100;
 
         setPercentage(Math.min(percentageToSet, 100));
     };
 
-    useScrollListener(handleScroll, 20);
+    useScrollListener(handleScroll);
 
     useEffect(() => {
+        setHeight(window.innerHeight * 0.8);
+
         handleScroll();
     }, []);
 
@@ -48,25 +50,39 @@ const LinkButton = React.forwardRef(({ onClick, href, children }, ref) => {
             href={href}
             onClick={onClick}
             ref={ref}
-            style={{ transition: "all 0.4s" }}
+            style={{ transition: "all 0.2s" }}
             className="relative text-xl my-5 rounded-sm cursor-pointer focus:shadow-lg hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
         >
             <>
                 <div
                     className="absolute border border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-                    style={{ top: 0, right: 0, width: `${percentage}%` }}
+                    style={{
+                        top: 0,
+                        right: 0,
+                        width: `${percentage}%`
+                    }}
                 />
                 <div
                     className="absolute border border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-                    style={{ right: 0, bottom: 0, height: `${percentage}%` }}
+                    style={{
+                        right: 0,
+                        bottom: 0,
+                        height: `${percentage}%`
+                    }}
                 />
                 <div
                     className="absolute border border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-                    style={{ bottom: 0, width: `${percentage}%` }}
+                    style={{
+                        bottom: 0,
+                        width: `${percentage}%`
+                    }}
                 />
                 <div
                     className="absolute border border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-                    style={{ left: 0, height: `${percentage}%` }}
+                    style={{
+                        left: 0,
+                        height: `${percentage}%`
+                    }}
                 />
                 <div className="px-5 py-3">{children}</div>
             </>
