@@ -32,7 +32,7 @@ const LinkButton = React.forwardRef(({ onClick, href, children }, ref) => {
     const [height, setHeight] = useState(600);
 
     const handleScroll = () => {
-        const percentageToSet = ((window.scrollY * 0.9) / height) * 100;
+        const percentageToSet = (window.scrollY / height) * 100;
 
         setPercentage(Math.min(percentageToSet, 100));
     };
