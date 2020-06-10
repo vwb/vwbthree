@@ -1,0 +1,93 @@
+@mixin animate-menu($attribute, $value) {
+    #{$attribute}: $value;
+    transition: $attribute 1.25s ease-in-out;
+}
+
+@mixin animate-links {
+    animation-duration: 1.25s;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes width-animation {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+@keyframes height-animation {
+    0% {
+        height: 0%;
+    }
+    100% {
+        height: 100%;
+    }
+}
+
+@keyframes hide-width {
+    0% {
+        width: 100%;
+    }
+    99% {
+        width: 1%;
+    }
+    100% {
+        width: 0%;
+    }
+}
+
+@keyframes hide-height {
+    0% {
+        height: 100%;
+    }
+    99% {
+        height: 1%;
+    }
+    100% {
+        height: 0%;
+    }
+}
+
+.landing {
+    .landing-background {
+        @include animate-menu(filter, blur(0px));
+    }
+    .menu-visible {
+        .top-right,
+        .bottom-left {
+            @include animate-links;
+            animation-name: width-animation;
+            border-width: 1px;
+        }
+        .top-left,
+        .bottom-right {
+            @include animate-links;
+            animation-name: height-animation;
+            border-width: 1px;
+        }
+    }
+    .menu-hidden {
+        .top-right,
+        .bottom-left {
+            @include animate-links;
+            animation-name: hide-width;
+            border-width: 1px;
+        }
+        .top-left,
+        .bottom-right {
+            @include animate-links;
+            animation-name: hide-height;
+            border-width: 1px;
+        }
+    }
+}
+
+.landing.blur {
+    .landing-background {
+        @include animate-menu(filter, blur(10px));
+    }
+}

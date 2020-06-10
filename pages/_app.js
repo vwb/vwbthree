@@ -5,6 +5,7 @@ import Router from "next/router";
 import "../css/tailwind.css";
 import "../css/markdown.css";
 import "../scss/animations.scss";
+import "../scss/landing.scss";
 
 class MyApp extends App {
     componentDidMount() {

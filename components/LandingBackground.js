@@ -1,22 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-import { useScrollListener } from "../hooks";
-
 const LandingBackground = props => {
-    const [blur, setBlur] = useState(0);
     const [{ width, height }, setDimensions] = useState({
         width: "100vw",
         height: "100vh"
     });
 
-    const handleScroll = () => {
-        setBlur(window.scrollY / 50);
-    };
-
-    useScrollListener(handleScroll);
-
     useEffect(() => {
-        handleScroll();
         setDimensions({ width: window.outerWidth, height: window.outerHeight });
 
         document.getElementsByTagName("body")[0].style.backgroundColor =
@@ -28,11 +18,11 @@ const LandingBackground = props => {
         };
     }, []);
 
-    const DARK_BACKGROUND = `-webkit-linear-gradient(bottom, rgba(26, 26, 26, 1), rgba(25, 25, 25, 0.0) 15%), url(/waterfall.jpg)`;
+    const BACKGROUND_STYLE = `-webkit-linear-gradient(bottom, rgba(26, 26, 26, 1), rgba(25, 25, 25, 0.0) 15%), url(/waterfall.jpg)`;
 
     return (
         <section
-            className="fixed"
+            className="fixed landing__background"
             style={{
                 height,
                 width,
@@ -42,15 +32,14 @@ const LandingBackground = props => {
             }}
         >
             <section
-                className="fixed"
+                className="landing-background fixed"
                 style={{
                     marginTop: "-120px",
                     height,
                     width,
-                    background: DARK_BACKGROUND,
+                    background: BACKGROUND_STYLE,
                     backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    filter: `blur(${blur}px)`
+                    backgroundPosition: "center"
                 }}
             >
                 {props.children}

@@ -5,7 +5,6 @@ import Layout from "../components/Layout";
 import ScrollArrow from "../components/ScrollArrow";
 import LandingBackground from "../components/LandingBackground";
 import FadeIn from "../components/FadeIn";
-import { useScrollListener } from "../hooks";
 
 const Menu = props => {
     const [height, setMenuHeight] = useState(600);
@@ -17,6 +16,7 @@ const Menu = props => {
     return (
         <div
             id="landing-menu"
+            className={`${props.isVisible ? "menu-visible" : "menu-hidden"}`}
             style={{
                 width: "100%",
                 height: `${height}px`,
@@ -30,58 +30,29 @@ const Menu = props => {
 };
 
 const LinkButton = React.forwardRef(({ onClick, href, children }, ref) => {
-    const [percentage, setPercentage] = useState(0);
-    const [height] = useState(400);
-
-    const handleScroll = () => {
-        const percentageToSet = (window.scrollY / height) * 100;
-        setPercentage(Math.min(percentageToSet, 100));
-    };
-
-    useScrollListener(handleScroll);
-
-    useEffect(() => {
-        handleScroll();
-    }, []);
-
     return (
         <a
             href={href}
             onClick={onClick}
             ref={ref}
-            style={{ transition: "all 0.2s" }}
             className="relative text-xl my-5 rounded-sm cursor-pointer focus:shadow-lg hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
         >
             <>
                 <div
-                    className="absolute border border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-                    style={{
-                        top: 0,
-                        right: 0,
-                        width: `${percentage}%`
-                    }}
+                    className="top-right absolute border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
+                    style={{ top: 0, right: 0 }}
                 />
                 <div
-                    className="absolute border border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-                    style={{
-                        right: 0,
-                        bottom: 0,
-                        height: `${percentage}%`
-                    }}
+                    className="bottom-right absolute border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
+                    style={{ right: 0, bottom: 0 }}
                 />
                 <div
-                    className="absolute border border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-                    style={{
-                        bottom: 0,
-                        width: `${percentage}%`
-                    }}
+                    className="bottom-left absolute border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
+                    style={{ bottom: 0 }}
                 />
                 <div
-                    className="absolute border border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-                    style={{
-                        left: 0,
-                        height: `${percentage}%`
-                    }}
+                    className="top-left absolute border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
+                    style={{ left: 0 }}
                 />
                 <div className="px-5 py-3">{children}</div>
             </>
@@ -90,8 +61,31 @@ const LinkButton = React.forwardRef(({ onClick, href, children }, ref) => {
 });
 
 const Home = () => {
+    const [isMenuVisible, setMenuVisible] = useState(false);
+
+    const callback = entries => {
+        let [entry] = entries;
+
+        console.log("callback called");
+        console.log(entry.isIntersecting);
+
+        setMenuVisible(entry.isIntersecting);
+    };
+
+    useEffect(() => {
+        const options = {
+            threshold: 0.25
+        };
+
+        const observer = new IntersectionObserver(callback, options);
+        observer.observe(document.querySelector("#landing-menu"));
+    }, []);
+
     return (
-        <div style={{ backgroundColor: "#1B1B1B" }}>
+        <div
+            className={`landing ${isMenuVisible ? "blur" : ""}`}
+            style={{ backgroundColor: "#1B1B1B" }}
+        >
             <Layout
                 isOpenDefault={false}
                 navClass="t-0 l-10 bg-transparent"
@@ -100,7 +94,7 @@ const Home = () => {
                 <LandingBackground />
                 <FadeIn>
                     <ScrollArrow />
-                    <Menu>
+                    <Menu isVisible={isMenuVisible}>
                         <section className="flex items-center flex-col">
                             <div
                                 className="text-center text-gray-200 font-light flex flex-col items-center"
