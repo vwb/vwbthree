@@ -1,12 +1,10 @@
 const blurStyles = {
-    height: '100%',
-    width: '100%',
-    backdropFilter: 'blur(6px)',
-    position: 'absolute',
-}
+    height: "100%",
+    width: "100%",
+    backdropFilter: "blur(20px)",
+    position: "absolute"
+};
 
-const Blur = () => (
-    <div style={blurStyles}/>
-);
+const Blur = () => <div style={blurStyles} />;
 
-export default Blur
+export default Blur;
