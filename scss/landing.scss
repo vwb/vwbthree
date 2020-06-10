@@ -74,7 +74,7 @@
             border-width: 1px;
         }
         .fade-in {
-            @include animate-background(opacity, 100%, 0.75s);
+            @include animate-background(opacity, 1, 0.75s);
         }
     }
     .menu-hidden {
@@ -91,7 +91,7 @@
             border-width: 1px;
         }
         .fade-in {
-            @include animate-background(opacity, 10%, 0.75s);
+            @include animate-background(opacity, 0.15, 0.75s);
         }
     }
 }
