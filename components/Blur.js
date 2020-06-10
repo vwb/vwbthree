@@ -1,7 +1,7 @@
 const blurStyles = {
     height: "100%",
     width: "100%",
-    backdropFilter: "blur(20px)",
+    backdropFilter: "blur(15px)",
     position: "absolute"
 };
 

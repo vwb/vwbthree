@@ -54,7 +54,7 @@ const LinkButton = React.forwardRef(({ onClick, href, children }, ref) => {
                     className="top-left absolute border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
                     style={{ left: 0 }}
                 />
-                <div className="px-5 py-3">{children}</div>
+                <div className="fade-in px-5 py-3">{children}</div>
             </>
         </a>
     );
@@ -74,7 +74,7 @@ const Home = () => {
 
     useEffect(() => {
         const options = {
-            threshold: 0.25
+            threshold: 0.3
         };
 
         const observer = new IntersectionObserver(callback, options);
@@ -107,7 +107,7 @@ const Home = () => {
                                 <Link href="/photos">
                                     <LinkButton passHref>Gallery</LinkButton>
                                 </Link>
-                                <div className="border border-solid border-gray-200 w-6" />
+                                <div className="fade-in border border-solid border-gray-200 w-6" />
                                 <Link href="/about">
                                     <LinkButton passHref>About</LinkButton>
                                 </Link>
