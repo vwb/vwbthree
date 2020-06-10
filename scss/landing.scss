@@ -1,4 +1,4 @@
-@mixin animate-menu($attribute, $value) {
+@mixin animate-background($attribute, $value) {
     #{$attribute}: $value;
     transition: $attribute 1.25s ease-in-out;
 }
@@ -54,7 +54,7 @@
 
 .landing {
     .landing-background {
-        @include animate-menu(filter, blur(0px));
+        @include animate-background(filter, blur(0px));
     }
     .menu-visible {
         .top-right,
@@ -88,6 +88,6 @@
 
 .landing.blur {
     .landing-background {
-        @include animate-menu(filter, blur(10px));
+        @include animate-background(filter, blur(10px));
     }
 }
