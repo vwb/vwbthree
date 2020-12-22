@@ -57,9 +57,6 @@
 }
 
 .landing {
-    .landing-background {
-        @include animate-background(filter, blur(0px));
-    }
     .menu-visible {
         .top-right,
         .bottom-left {
@@ -75,23 +72,6 @@
         }
         .fade-in {
             @include animate-background(opacity, 1, 0.75s);
-        }
-    }
-    .menu-hidden {
-        .top-right,
-        .bottom-left {
-            @include animate-links;
-            animation-name: hide-width;
-            border-width: 1px;
-        }
-        .top-left,
-        .bottom-right {
-            @include animate-links;
-            animation-name: hide-height;
-            border-width: 1px;
-        }
-        .fade-in {
-            @include animate-background(opacity, 0.15, 0.75s);
         }
     }
 }

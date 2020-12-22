@@ -31,6 +31,7 @@ const PhotoContainer = ({ photo, isLast, index, collection }) => {
         >
             <PhotoView
                 photo={photo}
+                isRaised={true}
                 render={image => (
                     <Link
                         href="/photos/[id]/[slug]"
@@ -58,7 +59,7 @@ const PhotoContainer = ({ photo, isLast, index, collection }) => {
 const PhotoGroupPage = props => (
     <Layout
         isOpenDefault={false}
-        navClass="bg-transparent text-white"
+        navClass="bg-transparent text-black"
         title={props.collection.name}
     >
         {props.photos.map((photo, index) => (

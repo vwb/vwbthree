@@ -143,7 +143,7 @@ const PhotoDetailPage = ({ photo, collection }) => {
     return (
         <Layout
             isOpenDefault={false}
-            navClass="bg-transparent text-gray-200"
+            navClass="bg-transparent text-black"
             title={photo.title}
         >
             <Background collection={collection}>

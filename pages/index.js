@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import Link from "next/link";
 import Layout from "../components/Layout";
-import ScrollArrow from "../components/ScrollArrow";
-import FadeIn from "../components/FadeIn";
+import FadeIn from '../components/FadeIn';
 
 const LandingBackground = props => {
     const [{ width, height }, setDimensions] = useState({
@@ -27,28 +26,17 @@ const LandingBackground = props => {
 
     return (
         <section
-            className="fixed landing__background"
+            className="landing-background fixed"
             style={{
+                marginTop: "-120px",
                 height,
                 width,
-                backgroundColor: "#1B1B1B",
+                background: BACKGROUND_STYLE,
                 backgroundSize: "cover",
                 backgroundPosition: "center"
             }}
         >
-            <section
-                className="landing-background fixed"
-                style={{
-                    marginTop: "-120px",
-                    height,
-                    width,
-                    background: BACKGROUND_STYLE,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center"
-                }}
-            >
-                {props.children}
-            </section>
+            {props.children}
         </section>
     );
 };
@@ -67,8 +55,8 @@ const Menu = props => {
             style={{
                 width: "100%",
                 height: `${height}px`,
-                position: "absolute",
-                bottom: `-${height}px`
+                display: 'flex',
+                alignItems: 'center'
             }}
         >
             {props.children}
@@ -110,23 +98,11 @@ const LinkButton = React.forwardRef(({ onClick, href, children }, ref) => {
 const Home = () => {
     const [isMenuVisible, setMenuVisible] = useState(false);
 
-    const callback = entries => {
-        let [entry] = entries;
-
-        console.log("callback called");
-        console.log(entry.isIntersecting);
-
-        setMenuVisible(entry.isIntersecting);
-    };
-
     useEffect(() => {
-        const options = {
-            threshold: 0.3
-        };
-
-        const observer = new IntersectionObserver(callback, options);
-        observer.observe(document.querySelector("#landing-menu"));
-    }, []);
+        setTimeout(() => {
+            setMenuVisible(true);
+        }, 500)
+    })
 
     return (
         <div
@@ -139,29 +115,29 @@ const Home = () => {
                 textColor="text-white"
             >
                 <LandingBackground />
-                <FadeIn>
-                    <ScrollArrow />
-                    <Menu isVisible={isMenuVisible}>
-                        <section className="flex items-center flex-col">
-                            <div
-                                className="text-center text-gray-200 font-light flex flex-col items-center"
-                                style={{
-                                    height: "200px",
-                                    width: "200px",
-                                    fontFamily: "Simsun"
-                                }}
-                            >
-                                <Link href="/photos">
-                                    <LinkButton passHref>Gallery</LinkButton>
-                                </Link>
-                                <div className="fade-in border border-solid border-gray-200 w-6" />
-                                <Link href="/about">
-                                    <LinkButton passHref>About</LinkButton>
-                                </Link>
-                            </div>
-                        </section>
-                    </Menu>
-                </FadeIn>
+                    <FadeIn>
+                        <Menu isVisible={isMenuVisible}>
+                            <section className="flex items-center flex-col w-full">
+                                <div
+                                    className="text-center text-gray-200 font-light flex flex-col items-center"
+                                    style={{
+                                        height: "200px",
+                                        width: "200px",
+                                        fontFamily: "Simsun"
+                                    }}
+                                >
+                                    <Link href="/photos">
+                                        <LinkButton passHref>Photography</LinkButton>
+                                    </Link>
+                                    <div className="fade-in border border-solid border-gray-200 w-6" />
+                                    <Link href="/about">
+                                        <LinkButton passHref>About</LinkButton>
+                                    </Link>
+                                </div>
+                            </section>
+                        </Menu>
+                    </FadeIn>
+
             </Layout>
         </div>
     );

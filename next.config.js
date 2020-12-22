@@ -7,6 +7,6 @@ module.exports = {
         return config;
     },
     images: {
-        domains: ['example.com'],
+        domains: ['vwbthree-photos.s3-us-west-1.amazonaws.com'],
     },
 };
