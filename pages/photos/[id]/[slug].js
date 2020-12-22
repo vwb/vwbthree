@@ -62,13 +62,13 @@ const ContactForm = props => {
     return (
         <section className="pt-4 px-4 w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto">
             {!isSubmitted && (
-                <section className="flex flex-col items-center">
+                <section className="flex flex-col items-center text-center">
                     <p className="text-center">
                         Contact via email and I will reach out shortly to
                         finalize purchasing options!
-                        <span className="text-xs pt-2">
-                            Digital download and custom prints available
-                        </span>
+                    </p>
+                    <p className="text-xs pt-2">
+                        Digital download and custom prints available
                     </p>
                     <a
                         className="my-3 p-3 hover:shadow-xl text-gray-300 focus:outline-none bg-teal-700 rounded"
