@@ -85,7 +85,7 @@ const ContactForm = props => {
                         Thank you for your interest!
                     </p>
                     <p className="text-center test-sm pt-2">
-                        You will be contaced shortly.
+                        You will be contaced shortly
                     </p>
                     <button
                         className="p-3 my-4 border-2 border-solid border-gray-400 rounded"
