@@ -26,10 +26,10 @@ const Panel = props => {
         >
             <div
                 style={{
-                    backgroundColor: `rgba(30,30,30, ${isOpen ? 1 : 0.6})`,
+                    backgroundColor: `rgba(255,255,255, ${isOpen ? 1 : 0.6})`,
                     transition: "background-color 0.4s"
                 }}
-                className="w-full sm:w-3/4 lg:w-1/2 xl:x-1/3 mx-auto h-full rounded-lg rounded-b-none shadow-xl text-gray-200"
+                className="w-full sm:w-3/4 lg:w-1/2 xl:x-1/3 mx-auto h-full rounded-lg rounded-b-none shadow-xl text-black "
             >
                 <PanelContext.Provider value={[isOpen, setOpen]}>
                     {props.children}

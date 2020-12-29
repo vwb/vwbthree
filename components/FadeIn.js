@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 
 const FadeIn = ({ children, transitionTime = 2 }) => {
     const [fadeVal, setFadeVal] = useState(0);
-    useEffect(() => {
+    useLayoutEffect(() => {
         setTimeout(() => {
             setFadeVal(0.9);
         }, 600);

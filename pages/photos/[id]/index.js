@@ -1,6 +1,9 @@
 import React from "react";
 import Link from "next/link";
 
+import { FixedSizeList as List } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
+
 import Layout from "../../../components/Layout";
 import PhotoView from "../../../components/Photo";
 
@@ -23,12 +26,15 @@ const ScrollToNext = ({ onClick }) => (
     </div>
 );
 
-const PhotoContainer = ({ photo, isLast, index, collection }) => {
+const PhotoContainer = ({
+    photo,
+    index,
+    collection,
+    isLast,
+    handleNextPhotoClick
+}) => {
     return (
-        <div
-            id={`photo-view-${index}`}
-            className="h-screen w-full relative flex items-center content-center overflow-hidden"
-        >
+        <div className="h-screen w-full relative flex items-center content-center overflow-hidden">
             <PhotoView
                 photo={photo}
                 isRaised={true}
@@ -44,35 +50,60 @@ const PhotoContainer = ({ photo, isLast, index, collection }) => {
                 )}
             />
             {!isLast && (
-                <ScrollToNext
-                    onClick={() =>
-                        document
-                            .getElementById(`photo-view-${index + 1}`)
-                            .scrollIntoView({ behavior: "smooth" })
-                    }
-                />
+                <ScrollToNext onClick={() => handleNextPhotoClick(index)} />
             )}
         </div>
     );
 };
 
-const PhotoGroupPage = props => (
-    <Layout
-        isOpenDefault={false}
-        navClass="bg-transparent text-black"
-        title={props.collection.name}
-    >
-        {props.photos.map((photo, index) => (
-            <PhotoContainer
-                key={photo.url}
-                photo={photo}
-                isLast={index === props.photos.length - 1}
-                index={index}
-                collection={props.collection}
-            />
-        ))}
-    </Layout>
-);
+const PhotoGroupPage = props => {
+    const ref = React.useRef();
+
+    return (
+        <Layout
+            isOpenDefault={false}
+            navClass="bg-transparent text-black"
+            title={props.collection.name}
+        >
+            <div className="h-screen w-screen">
+                <AutoSizer>
+                    {({ height, width }) => (
+                        <List
+                            className="photo-list"
+                            ref={ref}
+                            height={height}
+                            itemCount={props.photos.length}
+                            itemData={props.photos}
+                            itemSize={height}
+                            width={width}
+                        >
+                            {({ index, style }) => {
+                                return (
+                                    <div style={style}>
+                                        <PhotoContainer
+                                            collection={props.collection}
+                                            photo={props.photos[index]}
+                                            index={index}
+                                            isLast={
+                                                index ===
+                                                props.photos.length - 1
+                                            }
+                                            handleNextPhotoClick={currentIndex => {
+                                                ref.current.scrollToItem(
+                                                    currentIndex + 1
+                                                );
+                                            }}
+                                        />
+                                    </div>
+                                );
+                            }}
+                        </List>
+                    )}
+                </AutoSizer>
+            </div>
+        </Layout>
+    );
+};
 
 export async function getStaticPaths() {
     const paths = getAllCollectionPaths();
