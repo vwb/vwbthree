@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 
 const ImageWrapper = ({ url, title }) => (
     <Image
@@ -12,7 +12,7 @@ const ImageWrapper = ({ url, title }) => (
 
 const Photo = props => {
     const backgroundStyles = {
-        background: 'white',
+        background: "white",
         backgroundSize: "cover",
         backgroundPosition: "center",
         height: "100%",
@@ -29,7 +29,15 @@ const Photo = props => {
 
     return (
         <>
-            <div className="z-10 absolute w-9/12" style={{height: '70%',     transform: 'translateX(15%)'}}>
+            <div
+                className="z-10 absolute w-9/12"
+                style={
+                    props.style || {
+                        height: "70%",
+                        transform: "translateX(15%)"
+                    }
+                }
+            >
                 {props.render ? props.render(image) : image}
             </div>
             <div style={backgroundStyles} />

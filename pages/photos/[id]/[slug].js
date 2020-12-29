@@ -148,7 +148,10 @@ const PhotoDetailPage = ({ photo, collection }) => {
             <Background collection={collection}>
                 <PhotoView
                     photo={photo}
-                    backgroundOverlay="rgba(15, 15, 15, 0.65), rgba(15, 15, 15, 0.65))"
+                    style={{
+                        height: "85%",
+                        transform: "translateX(15%)"
+                    }}
                     render={image => (
                         <div
                             onClick={e => {

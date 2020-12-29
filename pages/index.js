@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect} from "react";
 
 import Link from "next/link";
 import Layout from "../components/Layout";
@@ -10,7 +10,7 @@ const LandingBackground = props => {
         height: "100vh"
     });
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         setDimensions({ width: window.outerWidth, height: window.outerHeight });
 
         document.getElementsByTagName("body")[0].style.backgroundColor =
@@ -44,7 +44,7 @@ const LandingBackground = props => {
 const Menu = props => {
     const [height, setMenuHeight] = useState(600);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         setMenuHeight(window.innerHeight * 0.8);
     }, []);
 
