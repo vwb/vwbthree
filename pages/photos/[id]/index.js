@@ -46,7 +46,7 @@ const PhotoContainer = ({
                 photo={photo}
                 isRaised={true}
                 style={{
-                    height: "55%"
+                    height: "60%"
                 }}
                 render={image => (
                     <Link
