@@ -70,29 +70,36 @@ const PhotoContainer = ({
 
 const PhotoGroupPage = props => {
     const [windowInnerHeight, setInnerHeight] = React.useState(null);
+    const [hasScrolled, setHasScrolled] = React.useState(false);
     const ref = React.useRef();
 
     const setRef = element => {
         ref.current = element;
-
-        const potentialIndex = JSON.parse(
-            localStorage.getItem("vwb_photos_index")
-        );
-
-        if (potentialIndex) {
-            if (potentialIndex?.collectionName === props.collection.name) {
-                ref?.current?.scrollToItem(potentialIndex.index, "start");
-            }
-
-            if (ref.current) {
-                localStorage.removeItem("vwb_photos_index");
-            }
-        }
     };
 
     React.useLayoutEffect(() => {
         setInnerHeight(document.documentElement.clientHeight);
     }, []);
+
+    React.useEffect(() => {
+        if (windowInnerHeight && ref.current && !hasScrolled) {
+            const potentialIndex = JSON.parse(
+                localStorage.getItem("vwb_photos_index")
+            );
+
+            if (potentialIndex) {
+                if (potentialIndex?.collectionName === props.collection.name) {
+                    ref?.current?.scrollToItem(potentialIndex.index);
+                }
+
+                if (ref.current) {
+                    localStorage.removeItem("vwb_photos_index");
+                }
+
+                setHasScrolled(true);
+            }
+        }
+    });
 
     return (
         <Layout
