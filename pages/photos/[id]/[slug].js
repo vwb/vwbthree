@@ -154,14 +154,13 @@ const PhotoDetailPage = ({ photo, collection }) => {
                 <PhotoView
                     photo={photo}
                     style={{
-                        height: "85%"
+                        height: "80%"
                     }}
                     render={image => (
                         <div
                             onClick={e => {
                                 e.stopPropagation();
                             }}
-                            style={{ marginTop: "-50px" }}
                         >
                             {image}
                         </div>
