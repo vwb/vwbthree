@@ -94,8 +94,6 @@ const PhotoGroupPage = props => {
         setInnerHeight(document.documentElement.clientHeight);
     }, []);
 
-    console.log("render");
-
     return (
         <Layout
             isOpenDefault={false}
