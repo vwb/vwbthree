@@ -81,7 +81,7 @@ const PhotoGroupPage = props => {
 
         if (potentialIndex) {
             if (potentialIndex?.collectionName === props.collection.name) {
-                ref?.current?.scrollToItem(potentialIndex.index, "center");
+                ref?.current?.scrollToItem(potentialIndex.index, "start");
             }
 
             if (ref.current) {
