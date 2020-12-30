@@ -34,7 +34,7 @@ const PhotoContainer = ({
     handleNextPhotoClick
 }) => {
     return (
-        <div className="h-screen w-full relative flex items-center content-center overflow-hidden">
+        <div className="h-full w-full relative flex items-center content-center overflow-hidden">
             <PhotoView
                 photo={photo}
                 isRaised={true}
@@ -58,6 +58,11 @@ const PhotoContainer = ({
 
 const PhotoGroupPage = props => {
     const ref = React.useRef();
+    const [windowInnerHeight, setInnerHeight] = React.useState(null);
+
+    React.useLayoutEffect(() => {
+        setInnerHeight(document.documentElement.clientHeight);
+    }, []);
 
     return (
         <Layout
@@ -65,7 +70,10 @@ const PhotoGroupPage = props => {
             navClass="bg-transparent text-black"
             title={props.collection.name}
         >
-            <div className="h-screen w-screen">
+            <div
+                className={`w-screen ${windowInnerHeight ? "" : "h-screen"}`}
+                style={{ height: windowInnerHeight ? windowInnerHeight : "" }}
+            >
                 <AutoSizer>
                     {({ height, width }) => (
                         <List

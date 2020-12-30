@@ -149,8 +149,7 @@ const PhotoDetailPage = ({ photo, collection }) => {
                 <PhotoView
                     photo={photo}
                     style={{
-                        height: "85%",
-                        transform: "translateX(15%)"
+                        height: "85%"
                     }}
                     render={image => (
                         <div

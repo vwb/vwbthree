@@ -30,11 +30,10 @@ const Photo = props => {
     return (
         <>
             <div
-                className="z-10 absolute w-9/12"
+                className="z-10 absolute w-full"
                 style={
                     props.style || {
-                        height: "70%",
-                        transform: "translateX(15%)"
+                        height: "70%"
                     }
                 }
             >
