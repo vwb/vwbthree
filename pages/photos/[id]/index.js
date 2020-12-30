@@ -38,6 +38,9 @@ const PhotoContainer = ({
             <PhotoView
                 photo={photo}
                 isRaised={true}
+                style={{
+                    height: "50%"
+                }}
                 render={image => (
                     <Link
                         href="/photos/[id]/[slug]"
