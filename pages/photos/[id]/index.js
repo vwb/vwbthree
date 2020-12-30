@@ -26,6 +26,13 @@ const ScrollToNext = ({ onClick }) => (
     </div>
 );
 
+const storeIndex = (index, collectionName) => {
+    localStorage.setItem(
+        "vwb_photos_index",
+        JSON.stringify({ collectionName, index })
+    );
+};
+
 const PhotoContainer = ({
     photo,
     index,
@@ -39,7 +46,7 @@ const PhotoContainer = ({
                 photo={photo}
                 isRaised={true}
                 style={{
-                    height: "50%"
+                    height: "55%"
                 }}
                 render={image => (
                     <Link
@@ -48,7 +55,9 @@ const PhotoContainer = ({
                             photo
                         )}`}
                     >
-                        <a>{image}</a>
+                        <a onClick={() => storeIndex(index, collection.name)}>
+                            {image}
+                        </a>
                     </Link>
                 )}
             />
@@ -60,12 +69,32 @@ const PhotoContainer = ({
 };
 
 const PhotoGroupPage = props => {
-    const ref = React.useRef();
     const [windowInnerHeight, setInnerHeight] = React.useState(null);
+    const ref = React.useRef();
+
+    const setRef = element => {
+        ref.current = element;
+
+        const potentialIndex = JSON.parse(
+            localStorage.getItem("vwb_photos_index")
+        );
+
+        if (potentialIndex) {
+            if (potentialIndex?.collectionName === props.collection.name) {
+                ref?.current?.scrollToItem(potentialIndex.index);
+            }
+
+            if (ref.current) {
+                localStorage.removeItem("vwb_photos_index");
+            }
+        }
+    };
 
     React.useLayoutEffect(() => {
         setInnerHeight(document.documentElement.clientHeight);
     }, []);
+
+    console.log("render");
 
     return (
         <Layout
@@ -81,7 +110,7 @@ const PhotoGroupPage = props => {
                     {({ height, width }) => (
                         <List
                             className="photo-list"
-                            ref={ref}
+                            ref={element => setRef(element)}
                             height={height}
                             itemCount={props.photos.length}
                             itemData={props.photos}
