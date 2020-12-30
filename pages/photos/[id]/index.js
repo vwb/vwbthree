@@ -26,6 +26,13 @@ const ScrollToNext = ({ onClick }) => (
     </div>
 );
 
+const storeIndex = (index, collectionName) => {
+    localStorage.setItem(
+        "vwb_photos_index",
+        JSON.stringify({ collectionName, index })
+    );
+};
+
 const PhotoContainer = ({
     photo,
     index,
@@ -34,10 +41,13 @@ const PhotoContainer = ({
     handleNextPhotoClick
 }) => {
     return (
-        <div className="h-screen w-full relative flex items-center content-center overflow-hidden">
+        <div className="h-full w-full relative flex items-center content-center overflow-hidden">
             <PhotoView
                 photo={photo}
                 isRaised={true}
+                style={{
+                    height: "55%"
+                }}
                 render={image => (
                     <Link
                         href="/photos/[id]/[slug]"
@@ -45,7 +55,9 @@ const PhotoContainer = ({
                             photo
                         )}`}
                     >
-                        <a>{image}</a>
+                        <a onClick={() => storeIndex(index, collection.name)}>
+                            {image}
+                        </a>
                     </Link>
                 )}
             />
@@ -57,7 +69,32 @@ const PhotoContainer = ({
 };
 
 const PhotoGroupPage = props => {
+    const [windowInnerHeight, setInnerHeight] = React.useState(null);
     const ref = React.useRef();
+
+    const setRef = element => {
+        ref.current = element;
+
+        const potentialIndex = JSON.parse(
+            localStorage.getItem("vwb_photos_index")
+        );
+
+        if (potentialIndex) {
+            if (potentialIndex?.collectionName === props.collection.name) {
+                ref?.current?.scrollToItem(potentialIndex.index);
+            }
+
+            if (ref.current) {
+                localStorage.removeItem("vwb_photos_index");
+            }
+        }
+    };
+
+    React.useLayoutEffect(() => {
+        setInnerHeight(document.documentElement.clientHeight);
+    }, []);
+
+    console.log("render");
 
     return (
         <Layout
@@ -65,12 +102,15 @@ const PhotoGroupPage = props => {
             navClass="bg-transparent text-black"
             title={props.collection.name}
         >
-            <div className="h-screen w-screen">
+            <div
+                className={`w-screen ${windowInnerHeight ? "" : "h-screen"}`}
+                style={{ height: windowInnerHeight ? windowInnerHeight : "" }}
+            >
                 <AutoSizer>
                     {({ height, width }) => (
                         <List
                             className="photo-list"
-                            ref={ref}
+                            ref={element => setRef(element)}
                             height={height}
                             itemCount={props.photos.length}
                             itemData={props.photos}

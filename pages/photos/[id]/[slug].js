@@ -8,6 +8,7 @@ import Divider from "../../../components/Divider";
 
 import { getAllPhotoPaths, getPhotoData } from "../../../lib/photos";
 import { getCollection } from "../../../lib/collections";
+import DownArrow from "../../../components/DownArrrow";
 
 const DetailHeader = props => (
     <div className="mx-4">
@@ -111,13 +112,17 @@ const PanelContent = props => {
                         <button
                             className={`${
                                 isPanelOpen
-                                    ? "bg-transparent mt-2"
+                                    ? "bg-white mt-2 rounded"
                                     : "bg-teal-700 rounded"
-                            }   p-3 hover:shadow-xl text-gray-300 focus:outline-none`}
+                            }   p-3 hover:shadow-xl text-white focus:outline-none`}
                             style={{ transition: "all .4s" }}
                             onClick={() => setPanelOpen(!isPanelOpen)}
                         >
-                            {isPanelOpen ? "⇣" : "Purchase"}
+                            {isPanelOpen ? (
+                                <DownArrow style={{ height: "25px" }} />
+                            ) : (
+                                "Purchase"
+                            )}
                         </button>
                     </div>
                 </div>
@@ -149,8 +154,7 @@ const PhotoDetailPage = ({ photo, collection }) => {
                 <PhotoView
                     photo={photo}
                     style={{
-                        height: "85%",
-                        transform: "translateX(15%)"
+                        height: "85%"
                     }}
                     render={image => (
                         <div
