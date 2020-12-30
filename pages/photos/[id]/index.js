@@ -82,6 +82,7 @@ const PhotoGroupPage = props => {
     }, []);
 
     React.useEffect(() => {
+        console.log("useeffect");
         if (windowInnerHeight && ref.current && !hasScrolled) {
             const potentialIndex = JSON.parse(
                 localStorage.getItem("vwb_photos_index")
@@ -89,7 +90,9 @@ const PhotoGroupPage = props => {
 
             if (potentialIndex) {
                 if (potentialIndex?.collectionName === props.collection.name) {
-                    ref?.current?.scrollToItem(potentialIndex.index, "smart");
+                    ref?.current?.scrollTo(
+                        windowInnerHeight * potentialIndex.index
+                    );
                 }
 
                 if (ref.current) {
