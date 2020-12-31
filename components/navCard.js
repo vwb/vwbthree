@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import Blur from "./Blur";
-
 const NavCard = ({
     img,
     children,

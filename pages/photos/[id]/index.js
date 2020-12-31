@@ -77,12 +77,11 @@ const PhotoGroupPage = props => {
         ref.current = element;
     };
 
-    React.useLayoutEffect(() => {
+    React.useEffect(() => {
         setInnerHeight(document.documentElement.clientHeight);
     }, []);
 
     React.useEffect(() => {
-        console.log("useeffect");
         if (windowInnerHeight && ref.current && !hasScrolled) {
             const potentialIndex = JSON.parse(
                 localStorage.getItem("vwb_photos_index")

@@ -28,5 +28,11 @@
         "ids": [47, 48, 49, 50, 51, 52, 53, 54, 55],
         "coverPhotoUrl": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/framed/one.jpg",
         "slug": "framed"
+    },
+    "tahoe": {
+        "name": "Tahoe",
+        "ids": [84],
+        "coverPhotoUrl": "https://vwbthree-photos.s3-us-west-1.amazonaws.com/tahoe/golden-emerald-bay.jpg",
+        "slug": "tahoe"
     }
 }

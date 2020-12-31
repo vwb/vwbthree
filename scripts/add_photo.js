@@ -3,6 +3,11 @@ const { addPhoto, parseArgs } = require("./utils");
 // Handle arguments
 const myArgs = process.argv.slice(2);
 
+/**
+ * Usage:
+ *
+ * node add_photo.js --title="cool-photo" --collection="collection_name"
+ */
 function main() {
     const parsedArgs = parseArgs(myArgs);
 

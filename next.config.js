@@ -7,6 +7,9 @@ module.exports = {
         return config;
     },
     images: {
-        domains: ['vwbthree-photos.s3-us-west-1.amazonaws.com'],
-    },
+        domains: [
+            "vwbthree-photos.s3-us-west-1.amazonaws.com",
+            "ik.imagekit.io"
+        ]
+    }
 };
