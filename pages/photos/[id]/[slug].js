@@ -147,7 +147,7 @@ const PhotoDetailPage = ({ photo, collection }) => {
     return (
         <Layout
             isOpenDefault={false}
-            navClass="bg-transparent text-black"
+            navClass="bg-white shadow"
             title={photo.title}
         >
             <Background collection={collection}>

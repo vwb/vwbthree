@@ -1,6 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import BreadCrumbs from "./BreadCrumbs";
+import { InstagramLink } from "./Instagram";
 
 const Nav = ({ navClas, textColor }) => {
     const router = useRouter();
@@ -20,9 +21,12 @@ const Nav = ({ navClas, textColor }) => {
 
     return (
         <nav
-            className={`${navClas} z-50 fixed top-0 right-0 left-0 text-center h-12  ${textColor}`}
+            className={`${navClas} z-50 fixed top-0 right-0 left-0 text-center h-12 flex justify-between ${textColor}`}
         >
             <BreadCrumbs crumbs={formattedCleanedPath} />
+            <div className="p-3">
+                <InstagramLink />
+            </div>
         </nav>
     );
 };

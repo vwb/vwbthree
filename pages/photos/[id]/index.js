@@ -106,7 +106,7 @@ const PhotoGroupPage = props => {
     return (
         <Layout
             isOpenDefault={false}
-            navClass="bg-transparent text-black"
+            navClass="bg-white shadow"
             title={props.collection.name}
         >
             <div
