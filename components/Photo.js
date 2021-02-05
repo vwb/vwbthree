@@ -7,6 +7,7 @@ const ImageWrapper = ({ url, title }) => (
         objectFit="contain"
         src={url}
         title={title}
+        priority={true}
     />
 );
 
