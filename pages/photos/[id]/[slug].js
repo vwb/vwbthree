@@ -1,11 +1,13 @@
 import { useEffect, useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { GiCrane } from "react-icons/gi";
+import { AiOutlineRight, AiOutlineDown } from "react-icons/Ai";
 
 import Layout from "../../../components/Layout";
 import PhotoView from "../../../components/Photo";
 import Panel, { PanelContext } from "../../../components/Panel";
 import Divider from "../../../components/Divider";
+import { Expand } from "../../../components/Expand";
 
 import { getAllPhotoPaths, getPhotoData } from "../../../lib/photos";
 import { getCollection } from "../../../lib/collections";
@@ -67,7 +69,38 @@ const ContactForm = props => {
                 <section className="flex flex-col items-center text-center">
                     <section className="flex flex-col items-center pt-12">
                         <GiCrane size={90} />
-                        <p className="pt-2">Shop under construction</p>
+                        <p className="text-lg pt-2 pb-6">
+                            Shop under construction
+                        </p>
+                        <Expand
+                            renderHeader={(isExpanded, setExpanded) => {
+                                return (
+                                    <button
+                                        className=" px-2 py-1 text-gray-900 mt-2 flex flex-row items-center"
+                                        onClick={() => setExpanded(!isExpanded)}
+                                    >
+                                        <p className="text-sm pr-4">
+                                            Still want one?
+                                        </p>
+                                        <section className="">
+                                            {isExpanded ? (
+                                                <AiOutlineDown size={12} />
+                                            ) : (
+                                                <AiOutlineRight size={12} />
+                                            )}
+                                        </section>
+                                    </button>
+                                );
+                            }}
+                        >
+                            <p className="text-xs pt-2">
+                                <div>File a custom order!</div>
+                                <div>
+                                    Digital download and custom prints available
+                                    from $50
+                                </div>
+                            </p>
+                        </Expand>
                     </section>
                     <section className="flex flex-col pt-8 absolute bottom-0 w-full px-4 max-w-xs">
                         <p className="text-sm pt-10">Custom orders available</p>

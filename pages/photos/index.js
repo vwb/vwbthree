@@ -1,5 +1,6 @@
 import Layout from "../../components/Layout";
 import NavCard from "../../components/navCard";
+import { Expand } from "../../components/Expand";
 import Link from "next/link";
 
 import PHOTO_COLLECTIONS from "../../data/photos/collections.json";
@@ -46,6 +47,38 @@ const PhotosIndex = () => {
                         />
                     ))}
                 </div>
+                <section className="text-center pt-20 text-gray-700 font-light">
+                    <Expand
+                        renderHeader={(isExpanded, setExpanded) => {
+                            return (
+                                <button
+                                    onClick={() => setExpanded(!isExpanded)}
+                                >
+                                    Not able to find what you're looking for?
+                                </button>
+                            );
+                        }}
+                    >
+                        <div className="px-6">
+                            Shoot me an{" "}
+                            <a
+                                href={`mailto:vwbthree.photos@gmail.com?subject=Looking%20for%20something..`}
+                                className="text-blue-500"
+                            >
+                                email
+                            </a>
+                            , or{" "}
+                            <a
+                                href="https://www.instagram.com/vwbthree/"
+                                className="text-blue-500"
+                            >
+                                message me on Instagram
+                            </a>{" "}
+                            and lets get you set up.
+                        </div>
+                    </Expand>
+                    <div className=""></div>
+                </section>
             </main>
         </Layout>
     );
