@@ -1,7 +1,7 @@
 import { useEffect, useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { GiCrane } from "react-icons/gi";
-import { AiOutlineRight, AiOutlineDown } from "react-icons/Ai";
+import { AiOutlineRight, AiOutlineDown } from "react-icons/ai";
 
 import Layout from "../../../components/Layout";
 import PhotoView from "../../../components/Photo";
