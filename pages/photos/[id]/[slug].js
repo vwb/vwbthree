@@ -1,7 +1,7 @@
 import { useEffect, useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { GiCrane } from "react-icons/gi";
-import { AiOutlineRight, AiOutlineDown } from "react-icons/ai";
+import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 
 import Layout from "../../../components/Layout";
 import PhotoView from "../../../components/Photo";
@@ -84,9 +84,9 @@ const ContactForm = props => {
                                         </p>
                                         <section className="">
                                             {isExpanded ? (
-                                                <AiOutlineDown size={12} />
+                                                <AiOutlineMinus size={12} />
                                             ) : (
-                                                <AiOutlineRight size={12} />
+                                                <AiOutlinePlus size={12} />
                                             )}
                                         </section>
                                     </button>
@@ -147,9 +147,9 @@ const PanelContent = props => {
                         <button
                             className={`${
                                 isPanelOpen
-                                    ? "bg-white mt-2 rounded"
-                                    : "bg-teal-700 rounded"
-                            }   p-3 text-white focus:outline-none`}
+                                    ? "bg-white mt-2 rounded-full border border-gray-300 border-solid p-2 shadow-xl"
+                                    : "bg-teal-700 rounded p-3"
+                            }   text-white focus:outline-none `}
                             style={{ transition: "all .4s" }}
                             onClick={() => setPanelOpen(!isPanelOpen)}
                         >
@@ -180,11 +180,7 @@ const PanelContent = props => {
 
 const PhotoDetailPage = ({ photo, collection }) => {
     return (
-        <Layout
-            isOpenDefault={false}
-            navClass="bg-white shadow"
-            title={photo.title}
-        >
+        <Layout isOpenDefault={false} navClass="bg-white" title={photo.title}>
             <Background collection={collection}>
                 <PhotoView
                     photo={photo}
