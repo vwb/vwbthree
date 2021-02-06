@@ -1,5 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 import { useRouter } from "next/router";
+import { GiCrane } from "react-icons/gi";
 
 import Layout from "../../../components/Layout";
 import PhotoView from "../../../components/Photo";
@@ -64,20 +65,21 @@ const ContactForm = props => {
         <section className="pt-4 px-4 w-full sm:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto">
             {!isSubmitted && (
                 <section className="flex flex-col items-center text-center">
-                    <p className="text-center">
-                        Contact via email and I will reach out shortly to
-                        finalize purchasing options!
-                    </p>
-                    <p className="text-xs pt-2">
-                        Digital download and custom prints available
-                    </p>
-                    <a
-                        className="my-3 p-3 hover:shadow-xl text-gray-300 focus:outline-none bg-teal-700 rounded"
-                        href={`mailto:vwbthree.photos@gmail.com?subject=Interested%20in:%20${props.photo.title}%20in%20the%20${props.collection.name}%20Collection`}
-                        onClick={() => setSubmitted(true)}
-                    >
-                        Contact
-                    </a>
+                    <section className="flex flex-col items-center pt-12">
+                        <GiCrane size={90} />
+                        <p className="pt-2">Shop under construction</p>
+                    </section>
+                    <section className="flex flex-col pt-8 absolute bottom-0 w-full px-4 max-w-xs">
+                        <p className="text-sm pt-10">Custom orders available</p>
+                        <p></p>
+                        <a
+                            className="my-3 p-3 hover:shadow-xl text-gray-300 focus:outline-none bg-teal-700 rounded"
+                            href={`mailto:vwbthree.photos@gmail.com?subject=Interested%20in:%20${props.photo.title}%20in%20the%20${props.collection.name}%20Collection`}
+                            onClick={() => setSubmitted(true)}
+                        >
+                            Contact
+                        </a>
+                    </section>
                 </section>
             )}
             {isSubmitted && (
@@ -104,7 +106,7 @@ const PanelContent = props => {
     const [isPanelOpen, setPanelOpen] = useContext(PanelContext);
 
     return (
-        <section className="pt-2">
+        <section className="pt-2 h-full">
             <DetailHeader>
                 <div className="flex items-center justify-between">
                     <h1 className="text-2xl pl-6">{props.photo.title}</h1>
@@ -114,7 +116,7 @@ const PanelContent = props => {
                                 isPanelOpen
                                     ? "bg-white mt-2 rounded"
                                     : "bg-teal-700 rounded"
-                            }   p-3 hover:shadow-xl text-white focus:outline-none`}
+                            }   p-3 text-white focus:outline-none`}
                             style={{ transition: "all .4s" }}
                             onClick={() => setPanelOpen(!isPanelOpen)}
                         >
