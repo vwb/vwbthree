@@ -1,8 +1,8 @@
 const AWS = require("aws-sdk");
 const fsPromises = require("fs/promises");
 const path = require("path");
+const csvParser = require("csvtojson");
 const { getImageMetaData } = require("../image");
-const db = require("../../db");
 
 require("dotenv").config({
     path: path.join(__dirname, "../../.env.local"),
@@ -16,6 +16,7 @@ AWS.config.update({
 });
 
 const PRIVATE_BUCKET = "vwbthree-photos--private";
+const DYNAMO_TABLE = "vwbthree--photos--test";
 const getImageUrl = key => `https://d1vk060ez13nog.cloudfront.net/${key}`;
 
 /**takes a csv and directory. csv rows should match the photos. have following structure: */
@@ -23,40 +24,101 @@ const getImageUrl = key => `https://d1vk060ez13nog.cloudfront.net/${key}`;
  * filename | photoName | summary | collection
  */
 const main = async () => {
-    //TODO: Support script level args and bulk images.
-    // - support path to directory
-    // - support path to accomponying CSV
+    //TODO: Support argument parsing for csv location and photos to upload
+    const imageFolderPath = path.join(
+        __dirname,
+        "../../../../Pictures/website_photos_v2"
+    );
+
+    const files = await fsPromises.readdir(imageFolderPath, {
+        withFileTypes: true
+    });
+    const imageNames = files
+        .filter(item => !item.isDirectory() && item.name.includes(".jpg"))
+        .map(item => item.name);
+
+    const csvFileName = files
+        .filter(item => !item.isDirectory() && item.name.includes(".csv"))
+        .map(item => item.name);
+
+    const csvFilePath = `${imageFolderPath}/${csvFileName}`;
+    const parsedCSV = await csvParser().fromFile(csvFilePath);
+    const photosToUpload = parsedCSV.filter(item => item.uploaded === "FALSE");
+
+    console.log(parsedCSV);
 
     const s3 = new AWS.S3();
+    const db = new AWS.DynamoDB.DocumentClient({ apiVersion: "latest" });
 
     let imageDataBuffer;
     let imageMetaData;
 
-    try {
-        const imagePath = path.join(
-            __dirname,
-            "../../../../Pictures/DSC07485.jpg"
-        );
-        imageDataBuffer = await fsPromises.readFile(imagePath);
-        imageMetaData = await getImageMetaData(imageDataBuffer);
-    } catch (e) {
-        console.error(e);
-        throw new Error("Unable to fetch or process file");
+    for (const imageToUpload of photosToUpload) {
+        const { fileName, name, collection, location, summary } = imageToUpload;
+
+        try {
+            const imagePath = path.join(
+                __dirname,
+                `../../../../Pictures/website_photos_v2/${fileName}`
+            );
+            imageDataBuffer = await fsPromises.readFile(imagePath);
+            imageMetaData = await getImageMetaData(imageDataBuffer);
+            console.info(`Generated metadata for ${fileName}`);
+        } catch (e) {
+            console.error(e);
+            throw new Error("Unable to find, or parse image", e);
+        }
+
+        // TODO: check if filename exists in S3 already before writing
+        try {
+            const params = {
+                Bucket: PRIVATE_BUCKET,
+                Key: fileName,
+                Body: imageDataBuffer,
+                ContentType: "image"
+            };
+            await s3.putObject(params).promise();
+            console.info("Successfully uploaded image", fileName);
+        } catch (e) {
+            console.error(e);
+            throw new Error("Unable to upload to S3", e);
+        }
+
+        try {
+            const fileWithNoExtension = fileName.split(".")[0];
+            const params = {
+                TableName: DYNAMO_TABLE,
+                Item: {
+                    photoName: fileWithNoExtension,
+                    collections: `#${location}#${collection}`,
+                    displayName: name,
+                    url: getImageUrl(fileName),
+                    location: location,
+                    ratio: imageMetaData.ratio,
+                    orientation: imageMetaData.orientation,
+                    summary: summary,
+                    metaData: {
+                        height: imageMetaData.height,
+                        width: imageMetaData.width,
+                        size: imageMetaData.size,
+                        fileName: fileName
+                    }
+                }
+            };
+
+            // TODO: Check if item exists in dynamo table before uploading
+            await db.put(params).promise();
+            console.info("Successfully uploaded image to Dynamo", fileName);
+        } catch (e) {
+            console.error(e);
+            throw new Error("Failed to post photo to dynamo db");
+        }
     }
 
-    try {
-        const params = {
-            Bucket: PRIVATE_BUCKET,
-            Key: "DSC07485.jpg",
-            Body: imageDataBuffer,
-            ContentType: "image"
-        };
-        await s3.putObject(params).promise();
-    } catch (e) {
-        console.error(e);
-    }
-
-    console.log(db);
+    return null;
 };
 
-main();
+main().then(() => {
+    console.log("Script complete.");
+    return;
+});

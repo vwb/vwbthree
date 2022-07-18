@@ -9,7 +9,17 @@ module.exports = {
     images: {
         domains: [
             "vwbthree-photos.s3-us-west-1.amazonaws.com",
-            "ik.imagekit.io"
+            "ik.imagekit.io",
+            "d1vk060ez13nog.cloudfront.net"
         ]
+    },
+    redirects: async () => {
+        return [
+            {
+                source: "/photos",
+                destination: "/photos/collections",
+                permanent: false
+            }
+        ];
     }
 };

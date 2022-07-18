@@ -18,6 +18,8 @@ const getImageMetaData = async imageBuffer => {
     const ratio = isLandscape ? width / height : height / width;
     const normalizedRatio = Math.round(10 * ratio) / 10;
 
+    await imagePool.close();
+
     return {
         height,
         width,
