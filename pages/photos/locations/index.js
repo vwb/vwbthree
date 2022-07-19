@@ -2,6 +2,7 @@ import CollectionView from "../../../components/views/CollectionView";
 import { db, PHOTO_DYNAMO_TABLE } from "../../../db";
 
 export default CollectionView;
+// import PHOTO_COLLECTIONS from "../../data/photos/collections.json";
 
 export async function getStaticProps(context) {
     var params = {
@@ -12,27 +13,23 @@ export async function getStaticProps(context) {
     const photos = result.Items;
 
     const usedPhotos = new Set();
-    const allCollections = new Set();
+    const allLocations = new Set();
 
     const collections = photos.reduce((memo, item) => {
-        const [_throwAway, ...itemCollections] = item.collections
-            .replace(`#${item.location}`, "")
-            .split("#");
+        let location = item.location.split("#")[1];
 
-        for (let collection of itemCollections) {
-            collection = collection.trim();
-            allCollections.add(collection);
+        location = location.trim();
+        allLocations.add(location);
 
-            if (!memo[collection] && !usedPhotos.has(item.photoName)) {
-                usedPhotos.add(item.photoName);
-                memo[collection] = item;
-            }
+        if (!memo[location] && !usedPhotos.has(item.photoName)) {
+            usedPhotos.add(item.photoName);
+            memo[location] = item;
         }
 
         return memo;
     }, {});
 
-    const unlistedCollections = [...allCollections].filter(
+    const unlistedCollections = [...allLocations].filter(
         collection => !collections[collection]
     );
 
@@ -40,7 +37,8 @@ export async function getStaticProps(context) {
         props: {
             collections,
             unlistedCollections: unlistedCollections,
-            photos: photos
+            photos: photos,
+            isLocationView: true
         }
     };
 }

@@ -244,8 +244,6 @@ export async function getStaticProps({ params }) {
         const result = await db.query(params).promise();
         const photo = result.Items[0];
 
-        console.log(photo);
-
         return { props: { photo } };
     } catch (e) {
         console.error("failed");
