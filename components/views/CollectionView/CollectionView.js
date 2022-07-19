@@ -65,12 +65,14 @@ const PhotosIndex = props => {
                         />
                     ))}
                 </div>
-                <section className="text-center pt-10 text-gray-900">
-                    <div>Other collections:</div>
-                    {props.unlistedCollections.map(collection => (
-                        <span className="pl-2 pr-2">{collection}</span>
-                    ))}
-                </section>
+                {props.unlistedCollections.length > 0 ? (
+                    <section className="text-center pt-10 text-gray-900">
+                        <div>Other collections:</div>
+                        {props.unlistedCollections.map(collection => (
+                            <span className="pl-2 pr-2">{collection}</span>
+                        ))}
+                    </section>
+                ) : null}
                 <section className="text-center pt-20 text-gray-700 font-light">
                     <Expand
                         renderHeader={(isExpanded, setExpanded) => {

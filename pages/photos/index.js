@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Layout from "../../components/Layout";
 import NavCard from "../../components/navCard";
+import LinkButton from "../../components/LinkButton";
 
 const PhotosIndex = props => {
     return (
@@ -84,6 +85,18 @@ const PhotosIndex = props => {
                                     </div>
                                 </NavCard>
                             </a>
+                        </Link>
+                    </div>
+                </div>
+                <div
+                    className="flex justify-center pt-20 pb-10 landing"
+                    style={{ fontFamily: "Simsun" }}
+                >
+                    <div className="menu-visible">
+                        <Link href="/photos/all">
+                            <LinkButton style="dark" passHref>
+                                view all
+                            </LinkButton>
                         </Link>
                     </div>
                 </div>
