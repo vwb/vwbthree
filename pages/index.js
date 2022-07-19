@@ -3,6 +3,7 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import Link from "next/link";
 import Layout from "../components/Layout";
 import FadeIn from "../components/FadeIn";
+import LinkButton from "../components/LinkButton";
 
 const LandingBackground = props => {
     const [{ width, height }, setDimensions] = useState({
@@ -64,37 +65,6 @@ const Menu = props => {
     );
 };
 
-const LinkButton = React.forwardRef(({ onClick, href, children }, ref) => {
-    return (
-        <a
-            href={href}
-            onClick={onClick}
-            ref={ref}
-            className="relative text-xl my-5 rounded-sm cursor-pointer focus:shadow-lg hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-        >
-            <>
-                <div
-                    className="top-right absolute border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-                    style={{ top: 0, right: 0 }}
-                />
-                <div
-                    className="bottom-right absolute border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-                    style={{ right: 0, bottom: 0 }}
-                />
-                <div
-                    className="bottom-left absolute border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-                    style={{ bottom: 0 }}
-                />
-                <div
-                    className="top-left absolute border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-                    style={{ left: 0 }}
-                />
-                <div className="fade-in px-5 py-3">{children}</div>
-            </>
-        </a>
-    );
-});
-
 const Home = () => {
     const [isMenuVisible, setMenuVisible] = useState(false);
 
@@ -126,7 +96,7 @@ const Home = () => {
                                     fontFamily: "Simsun"
                                 }}
                             >
-                                <Link href="/photos/collections">
+                                <Link href="/photos">
                                     <LinkButton passHref>
                                         Photography
                                     </LinkButton>

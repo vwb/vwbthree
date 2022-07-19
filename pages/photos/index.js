@@ -81,7 +81,7 @@ const PhotosIndex = props => {
                                             paddingRight: "12px"
                                         }}
                                     >
-                                        {"location"}
+                                        {"locations"}
                                     </div>
                                 </NavCard>
                             </a>
@@ -95,7 +95,7 @@ const PhotosIndex = props => {
                     <div className="menu-visible">
                         <Link href="/photos/all">
                             <LinkButton style="dark" passHref>
-                                view all
+                                view all photos
                             </LinkButton>
                         </Link>
                     </div>
