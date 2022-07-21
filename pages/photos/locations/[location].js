@@ -8,10 +8,13 @@ export async function getStaticPaths() {
     const TOP_LEVEL_LOCATIONS = [
         "california",
         "utah",
-        "canyonlands",
+        "canyonlands-arches",
         "santa-cruz",
         "yosemite",
-        "whitney"
+        "whitney",
+        "cottonwood-canyon",
+        "tahoe",
+        "salt-flats"
     ];
 
     return {

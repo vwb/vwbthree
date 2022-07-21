@@ -12,7 +12,12 @@ export async function getStaticPaths() {
         "mountain",
         "ocean",
         "surf",
-        "reflection"
+        "reflection",
+        "winter",
+        "lake",
+        "sunrise",
+        "forest",
+        "halfdome"
     ];
 
     return {

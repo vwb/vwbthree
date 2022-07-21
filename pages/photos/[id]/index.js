@@ -10,9 +10,6 @@ import Divider from "../../../components/Divider";
 import { Expand } from "../../../components/Expand";
 
 import { db, PHOTO_DYNAMO_TABLE } from "../../../db";
-
-import { getAllPhotoPaths, getPhotoData } from "../../../lib/photos";
-import { getCollection } from "../../../lib/collections";
 import DownArrow from "../../../components/DownArrrow";
 
 const DetailHeader = props => (

@@ -50,6 +50,7 @@ const PhotoGroupCard = props => {
     );
 };
 
+//TODO: Update the unlisted collections item to a link/something nicer visually
 const PhotosIndex = props => {
     return (
         <Layout title="Photos" navClass="shadow bg-white">
@@ -67,10 +68,12 @@ const PhotosIndex = props => {
                 </div>
                 {props.unlistedCollections.length > 0 ? (
                     <section className="text-center pt-10 text-gray-900">
+                        {/* 
+                        //TODO: Better handle the unlisted collection rendering
                         <div>Other collections:</div>
                         {props.unlistedCollections.map(collection => (
                             <span className="pl-2 pr-2">{collection}</span>
-                        ))}
+                        ))} */}
                     </section>
                 ) : null}
                 <section className="text-center pt-20 text-gray-700 font-light">

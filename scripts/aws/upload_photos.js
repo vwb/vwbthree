@@ -24,7 +24,6 @@ const getImageUrl = key => `https://d1vk060ez13nog.cloudfront.net/${key}`;
  * filename | photoName | summary | collection
  */
 const main = async () => {
-    //TODO: Support argument parsing for csv location and photos to upload
     const imageFolderPath = path.join(
         __dirname,
         "../../../../Pictures/website_photos_v2"
@@ -52,6 +51,9 @@ const main = async () => {
 
     let imageDataBuffer;
     let imageMetaData;
+
+    //TODO: Update scrip to do all the actions in bulk. Squoosh can handle multiple
+    //images at the same time.
 
     for (const imageToUpload of photosToUpload) {
         const { fileName, name, collection, location, summary } = imageToUpload;
