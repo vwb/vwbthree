@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useLayoutEffect} from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 
 import Link from "next/link";
 import Layout from "../components/Layout";
-import FadeIn from '../components/FadeIn';
+import FadeIn from "../components/FadeIn";
+import LinkButton from "../components/LinkButton";
 
 const LandingBackground = props => {
     const [{ width, height }, setDimensions] = useState({
@@ -55,8 +56,8 @@ const Menu = props => {
             style={{
                 width: "100%",
                 height: `${height}px`,
-                display: 'flex',
-                alignItems: 'center'
+                display: "flex",
+                alignItems: "center"
             }}
         >
             {props.children}
@@ -64,45 +65,14 @@ const Menu = props => {
     );
 };
 
-const LinkButton = React.forwardRef(({ onClick, href, children }, ref) => {
-    return (
-        <a
-            href={href}
-            onClick={onClick}
-            ref={ref}
-            className="relative text-xl my-5 rounded-sm cursor-pointer focus:shadow-lg hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-        >
-            <>
-                <div
-                    className="top-right absolute border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-                    style={{ top: 0, right: 0 }}
-                />
-                <div
-                    className="bottom-right absolute border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-                    style={{ right: 0, bottom: 0 }}
-                />
-                <div
-                    className="bottom-left absolute border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-                    style={{ bottom: 0 }}
-                />
-                <div
-                    className="top-left absolute border-solid border-gray-200 hover:shadow-sm hover:text-gray-100 hover:border-gray-100"
-                    style={{ left: 0 }}
-                />
-                <div className="fade-in px-5 py-3">{children}</div>
-            </>
-        </a>
-    );
-});
-
 const Home = () => {
     const [isMenuVisible, setMenuVisible] = useState(false);
 
     useEffect(() => {
         setTimeout(() => {
             setMenuVisible(true);
-        }, 500)
-    })
+        }, 500);
+    });
 
     return (
         <div
@@ -115,29 +85,30 @@ const Home = () => {
                 textColor="text-white"
             >
                 <LandingBackground />
-                    <FadeIn>
-                        <Menu isVisible={isMenuVisible}>
-                            <section className="flex items-center flex-col w-full">
-                                <div
-                                    className="text-center text-gray-200 font-light flex flex-col items-center"
-                                    style={{
-                                        height: "200px",
-                                        width: "200px",
-                                        fontFamily: "Simsun"
-                                    }}
-                                >
-                                    <Link href="/photos">
-                                        <LinkButton passHref>Photography</LinkButton>
-                                    </Link>
-                                    <div className="fade-in border border-solid border-gray-200 w-6" />
-                                    <Link href="/about">
-                                        <LinkButton passHref>About</LinkButton>
-                                    </Link>
-                                </div>
-                            </section>
-                        </Menu>
-                    </FadeIn>
-
+                <FadeIn>
+                    <Menu isVisible={isMenuVisible}>
+                        <section className="flex items-center flex-col w-full">
+                            <div
+                                className="text-center text-gray-200 font-light flex flex-col items-center"
+                                style={{
+                                    height: "200px",
+                                    width: "200px",
+                                    fontFamily: "Simsun"
+                                }}
+                            >
+                                <Link href="/photos">
+                                    <LinkButton passHref>
+                                        Photography
+                                    </LinkButton>
+                                </Link>
+                                <div className="fade-in border border-solid border-gray-200 w-6" />
+                                <Link href="/about">
+                                    <LinkButton passHref>About</LinkButton>
+                                </Link>
+                            </div>
+                        </section>
+                    </Menu>
+                </FadeIn>
             </Layout>
         </div>
     );
