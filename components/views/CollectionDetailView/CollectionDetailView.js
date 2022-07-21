@@ -4,8 +4,8 @@ import Link from "next/link";
 import { FixedSizeList as List } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 
-import Layout from "../../../components/Layout";
-import PhotoView from "../../../components/Photo";
+import Layout from "../../Layout";
+import PhotoView from "../../Photo";
 
 const ScrollToNext = ({ onClick }) => (
     <div
@@ -116,7 +116,15 @@ const PhotoGroupPage = props => {
                         >
                             {({ index, style }) => {
                                 return (
-                                    <div style={style}>
+                                    <div
+                                        style={{
+                                            ...style,
+                                            left: "0px",
+                                            right: "0px",
+                                            width: "90%",
+                                            margin: "0 auto"
+                                        }}
+                                    >
                                         <PhotoContainer
                                             collection={props.collection}
                                             photo={props.photos[index]}

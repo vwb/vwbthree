@@ -9,12 +9,12 @@ const PhotosIndex = props => {
         <Layout title="Photos" navClass="shadow bg-white">
             <main className="pt-12 pb-6 max-w-screen-xl mx-auto">
                 <h2
-                    className="flex justify-center pt-6"
+                    className="flex justify-center pt-8"
                     style={{ fontFamily: "Simsun" }}
                 >
                     Browse by
                 </h2>
-                <div className="flex justify-center flex-wrap">
+                <div className="flex justify-center flex-wrap md:pt-6">
                     <div
                         style={{ height: "450px", width: "400px" }}
                         className="pt-6 px-4 object-center"

@@ -144,7 +144,12 @@ const PanelContent = props => {
         <section className="pt-2 h-full">
             <DetailHeader>
                 <div className="flex items-center justify-between">
-                    <h1 className="text-2xl pl-6">{props.photo.title}</h1>
+                    <h1
+                        className="text-2xl pl-6"
+                        style={{ fontFamily: "Simsun" }}
+                    >
+                        {props.photo.displayName}
+                    </h1>
                     <div className="flex flex-col items-center">
                         <button
                             className={`${
