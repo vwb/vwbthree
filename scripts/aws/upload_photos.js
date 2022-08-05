@@ -54,7 +54,7 @@ const main = async () => {
 
     //TODO: Update scrip to do all the actions in bulk. Squoosh can handle multiple
     //images at the same time.
-
+    //add a comment
     for (const imageToUpload of photosToUpload) {
         const { fileName, name, collection, location, summary } = imageToUpload;
 
