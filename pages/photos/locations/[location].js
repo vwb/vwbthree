@@ -3,22 +3,20 @@ import CollectionDetailView from "../../../components/views/CollectionDetailView
 import { db, PHOTO_DYNAMO_TABLE } from "../../../db";
 
 export async function getStaticPaths() {
-    //TODO: Get all possible collections
-    //"proper" solution: in the upload script upload collections to their own dynamo table
-    const TOP_LEVEL_LOCATIONS = [
-        "california",
-        "utah",
-        "canyonlands-arches",
-        "santa-cruz",
-        "yosemite",
-        "whitney",
-        "cottonwood-canyon",
-        "tahoe",
-        "salt-flats"
-    ];
+    const locationSet = new Set();
+    var params = {
+        TableName: PHOTO_DYNAMO_TABLE
+    };
+    var result = await db.scan(params).promise();
+    const photos = result.Items;
+
+    for (const photo of photos) {
+        const photoLocation = photo.location.split("#")[1];
+        locationSet.add(photoLocation);
+    }
 
     return {
-        paths: TOP_LEVEL_LOCATIONS.map(collection => ({
+        paths: [...locationSet].map(collection => ({
             params: { location: collection }
         })),
         fallback: false
