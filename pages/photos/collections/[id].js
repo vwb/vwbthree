@@ -5,23 +5,26 @@ import { db, PHOTO_DYNAMO_TABLE } from "../../../db";
 export async function getStaticPaths() {
     //TODO: Get all possible collections
     //"proper" solution: in the upload script upload collections to their own dynamo table
-    const COLLECTIONS = [
-        "layers",
-        "minimal",
-        "desert",
-        "mountain",
-        "ocean",
-        "surf",
-        "reflection",
-        "winter",
-        "lake",
-        "sunrise",
-        "forest",
-        "halfdome"
-    ];
+    const collectionSet = new Set();
+    var params = {
+        TableName: PHOTO_DYNAMO_TABLE
+    };
+    var result = await db.scan(params).promise();
+    const photos = result.Items;
+
+    for (const photo of photos) {
+        const photoLocation = photo.location;
+        const collections = photo.collections.split("#");
+
+        for (const collection of collections) {
+            if (!photoLocation.includes(collection)) {
+                collectionSet.add(collection);
+            }
+        }
+    }
 
     return {
-        paths: [...COLLECTIONS].map(collection => ({
+        paths: [...collectionSet].map(collection => ({
             params: { id: collection }
         })),
         fallback: false
@@ -44,8 +47,6 @@ export async function getStaticProps({ params }) {
     try {
         const result = await db.scan(params).promise();
         photos = result.Items;
-
-        console.log(result);
     } catch (e) {
         console.error("failed");
         console.error(e);
