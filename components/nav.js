@@ -1,13 +1,11 @@
 import React from "react";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import BreadCrumbs from "./BreadCrumbs";
 import { InstagramLink } from "./Instagram";
 
 const Nav = ({ navClas, textColor }) => {
-    const router = useRouter();
-
-    const path = router.asPath.split("/");
-    const cleanedPath = path.filter(crumb => crumb);
+    const pathname = usePathname();
+    const cleanedPath = pathname.split("/").filter(crumb => crumb);
 
     let constructedRoute = "";
 

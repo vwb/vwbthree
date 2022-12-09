@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 
 import Link from "next/link";
 import Layout from "../components/Layout";
@@ -10,18 +12,6 @@ const LandingBackground = props => {
         width: "100vw",
         height: "100vh"
     });
-
-    useLayoutEffect(() => {
-        setDimensions({ width: window.outerWidth, height: window.outerHeight });
-
-        document.getElementsByTagName("body")[0].style.backgroundColor =
-            "#1B1B1B";
-
-        return () => {
-            document.getElementsByTagName("body")[0].style.backgroundColor =
-                "initial";
-        };
-    }, []);
 
     const BACKGROUND_STYLE = `-webkit-linear-gradient(bottom, rgba(26, 26, 26, 1), rgba(25, 25, 25, 0.0) 15%), url(/waterfall.jpg)`;
 
@@ -45,7 +35,7 @@ const LandingBackground = props => {
 const Menu = props => {
     const [height, setMenuHeight] = useState(600);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         setMenuHeight(window.innerHeight * 0.8);
     }, []);
 
@@ -77,7 +67,7 @@ const Home = () => {
     return (
         <div
             className={`landing ${isMenuVisible ? "blur" : ""}`}
-            style={{ backgroundColor: "#1B1B1B" }}
+            style={{ backgroundColor: "#1B1B1B", height: "100vh" }}
         >
             <Layout
                 isOpenDefault={false}
