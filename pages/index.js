@@ -96,13 +96,13 @@ const Home = () => {
                                     fontFamily: "Simsun"
                                 }}
                             >
-                                <Link href="/photos">
+                                <Link legacyBehavior href="/photos">
                                     <LinkButton passHref>
                                         Photography
                                     </LinkButton>
                                 </Link>
                                 <div className="fade-in border border-solid border-gray-200 w-6" />
-                                <Link href="/about">
+                                <Link legacyBehavior href="/about">
                                     <LinkButton passHref>About</LinkButton>
                                 </Link>
                             </div>

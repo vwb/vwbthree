@@ -18,33 +18,31 @@ const PhotoGroupCard = props => {
             className="pt-6 px-4 object-center"
         >
             <Link href={href} as={asLink}>
-                <a>
-                    <NavCard
-                        blur={false}
-                        img={props.url}
-                        imgAlt={props.name}
-                        containerStyles={{
-                            width: "100%",
-                            height: "100%",
-                            maxWidth: "350px",
-                            fontFamily: "Simsun",
-                            boxShadow: "1px 1px 5px gray",
-                            fontSize: "1.15rem",
-                            margin: "0 auto"
+                <NavCard
+                    blur={false}
+                    img={props.url}
+                    imgAlt={props.name}
+                    containerStyles={{
+                        width: "100%",
+                        height: "100%",
+                        maxWidth: "350px",
+                        fontFamily: "Simsun",
+                        boxShadow: "1px 1px 5px gray",
+                        fontSize: "1.15rem",
+                        margin: "0 auto"
+                    }}
+                >
+                    <div
+                        style={{
+                            background: "black",
+                            padding: "8px",
+                            paddingLeft: "12px",
+                            paddingRight: "12px"
                         }}
                     >
-                        <div
-                            style={{
-                                background: "black",
-                                padding: "8px",
-                                paddingLeft: "12px",
-                                paddingRight: "12px"
-                            }}
-                        >
-                            {props.name}
-                        </div>
-                    </NavCard>
-                </a>
+                        {props.name}
+                    </div>
+                </NavCard>
             </Link>
         </div>
     );

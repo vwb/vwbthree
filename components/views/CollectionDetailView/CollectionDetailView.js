@@ -44,10 +44,9 @@ const PhotoContainer = ({
                     <Link
                         href="/photos/[id]/"
                         as={`/photos/${photo.displayName}--${photo.photoName}`}
+                        onClick={() => storeIndex(index, collection)}
                     >
-                        <a onClick={() => storeIndex(index, collection)}>
-                            {image}
-                        </a>
+                        {image}
                     </Link>
                 )}
             />

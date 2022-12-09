@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { Context as NavContext } from "../context/navContext";
-import Link from "next/link";
 
 const ProfileAvatar = () => (
     <div className="flex flex-col items-center py-4 pw-2 border-gray-100">
