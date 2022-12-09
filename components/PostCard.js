@@ -7,7 +7,7 @@ const PostCard = props => {
             <Card>
                 <div className="p-4 font-light">
                     <Link href="/blog/[id]" as={`/blog/${props.slug}`}>
-                        <a>{props.title}</a>
+                        {props.title}
                     </Link>
                 </div>
             </Card>

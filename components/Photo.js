@@ -3,12 +3,14 @@ import Image from "next/image";
 const ImageWrapper = ({ url, title }) => (
     <Image
         key={url}
-        layout="fill"
-        objectFit="contain"
         src={url}
         title={title}
         priority={true}
-    />
+        fill
+        sizes="100vw"
+        style={{
+            objectFit: "contain"
+        }} />
 );
 
 const Photo = props => {

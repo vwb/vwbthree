@@ -5,9 +5,7 @@ import { FiInstagram } from "react-icons/fi";
 export const InstagramLink = () => {
     return (
         <Link href="https://www.instagram.com/vwbthree">
-            <a>
-                <FiInstagram size={26} />
-            </a>
+            <FiInstagram size={26} />
         </Link>
     );
 };

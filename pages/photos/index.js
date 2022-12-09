@@ -20,35 +20,33 @@ const PhotosIndex = props => {
                         className="pt-6 px-4 object-center"
                     >
                         <Link href="photos/collections/">
-                            <a>
-                                <NavCard
-                                    blur={false}
-                                    img={
-                                        "https://d1vk060ez13nog.cloudfront.net/DSC07787.jpg"
-                                    }
-                                    imgAlt={"collections"}
-                                    containerStyles={{
-                                        width: "100%",
-                                        height: "100%",
-                                        maxWidth: "350px",
-                                        fontFamily: "Simsun",
-                                        boxShadow: "1px 1px 5px gray",
-                                        fontSize: "1.15rem",
-                                        margin: "0 auto"
+                            <NavCard
+                                blur={false}
+                                img={
+                                    "https://d1vk060ez13nog.cloudfront.net/DSC07787.jpg"
+                                }
+                                imgAlt={"collections"}
+                                containerStyles={{
+                                    width: "100%",
+                                    height: "100%",
+                                    maxWidth: "350px",
+                                    fontFamily: "Simsun",
+                                    boxShadow: "1px 1px 5px gray",
+                                    fontSize: "1.15rem",
+                                    margin: "0 auto"
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        background: "black",
+                                        padding: "8px",
+                                        paddingLeft: "12px",
+                                        paddingRight: "12px"
                                     }}
                                 >
-                                    <div
-                                        style={{
-                                            background: "black",
-                                            padding: "8px",
-                                            paddingLeft: "12px",
-                                            paddingRight: "12px"
-                                        }}
-                                    >
-                                        {"collections"}
-                                    </div>
-                                </NavCard>
-                            </a>
+                                    {"collections"}
+                                </div>
+                            </NavCard>
                         </Link>
                     </div>
                     <div
@@ -56,35 +54,33 @@ const PhotosIndex = props => {
                         className="pt-6 px-4 object-center"
                     >
                         <Link href="photos/locations/">
-                            <a>
-                                <NavCard
-                                    blur={false}
-                                    img={
-                                        "https://d1vk060ez13nog.cloudfront.net/DSC07495.jpg"
-                                    }
-                                    imgAlt={"location"}
-                                    containerStyles={{
-                                        width: "100%",
-                                        height: "100%",
-                                        maxWidth: "350px",
-                                        fontFamily: "Simsun",
-                                        boxShadow: "1px 1px 5px gray",
-                                        fontSize: "1.15rem",
-                                        margin: "0 auto"
+                            <NavCard
+                                blur={false}
+                                img={
+                                    "https://d1vk060ez13nog.cloudfront.net/DSC07495.jpg"
+                                }
+                                imgAlt={"location"}
+                                containerStyles={{
+                                    width: "100%",
+                                    height: "100%",
+                                    maxWidth: "350px",
+                                    fontFamily: "Simsun",
+                                    boxShadow: "1px 1px 5px gray",
+                                    fontSize: "1.15rem",
+                                    margin: "0 auto"
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        background: "black",
+                                        padding: "8px",
+                                        paddingLeft: "12px",
+                                        paddingRight: "12px"
                                     }}
                                 >
-                                    <div
-                                        style={{
-                                            background: "black",
-                                            padding: "8px",
-                                            paddingLeft: "12px",
-                                            paddingRight: "12px"
-                                        }}
-                                    >
-                                        {"locations"}
-                                    </div>
-                                </NavCard>
-                            </a>
+                                    {"locations"}
+                                </div>
+                            </NavCard>
                         </Link>
                     </div>
                 </div>
@@ -93,7 +89,7 @@ const PhotosIndex = props => {
                     style={{ fontFamily: "Simsun" }}
                 >
                     <div className="menu-visible">
-                        <Link href="/photos/all">
+                        <Link href="/photos/all" legacyBehavior>
                             <LinkButton style="dark" passHref>
                                 view all photos
                             </LinkButton>
