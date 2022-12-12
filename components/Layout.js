@@ -7,18 +7,6 @@ const Layout = props => {
 
     return (
         <>
-            <Head>
-                <title>
-                    {props.title
-                        ? `${props.title} | Vincent Budrovich`
-                        : "Vincent Budrovich"}
-                </title>
-                <link rel="icon" href="/favicon.ico" />
-                <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1.0"
-                />
-            </Head>
             <Nav navClas={navClass} textColor={textColor} />
             {children}
             <style jsx>{`
