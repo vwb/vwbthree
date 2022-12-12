@@ -1,8 +1,8 @@
-import CollectionDetailView from "../../../components/views/CollectionDetailView";
+import CollectionDetailView from "../../../../../components/views/CollectionDetailView";
 
-import { db, PHOTO_DYNAMO_TABLE } from "../../../db";
+import { db, PHOTO_DYNAMO_TABLE } from "../../../../../db";
 
-export async function getStaticPaths() {
+export async function generateStaticParams() {
     //TODO: Get all possible collections
     //"proper" solution: in the upload script upload collections to their own dynamo table
     const collectionSet = new Set();
@@ -23,15 +23,10 @@ export async function getStaticPaths() {
         }
     }
 
-    return {
-        paths: [...collectionSet].map(collection => ({
-            params: { id: collection }
-        })),
-        fallback: false
-    };
+    return [...collectionSet].map(collection => ({ id: collection }));
 }
 
-export async function getStaticProps({ params }) {
+export async function getCollectionData(params) {
     //TODO: Fetch all photos that include the provided collection id
     const collection = params.id;
     let photos = [];
@@ -52,9 +47,17 @@ export async function getStaticProps({ params }) {
         console.error(e);
     }
 
-    // const photos = getCollectionData(params.id);
-    // const collection = getCollection(params.id);
-    return { props: { photos, collection } };
+    return { photos, collection };
 }
 
-export default CollectionDetailView;
+export default async function Page({ params }) {
+    const collectionData = await getCollectionData(params);
+
+    // Forward fetched data to your Client Component
+    return (
+        <CollectionDetailView
+            photos={collectionData.photos}
+            collection={collectionData.collection}
+        />
+    );
+}

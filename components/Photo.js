@@ -5,12 +5,14 @@ const ImageWrapper = ({ url, title }) => (
         key={url}
         src={url}
         title={title}
+        alt={title}
         priority={true}
         fill
         sizes="100vw"
         style={{
             objectFit: "contain"
-        }} />
+        }}
+    />
 );
 
 const Photo = props => {

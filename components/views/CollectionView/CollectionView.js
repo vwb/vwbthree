@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Layout from "../../Layout";
 import NavCard from "../../navCard";
@@ -6,9 +8,6 @@ import Link from "next/link";
 
 const PhotoGroupCard = props => {
     const href = props.isLocationView
-        ? "/photos/locations/[props.slug]"
-        : "/photos/collections/[props.slug]";
-    const asLink = props.isLocationView
         ? `/photos/locations/${props.slug}`
         : `/photos/collections/${props.slug}`;
 
@@ -17,7 +16,7 @@ const PhotoGroupCard = props => {
             style={{ height: "450px", width: "400px" }}
             className="pt-6 px-4 object-center"
         >
-            <Link href={href} as={asLink}>
+            <Link href={href}>
                 <NavCard
                     blur={false}
                     img={props.url}

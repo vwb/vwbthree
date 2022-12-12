@@ -1,9 +1,7 @@
-import CollectionView from "../../../components/views/CollectionView";
-import { db, PHOTO_DYNAMO_TABLE } from "../../../db";
+import CollectionView from "../../../../components/views/CollectionView";
+import { db, PHOTO_DYNAMO_TABLE } from "../../../../db";
 
-export default CollectionView;
-
-export async function getStaticProps(context) {
+export async function getThematicCollections() {
     var params = {
         TableName: PHOTO_DYNAMO_TABLE
     };
@@ -37,10 +35,22 @@ export async function getStaticProps(context) {
     );
 
     return {
-        props: {
-            collections,
-            unlistedCollections: unlistedCollections,
-            photos: photos
-        }
+        collections,
+        unlistedCollections: unlistedCollections,
+        photos: photos
     };
+}
+
+export default async function Page() {
+    const collectionData = await getThematicCollections();
+
+    // Forward fetched data to your Client Component
+    return (
+        <CollectionView
+            isLocationView={false}
+            collections={collectionData.collections}
+            unlistedCollections={collectionData.unlistedCollections}
+            photos={collectionData.photos}
+        />
+    );
 }

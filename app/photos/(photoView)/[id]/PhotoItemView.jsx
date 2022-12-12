@@ -1,16 +1,16 @@
+"use client";
+
 import { useEffect, useContext, useState } from "react";
-import { useRouter } from "next/router";
 import { GiCrane } from "react-icons/gi";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 
-import Layout from "../../../components/Layout";
-import PhotoView from "../../../components/Photo";
-import Panel, { PanelContext } from "../../../components/Panel";
-import Divider from "../../../components/Divider";
-import { Expand } from "../../../components/Expand";
+import Layout from "../../../../components/Layout";
+import PhotoView from "../../../../components/Photo";
+import Panel, { PanelContext } from "../../../../components/Panel";
+import Divider from "../../../../components/Divider";
+import { Expand } from "../../../../components/Expand";
 
-import { db, PHOTO_DYNAMO_TABLE } from "../../../db";
-import DownArrow from "../../../components/DownArrrow";
+import DownArrow from "../../../../components/DownArrrow";
 
 const DetailHeader = props => (
     <div className="mx-4">
@@ -25,16 +25,8 @@ const DetailHeader = props => (
 );
 
 const Background = props => {
-    const router = useRouter();
-
-    const handleClickBack = () => {
-        if (document.referrer.indexOf(`vwbthree`) > -1) {
-            router.back();
-        }
-    };
-
     return (
-        <div className="w-full h-screen" onClick={() => handleClickBack()}>
+        <div className="w-full h-screen">
             <div style={{ height: "100%" }} className="w-full fixed">
                 <div className="flex items-center overflow-hidden relative h-full">
                     {props.children}
@@ -212,47 +204,5 @@ const PhotoDetailPage = ({ photo, collection }) => {
         </Layout>
     );
 };
-
-export async function getStaticPaths() {
-    var params = {
-        TableName: PHOTO_DYNAMO_TABLE
-    };
-
-    var result = await db.scan(params).promise();
-    const photos = result.Items;
-
-    const paths = photos.map(item => ({
-        params: { id: `${item.displayName}--${item.photoName}` }
-    }));
-
-    return {
-        paths,
-        fallback: false
-    };
-}
-
-export async function getStaticProps({ params }) {
-    const id = params.id.split("--")[1];
-
-    var params = {
-        TableName: PHOTO_DYNAMO_TABLE,
-        ExpressionAttributeValues: {
-            ":photoName": id
-        },
-        KeyConditionExpression: "photoName = :photoName"
-    };
-
-    try {
-        const result = await db.query(params).promise();
-        const photo = result.Items[0];
-
-        return { props: { photo } };
-    } catch (e) {
-        console.error("failed");
-        console.error(e);
-    }
-
-    return { props: { photo: [] } };
-}
 
 export default PhotoDetailPage;
