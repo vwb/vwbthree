@@ -8,6 +8,7 @@ const Layout = props => {
 
     return (
         <>
+<<<<<<< Updated upstream
             <Head>
                 <title>
                     {props.title
@@ -31,6 +32,17 @@ const Layout = props => {
                     }
                 `}</style>
             </NavProvider>
+=======
+            <Nav navClas={navClass} textColor={textColor} />
+            {children}
+            <style jsx>{`
+                :global(body) {
+                    margin: 0;
+                    font-family: -apple-system, BlinkMacSystemFont, Avenir Next,
+                        Avenir, Helvetica, sans-serif;
+                }
+            `}</style>
+>>>>>>> Stashed changes
         </>
     );
 };
