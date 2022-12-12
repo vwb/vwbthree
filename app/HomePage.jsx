@@ -6,6 +6,7 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import FadeIn from "../components/FadeIn";
 import LinkButton from "../components/LinkButton";
+
 import "../scss/landing.scss";
 
 const LandingBackground = props => {
@@ -18,9 +19,9 @@ const LandingBackground = props => {
                 marginTop: "-120px",
                 width: "100vw",
                 height: "100vh",
-                background: BACKGROUND_STYLE,
-                backgroundSize: "cover",
-                backgroundPosition: "center"
+                background: BACKGROUND_STYLE
+                // backgroundSize: "cover",
+                // backgroundPosition: "center"
             }}
         >
             {props.children}

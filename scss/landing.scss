@@ -76,6 +76,11 @@
     }
 }
 
+.landing-background {
+    background-size: "cover";
+    background-position: "center";
+}
+
 .landing.blur {
     .landing-background {
         @include animate-background(filter, blur(10px));
