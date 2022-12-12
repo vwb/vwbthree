@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 
@@ -42,8 +44,7 @@ const PhotoContainer = ({
                 }}
                 render={image => (
                     <Link
-                        href="/photos/[id]/"
-                        as={`/photos/${photo.displayName}--${photo.photoName}`}
+                        href={`/photos/${photo.displayName}--${photo.photoName}`}
                         onClick={() => storeIndex(index, collection)}
                     >
                         {image}

@@ -1,8 +1,12 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import Layout from "../../components/Layout";
 import NavCard from "../../components/navCard";
 import LinkButton from "../../components/LinkButton";
+
+import "../../scss/landing.scss";
 
 const PhotosIndex = props => {
     return (

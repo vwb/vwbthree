@@ -1,5 +1,6 @@
-import Layout from "../components/Layout";
-import FadeIn from "../components/FadeIn";
+"use client";
+
+import Layout from "../../components/Layout";
 
 const Avatar = () => (
     <div className="rounded-full h-20 w-20 sm:h-40 sm:w-40">
