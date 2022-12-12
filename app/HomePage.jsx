@@ -6,13 +6,9 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import FadeIn from "../components/FadeIn";
 import LinkButton from "../components/LinkButton";
+import "../scss/landing.scss";
 
 const LandingBackground = props => {
-    const [{ width, height }, setDimensions] = useState({
-        width: "100vw",
-        height: "100vh"
-    });
-
     const BACKGROUND_STYLE = `-webkit-linear-gradient(bottom, rgba(26, 26, 26, 1), rgba(25, 25, 25, 0.0) 15%), url(/waterfall.jpg)`;
 
     return (
@@ -20,8 +16,8 @@ const LandingBackground = props => {
             className="landing-background fixed"
             style={{
                 marginTop: "-120px",
-                height,
-                width,
+                width: "100vw",
+                height: "100vh",
                 background: BACKGROUND_STYLE,
                 backgroundSize: "cover",
                 backgroundPosition: "center"

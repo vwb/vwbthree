@@ -6,6 +6,8 @@ import Layout from "../../components/Layout";
 import NavCard from "../../components/navCard";
 import LinkButton from "../../components/LinkButton";
 
+import "../../scss/landing.scss";
+
 const PhotosIndex = props => {
     return (
         <Layout title="Photos" navClass="shadow bg-white">

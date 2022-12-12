@@ -3,7 +3,6 @@ import React from "react";
 import "../css/tailwind.css";
 import "../css/markdown.css";
 import "../scss/animations.scss";
-import "../scss/landing.scss";
 
 export default function RootLayout({ children }) {
     return (
