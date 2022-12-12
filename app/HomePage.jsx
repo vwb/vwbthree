@@ -19,9 +19,9 @@ const LandingBackground = props => {
                 marginTop: "-120px",
                 width: "100vw",
                 height: "100vh",
-                background: BACKGROUND_STYLE
-                // backgroundSize: "cover",
-                // backgroundPosition: "center"
+                background: BACKGROUND_STYLE,
+                backgroundSize: "cover",
+                backgroundPosition: "center"
             }}
         >
             {props.children}
