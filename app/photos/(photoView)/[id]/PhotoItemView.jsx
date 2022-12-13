@@ -187,7 +187,6 @@ const CollectionPills = ({ location, collections }) => {
     return (
         <ul
             style={{
-                paddingTop: "20px",
                 display: "flex",
                 flexWrap: "wrap",
                 justifyContent: "center"
@@ -249,7 +248,9 @@ const PhotoDetailPage = ({ photo }) => {
                     photo={photo}
                     style={{
                         height: "60%",
-                        marginTop: "-5%"
+                        marginTop: "-5%",
+                        width: "95%",
+                        transform: "translateX(2.5%)"
                     }}
                     render={image => (
                         <div
@@ -259,14 +260,14 @@ const PhotoDetailPage = ({ photo }) => {
                             style={{
                                 display: "flex",
                                 flexDirection: "column",
-                                height: "103%",
+                                height: "110%",
                                 alignItems: "center"
                             }}
                         >
                             <span
                                 style={{
                                     height: "100%",
-                                    width: "95%",
+                                    width: "100%",
                                     filter:
                                         "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.33))"
                                 }}
