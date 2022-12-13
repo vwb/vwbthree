@@ -5,12 +5,17 @@ const Divider = ({ currentIndex, crumbLength, children }) =>
     currentIndex < crumbLength - 1 ? children : null;
 
 export const BreadCrumbs = props => (
-    <ul className="flex justify-start pl-5">
+    <ul className="flex justify-start pl-5" style={{ overflowX: "scroll" }}>
         {props.crumbs.map((crumb, index) => (
             <li
                 key={crumb.route}
-                className="py-3 flex"
-                style={{ fontFamily: "Gill Sans", fontWeight: "lighter" }}
+                className="py-3"
+                style={{
+                    fontFamily: "Gill Sans",
+                    fontWeight: "lighter",
+                    display: "flex",
+                    flex: "0 0 auto"
+                }}
             >
                 <Link href={crumb.route}>
                     {crumb.display}
