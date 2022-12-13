@@ -248,7 +248,7 @@ const PhotoDetailPage = ({ photo }) => {
                     photo={photo}
                     style={{
                         height: "60%",
-                        marginTop: "-5%",
+                        marginTop: "-15%",
                         width: "95%",
                         transform: "translateX(2.5%)"
                     }}
@@ -260,7 +260,7 @@ const PhotoDetailPage = ({ photo }) => {
                             style={{
                                 display: "flex",
                                 flexDirection: "column",
-                                height: "110%",
+                                height: "120%",
                                 alignItems: "center"
                             }}
                         >
