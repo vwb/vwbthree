@@ -2,6 +2,7 @@
 
 import { useEffect, useContext, useState } from "react";
 import { GiCrane } from "react-icons/gi";
+import { FaLocationArrow } from "react-icons/fa";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 
 import Layout from "../../../../components/Layout";
@@ -11,6 +12,7 @@ import Divider from "../../../../components/Divider";
 import { Expand } from "../../../../components/Expand";
 
 import DownArrow from "../../../../components/DownArrrow";
+import Link from "next/link";
 
 const DetailHeader = props => (
     <div className="mx-4">
@@ -174,7 +176,68 @@ const PanelContent = props => {
     );
 };
 
-const PhotoDetailPage = ({ photo, collection }) => {
+const CollectionPills = ({ location, collections }) => {
+    const localLocation = location.split("#")[1];
+    const formattedLocations = collections
+        .split(localLocation)[1]
+        .split("#")
+        .slice(1);
+    const pillContent = [localLocation, ...formattedLocations];
+
+    return (
+        <ul
+            style={{
+                paddingTop: "20px",
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center"
+            }}
+        >
+            {pillContent.map((item, index) => {
+                const path =
+                    index === 0
+                        ? `/photos/locations/${item.toLowerCase()}`
+                        : `/photos/collections/${item}`;
+                return (
+                    <li
+                        key={item}
+                        style={{
+                            paddingTop: "4px",
+                            paddingBottom: "4px",
+                            borderRadius: "20px",
+                            paddingLeft: "12px",
+                            paddingRight: "12px",
+                            marginTop: "12px",
+                            backgroundColor: "rgb(240, 240, 240)",
+                            display: "inline-block",
+                            marginRight: "12px",
+                            filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0))"
+                        }}
+                    >
+                        <Link href={path}>
+                            {index === 0 ? (
+                                <span
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center"
+                                    }}
+                                >
+                                    <FaLocationArrow size={10} />
+                                    <span style={{ paddingLeft: "4px" }} />
+                                    {item.split("-").join(" ")}
+                                </span>
+                            ) : (
+                                `#${item}`
+                            )}
+                        </Link>
+                    </li>
+                );
+            })}
+        </ul>
+    );
+};
+
+const PhotoDetailPage = ({ photo }) => {
     return (
         <Layout
             isOpenDefault={false}
@@ -185,15 +248,35 @@ const PhotoDetailPage = ({ photo, collection }) => {
                 <PhotoView
                     photo={photo}
                     style={{
-                        height: "80%"
+                        height: "60%",
+                        marginTop: "-5%"
                     }}
                     render={image => (
                         <div
                             onClick={e => {
                                 e.stopPropagation();
                             }}
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                height: "103%",
+                                alignItems: "center"
+                            }}
                         >
-                            {image}
+                            <span
+                                style={{
+                                    height: "100%",
+                                    width: "95%",
+                                    filter:
+                                        "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.33))"
+                                }}
+                            >
+                                {image}
+                            </span>
+                            <CollectionPills
+                                location={photo.location}
+                                collections={photo.collections}
+                            />
                         </div>
                     )}
                 />
