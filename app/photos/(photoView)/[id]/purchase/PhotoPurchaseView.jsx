@@ -12,7 +12,9 @@ const PreviewPanel = ({ photo }) => {
             <PhotoView
                 style={{
                     height: "225px",
-                    filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.33))"
+                    filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.33))",
+                    width: "95%",
+                    transform: "translateX(2.5%)"
                 }}
                 photo={photo}
             />
