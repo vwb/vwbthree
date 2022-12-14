@@ -5,8 +5,6 @@ import Link from "next/link";
 
 import { FixedSizeList as List } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
-
-import Layout from "../../Layout";
 import PhotoView from "../../Photo";
 
 const ScrollToNext = ({ onClick }) => (
@@ -94,11 +92,7 @@ const PhotoGroupPage = props => {
     });
 
     return (
-        <Layout
-            isOpenDefault={false}
-            navClass="bg-white shadow"
-            title={props.collection}
-        >
+        <>
             <div
                 className={`w-screen ${windowInnerHeight ? "" : "h-screen"}`}
                 style={{ height: windowInnerHeight ? windowInnerHeight : "" }}
@@ -146,7 +140,7 @@ const PhotoGroupPage = props => {
                     )}
                 </AutoSizer>
             </div>
-        </Layout>
+        </>
     );
 };
 

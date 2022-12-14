@@ -1,9 +1,5 @@
-"use client";
-
 import React from "react";
-import Layout from "../../Layout";
 import NavCard from "../../navCard";
-import { Expand } from "../../Expand";
 import Link from "next/link";
 
 const PhotoGroupCard = props => {
@@ -50,63 +46,29 @@ const PhotoGroupCard = props => {
 //TODO: Update the unlisted collections item to a link/something nicer visually
 const PhotosIndex = props => {
     return (
-        <Layout title="Photos" navClass="shadow bg-white">
-            <main className="pt-12 pb-6 max-w-screen-xl mx-auto">
-                <div className="flex justify-center flex-wrap">
-                    {Object.keys(props.collections).map(data => (
-                        <PhotoGroupCard
-                            key={data}
-                            slug={data}
-                            url={props.collections[data].url}
-                            name={data}
-                            isLocationView={props.isLocationView}
-                        />
-                    ))}
-                </div>
-                {props.unlistedCollections.length > 0 ? (
-                    <section className="text-center pt-10 text-gray-900">
-                        {/* 
+        <main className="pt-12 pb-6 max-w-screen-xl mx-auto">
+            <div className="flex justify-center flex-wrap">
+                {Object.keys(props.collections).map(data => (
+                    <PhotoGroupCard
+                        key={data}
+                        slug={data}
+                        url={props.collections[data].url}
+                        name={data}
+                        isLocationView={props.isLocationView}
+                    />
+                ))}
+            </div>
+            {props.unlistedCollections.length > 0 ? (
+                <section className="text-center pt-10 text-gray-900">
+                    {/* 
                         //TODO: Better handle the unlisted collection rendering
                         <div>Other collections:</div>
                         {props.unlistedCollections.map(collection => (
                             <span className="pl-2 pr-2">{collection}</span>
                         ))} */}
-                    </section>
-                ) : null}
-                <section className="text-center pt-20 text-gray-700 font-light">
-                    <Expand
-                        renderHeader={(isExpanded, setExpanded) => {
-                            return (
-                                <button
-                                    onClick={() => setExpanded(!isExpanded)}
-                                >
-                                    Not able to find what you're looking for?
-                                </button>
-                            );
-                        }}
-                    >
-                        <div className="px-6">
-                            Shoot me an{" "}
-                            <a
-                                href={`mailto:vwbthree.photos@gmail.com?subject=Looking%20for%20something..`}
-                                className="text-blue-500"
-                            >
-                                email
-                            </a>
-                            , or{" "}
-                            <a
-                                href="https://www.instagram.com/vwbthree/"
-                                className="text-blue-500"
-                            >
-                                message me on Instagram
-                            </a>{" "}
-                            and lets get you set up.
-                        </div>
-                    </Expand>
-                    <div className=""></div>
                 </section>
-            </main>
-        </Layout>
+            ) : null}
+        </main>
     );
 };
 
