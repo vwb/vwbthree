@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 
 const NavCard = ({
@@ -41,7 +43,7 @@ const NavCard = ({
                     height: 100%;
                     width: 100%;
                     filter: blur(${blur ? `${blurValue}px` : ""});
-                    transition: all 2s ease-in;
+                    transition: blur 2s ease-in;
                 }
             `}</style>
         </div>
