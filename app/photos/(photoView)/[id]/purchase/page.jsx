@@ -54,7 +54,11 @@ export async function getProductData(imageRatio) {
         const result = await db.query(params).promise();
         const products = result.Items;
 
-        return products;
+        return products.sort(
+            (a, b) =>
+                parseInt(a.printSize.split("x")[0]) -
+                parseInt(b.printSize.split("x")[0])
+        );
     } catch (e) {
         console.error("failed");
         console.error(e);
