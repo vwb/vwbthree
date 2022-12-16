@@ -58,7 +58,7 @@ export const PhotoPurchaseView = ({ photo, products }) => {
                     <ProductDetails products={products} />
                 </main>
                 <Panel>
-                    <FooterContent />
+                    <FooterContent photo={photo} />
                 </Panel>
             </PhotoPurchaseStatefulWrapper>
         </>

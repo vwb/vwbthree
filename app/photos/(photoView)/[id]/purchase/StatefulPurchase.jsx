@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, createContext, useContext, useMemo } from "react";
+import { useCartContext } from "../../../../../context/cart";
 
 const getPriceDisplay = price => {
     return `$${price}.00`;
@@ -25,18 +26,25 @@ export function PhotoPurchaseStatefulWrapper(props) {
 
     return (
         <PurchaseViewContext.Provider value={providerValue}>
-            <form>{props.children}</form>
+            {props.children}
         </PurchaseViewContext.Provider>
     );
 }
 
-export function FooterContent(props) {
+export function FooterContent({ photo }) {
     const { selectedItems } = usePurchaseViewContext();
+    const { setAndPersistCart } = useCartContext();
+
     const total = Object.keys(selectedItems).reduce((sum, key) => {
         const selectedItem = selectedItems[key];
         const itemTotal = selectedItem.item.price * selectedItem.count;
         return sum + itemTotal;
     }, 0);
+
+    const handleAddToCart = () => {
+        setAndPersistCart(selectedItems);
+        setSelectedItems({});
+    };
 
     return (
         <div className="mx-4">
@@ -45,9 +53,12 @@ export function FooterContent(props) {
                     Total: {getPriceDisplay(total)}
                 </h1>
                 <div className="flex flex-col items-center">
-                    <span className="bg-teal-700 text-gray-200 rounded-full border border-gray-300 border-solid p-3 shadow-xl">
-                        Checkout
-                    </span>
+                    <button
+                        onClick={handleAddToCart}
+                        className="bg-teal-700 text-gray-200 rounded-full border border-gray-300 border-solid p-3 shadow-xl"
+                    >
+                        Add to cart
+                    </button>
                 </div>
             </div>
         </div>
