@@ -39,8 +39,13 @@ export const CartContextProvider = props => {
         [cart]
     );
 
+    const clearCart = useCallback(() => {
+        setCart({});
+        window.localStorage.setItem(CART_LOCAL_KEY, JSON.stringify({}));
+    });
+
     return (
-        <CartContext.Provider value={{ cart, setAndPersistCart }}>
+        <CartContext.Provider value={{ cart, setAndPersistCart, clearCart }}>
             {props.children}
         </CartContext.Provider>
     );
