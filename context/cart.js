@@ -15,7 +15,7 @@ export const useCartContext = () => {
     return val;
 };
 
-function getPhotoCartItems(cartEntry, existingItem) {
+function getPhotoCartItems(cartEntry, existingItem, photo) {
     return Object.keys(cartEntry).reduce((memo, sku) => {
         if (memo[sku]) {
             return {
@@ -26,10 +26,13 @@ function getPhotoCartItems(cartEntry, existingItem) {
                 }
             };
         } else {
-            return { ...memo, [sku]: cartEntry[sku] };
+            return { ...memo, [sku]: { ...cartEntry[sku], photo } };
         }
     }, existingItem);
 }
+
+//TODO: replace cart with a reducer
+//build out cart UI
 
 export const CartContextProvider = props => {
     const [cart, setCart] = useState({});
@@ -43,12 +46,16 @@ export const CartContextProvider = props => {
     }, [setCart]);
 
     const setAndPersistCart = useCallback(
-        (photoName, cartEntry) => {
-            const existingItem = cart?.[photoName] || {};
+        (photo, cartEntry) => {
+            const existingItem = cart?.[photo.photoName] || {};
 
             const newCart = {
                 ...cart,
-                [photoName]: getPhotoCartItems(cartEntry, existingItem)
+                [photo.photoName]: getPhotoCartItems(
+                    cartEntry,
+                    existingItem,
+                    photo
+                )
             };
 
             setCart(newCart);

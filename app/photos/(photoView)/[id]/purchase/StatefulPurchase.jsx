@@ -55,7 +55,7 @@ export function FooterContent({ photo }) {
     );
 
     const handleAddToCart = () => {
-        setAndPersistCart(photo.photoName, selectedItems);
+        setAndPersistCart(photo, selectedItems);
         addedItemsRef.current = itemCount;
         setSelectedItems({});
         setOpen(true);
