@@ -15,6 +15,22 @@ export const useCartContext = () => {
     return val;
 };
 
+function getPhotoCartItems(cartEntry, existingItem) {
+    return Object.keys(cartEntry).reduce((memo, sku) => {
+        if (memo[sku]) {
+            return {
+                ...memo,
+                [sku]: {
+                    ...memo[sku],
+                    count: memo[sku].count + cartEntry[sku].count
+                }
+            };
+        } else {
+            return { ...memo, [sku]: cartEntry[sku] };
+        }
+    }, existingItem);
+}
+
 export const CartContextProvider = props => {
     const [cart, setCart] = useState({});
 
@@ -27,8 +43,13 @@ export const CartContextProvider = props => {
     }, [setCart]);
 
     const setAndPersistCart = useCallback(
-        cartEntry => {
-            const newCart = { ...cart, ...cartEntry };
+        (photoName, cartEntry) => {
+            const existingItem = cart?.[photoName] || {};
+
+            const newCart = {
+                ...cart,
+                [photoName]: getPhotoCartItems(cartEntry, existingItem)
+            };
 
             setCart(newCart);
             window.localStorage.setItem(
