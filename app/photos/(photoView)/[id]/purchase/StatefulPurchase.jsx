@@ -35,6 +35,15 @@ export function PhotoPurchaseStatefulWrapper(props) {
     );
 }
 
+const BUTTON_STYLES = {
+    active:
+        "bg-teal-700 text-gray-200 rounded-full border border-gray-300 border-solid p-3 shadow-xl",
+    disabled:
+        "bg-gray-400 text-white rounded-full border border-gray-400 border-solid p-3 ",
+    alt:
+        "bg-white text-gray-700 rounded-full border border-gray-700 border-solid p-3"
+};
+
 export function FooterContent({ photo }) {
     const [isOpen, setOpen] = usePanelContext();
     const { selectedItems, setSelectedItems } = usePurchaseViewContext();
@@ -62,12 +71,10 @@ export function FooterContent({ photo }) {
     };
 
     const buttonClasses = hasSelectedItems
-        ? "bg-teal-700 text-gray-200 rounded-full border border-gray-300 border-solid p-3 shadow-xl"
-        : "bg-gray-400 text-white rounded-full border border-gray-400 border-solid p-3 ";
+        ? BUTTON_STYLES.acive
+        : BUTTON_STYLES.disabled;
 
-    const panelButtonClasses = isOpen
-        ? "bg-white text-gray-700 rounded-full border border-gray-700 border-solid p-3"
-        : buttonClasses;
+    const panelButtonClasses = isOpen ? BUTTON_STYLES.alt : buttonClasses;
 
     return (
         <div className="mx-4">
