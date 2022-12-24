@@ -1,8 +1,8 @@
 "use client";
 
-import { useCartContext } from "../../../../context/cart";
 import Link from "next/link";
 import Image from "next/image";
+import { useCartContext } from "../../../../context/cart";
 
 const CartItem = ({ count, photo, item }) => {
     return (
