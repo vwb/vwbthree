@@ -56,7 +56,6 @@ const CartItem = ({ count, photo, item }) => {
 export const CartItems = () => {
     const { cart } = useCartContext();
     const hasItems = !!Object.keys(cart).length;
-    const test = "text-2xl ml-4";
 
     if (!hasItems) {
         return (
@@ -69,7 +68,7 @@ export const CartItems = () => {
 
     return (
         <>
-            <h1 className={test}>Order Summary</h1>
+            <h1 className="text-2xl ml-4">Order Summary</h1>
             <ul className="ml-4">
                 {Object.keys(cart).map(key => {
                     const photoItems = cart[key];

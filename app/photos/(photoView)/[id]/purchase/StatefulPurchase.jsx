@@ -71,7 +71,7 @@ export function FooterContent({ photo }) {
     };
 
     const buttonClasses = hasSelectedItems
-        ? BUTTON_STYLES.acive
+        ? BUTTON_STYLES.active
         : BUTTON_STYLES.disabled;
 
     const panelButtonClasses = isOpen ? BUTTON_STYLES.alt : buttonClasses;
