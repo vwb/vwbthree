@@ -93,11 +93,9 @@ const PhotosIndex = props => {
                     style={{ fontFamily: "Simsun" }}
                 >
                     <div className="menu-visible">
-                        <Link href="/photos/all" legacyBehavior>
-                            <LinkButton style="dark" passHref>
-                                view all photos
-                            </LinkButton>
-                        </Link>
+                        <LinkButton href="/photos/all" style="dark">
+                            view all photos
+                        </LinkButton>
                     </div>
                 </div>
             </main>

@@ -1,22 +1,30 @@
 "use client";
 import React, { useState } from "react";
 
-export const PanelContext = React.createContext(false);
+const PanelContext = React.createContext(false);
+
+export const usePanelContext = () => {
+    const value = React.useContext(PanelContext);
+
+    return value;
+};
+
+const CLOSED_DETAIL_PANEL_STYLES = {
+    height: "72px",
+    bottom: "0",
+    left: "0",
+    right: "0",
+    transition: "height 0.4s"
+};
+
+const OPEN_DETAIL_PANEL_STYLES = {
+    ...CLOSED_DETAIL_PANEL_STYLES,
+    height: "75vh",
+    filter: "drop-shadow(0px -3px 4px rgba(0, 0, 0, 0.2))"
+};
 
 const Panel = props => {
     const [isOpen, setOpen] = useState(false);
-    const CLOSED_DETAIL_PANEL_STYLES = {
-        height: "64px",
-        bottom: "0",
-        left: "0",
-        right: "0",
-        transition: "height 0.4s"
-    };
-
-    const OPEN_DETAIL_PANEL_STYLES = {
-        ...CLOSED_DETAIL_PANEL_STYLES,
-        height: "75vh"
-    };
 
     return (
         <div

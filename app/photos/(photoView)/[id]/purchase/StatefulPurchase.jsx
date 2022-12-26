@@ -1,6 +1,11 @@
 "use client";
 
-import { useState, createContext, useContext, useMemo } from "react";
+import { useState, createContext, useContext, useMemo, useRef } from "react";
+import Link from "next/link";
+import { FiCheckCircle } from "react-icons/fi";
+import { useCartContext, addItemToCart } from "../../../../../context/cart";
+import { usePanelContext } from "../../../../../components/Panel";
+import DownArrow from "../../../../../components/DownArrrow";
 
 const getPriceDisplay = price => {
     return `$${price}.00`;
@@ -25,31 +30,99 @@ export function PhotoPurchaseStatefulWrapper(props) {
 
     return (
         <PurchaseViewContext.Provider value={providerValue}>
-            <form>{props.children}</form>
+            {props.children}
         </PurchaseViewContext.Provider>
     );
 }
 
-export function FooterContent(props) {
-    const { selectedItems } = usePurchaseViewContext();
-    const total = Object.keys(selectedItems).reduce((sum, key) => {
-        const selectedItem = selectedItems[key];
-        const itemTotal = selectedItem.item.price * selectedItem.count;
-        return sum + itemTotal;
-    }, 0);
+const BUTTON_STYLES = {
+    active:
+        "bg-teal-700 text-gray-200 rounded-full border border-gray-300 border-solid p-3 shadow-xl",
+    disabled:
+        "bg-gray-400 text-white rounded-full border border-gray-400 border-solid p-3 ",
+    alt:
+        "bg-white text-gray-700 rounded-full border border-gray-700 border-solid p-3"
+};
+
+export function FooterContent({ photo }) {
+    const [isOpen, setOpen] = usePanelContext();
+    const { selectedItems, setSelectedItems } = usePurchaseViewContext();
+    const { dispatch } = useCartContext();
+    const addedItemsRef = useRef(null);
+
+    const hasSelectedItems = !!Object.keys(selectedItems).length;
+    const { total, itemCount } = Object.keys(selectedItems).reduce(
+        (memo, key) => {
+            const selectedItem = selectedItems[key];
+            const itemTotal = selectedItem.item.price * selectedItem.count;
+            return {
+                total: memo.total + itemTotal,
+                itemCount: memo.itemCount + selectedItem.count
+            };
+        },
+        { total: 0, itemCount: 0 }
+    );
+
+    const handleAddToCart = () => {
+        addItemToCart(dispatch, { photo, items: selectedItems });
+        addedItemsRef.current = itemCount;
+        setSelectedItems({});
+        setOpen(true);
+    };
+
+    const buttonClasses = hasSelectedItems
+        ? BUTTON_STYLES.active
+        : BUTTON_STYLES.disabled;
+
+    const panelButtonClasses = isOpen ? BUTTON_STYLES.alt : buttonClasses;
 
     return (
         <div className="mx-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between pt-2">
                 <h1 className="text-2xl pl-6">
-                    Total: {getPriceDisplay(total)}
+                    {hasSelectedItems ? getPriceDisplay(total) : ""}
                 </h1>
-                <div className="flex flex-col items-center">
-                    <span className="bg-teal-700 text-gray-200 rounded-full border border-gray-300 border-solid p-3 shadow-xl">
-                        Checkout
-                    </span>
+                <div className="flex flex-col items-center pr-2">
+                    <button
+                        onClick={
+                            isOpen ? () => setOpen(false) : handleAddToCart
+                        }
+                        disabled={!hasSelectedItems && !isOpen}
+                        className={panelButtonClasses}
+                    >
+                        {isOpen ? (
+                            <DownArrow
+                                style={{ height: "25px", fill: "#4a5568" }}
+                            />
+                        ) : (
+                            "Add to cart"
+                        )}
+                    </button>
                 </div>
             </div>
+            {isOpen && (
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        paddingTop: "25%"
+                    }}
+                >
+                    <FiCheckCircle size="52" syle={{ fill: "#4a5568" }} />
+                    <div className="text-2xl py-4">
+                        {addedItemsRef.current > 1
+                            ? `${addedItemsRef.current} items added to cart`
+                            : `${addedItemsRef.current} item added to cart`}
+                    </div>
+                    <Link
+                        href="/photos/cart"
+                        className="bg-teal-700 text-gray-200 rounded-full border border-gray-300 border-solid p-3 shadow-xl"
+                    >
+                        View Cart & Checkout
+                    </Link>
+                </div>
+            )}
         </div>
     );
 }
@@ -71,11 +144,9 @@ export function ProductSelection({ products }) {
 }
 
 const ProductSelect = ({ product }) => {
-    const [val, setVal] = useState();
     const { setSelectedItems, selectedItems } = usePurchaseViewContext();
 
     const handleChange = e => {
-        setVal(e.target.value);
         setSelectedItems({
             ...selectedItems,
             [product.sku]: {
@@ -84,6 +155,8 @@ const ProductSelect = ({ product }) => {
             }
         });
     };
+
+    const val = `${selectedItems?.[product.sku]?.count}`;
 
     return (
         <li
@@ -97,7 +170,11 @@ const ProductSelect = ({ product }) => {
             <span style={{ paddingBottom: "4px" }}>
                 {getPriceDisplay(product.price)}
                 <span style={{ paddingRight: "8px" }} />
-                <select value={val} onChange={handleChange}>
+                <select
+                    value={val}
+                    onChange={handleChange}
+                    style={{ padding: "4px" }}
+                >
                     {[0, 1, 2, 3, 4, 5].map(item => (
                         <option id={product.sku} key={item} value={item}>
                             {item}

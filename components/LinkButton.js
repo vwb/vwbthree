@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 const STYLE_MAP = {
     light: {
@@ -13,16 +14,15 @@ const STYLE_MAP = {
     }
 };
 
-export const LinkButton = React.forwardRef(
-    ({ onClick, href, children, style }, ref) => {
-        const styleMap = STYLE_MAP[style] || STYLE_MAP.light;
+export const LinkButton = ({ onClick, href, children, style }) => {
+    const styleMap = STYLE_MAP[style] || STYLE_MAP.light;
 
-        return (
-            <a
+    return (
+        <div className="relative">
+            <Link
                 href={href}
                 onClick={onClick}
-                ref={ref}
-                className={`relative text-xl my-5 rounded-sm cursor-pointer focus:shadow-lg hover:shadow-sm hover:${styleMap.textHover} hover:${styleMap.borderColorHover}`}
+                className={`text-xl my-5 rounded-sm cursor-pointer focus:shadow-lg hover:shadow-sm hover:${styleMap.textHover} hover:${styleMap.borderColorHover}`}
             >
                 <>
                     <div
@@ -43,9 +43,9 @@ export const LinkButton = React.forwardRef(
                     />
                     <div className="fade-in px-5 py-3">{children}</div>
                 </>
-            </a>
-        );
-    }
-);
+            </Link>
+        </div>
+    );
+};
 
 export default LinkButton;

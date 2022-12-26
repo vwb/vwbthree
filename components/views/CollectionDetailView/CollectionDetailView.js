@@ -36,9 +36,9 @@ const PhotoContainer = ({
         <div className="h-full w-full relative flex items-center content-center overflow-hidden">
             <PhotoView
                 photo={photo}
-                isRaised={true}
                 style={{
-                    height: "60%"
+                    height: "60%",
+                    filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.33))"
                 }}
                 render={image => (
                     <Link
