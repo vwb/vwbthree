@@ -38,7 +38,7 @@ const PhotoContainer = ({
                 photo={photo}
                 style={{
                     height: "60%",
-                    filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.33))"
+                    filter: "drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.33))"
                 }}
                 render={image => (
                     <Link
