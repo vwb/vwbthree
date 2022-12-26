@@ -173,7 +173,7 @@ const ProductSelect = ({ product }) => {
                 <select
                     value={val}
                     onChange={handleChange}
-                    style={{ padding: "8px" }}
+                    style={{ padding: "4px" }}
                 >
                     {[0, 1, 2, 3, 4, 5].map(item => (
                         <option id={product.sku} key={item} value={item}>

@@ -26,7 +26,7 @@ const CartItemCountSelector = ({ count, item, photo }) => {
         <select
             value={count}
             onChange={e => handleChange(e.target.value)}
-            style={{ padding: "8px" }}
+            style={{ padding: "4px" }}
         >
             {[0, 1, 2, 3, 4, 5].map(item => (
                 <option id={item.sku} key={item} value={item}>
