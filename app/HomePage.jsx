@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 
-import Link from "next/link";
 import Layout from "../components/Layout";
 import FadeIn from "../components/FadeIn";
 import LinkButton from "../components/LinkButton";
@@ -80,18 +79,15 @@ const Home = () => {
                                 style={{
                                     height: "200px",
                                     width: "200px",
-                                    fontFamily: "Simsun"
+                                    fontFamily: "Simsun",
+                                    justifyContent: "space-evenly"
                                 }}
                             >
-                                <Link legacyBehavior href="/photos">
-                                    <LinkButton passHref>
-                                        Photography
-                                    </LinkButton>
-                                </Link>
+                                <LinkButton href={"/photos"}>
+                                    Photography
+                                </LinkButton>
                                 <div className="fade-in border border-solid border-gray-200 w-6" />
-                                <Link legacyBehavior href="/about">
-                                    <LinkButton passHref>About</LinkButton>
-                                </Link>
+                                <LinkButton href="/about">About</LinkButton>
                             </div>
                         </section>
                     </Menu>

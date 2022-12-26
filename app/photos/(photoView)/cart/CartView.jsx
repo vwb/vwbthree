@@ -117,11 +117,9 @@ export const CartItems = () => {
                     Looks like your cart is empty
                 </div>
                 <div className="menu-visible" style={{ fontFamily: "Simsun" }}>
-                    <Link href="/photos" legacyBehavior>
-                        <LinkButton style="dark" passHref>
-                            browse photos
-                        </LinkButton>
-                    </Link>
+                    <LinkButton href="/photos" style="dark">
+                        browse photos
+                    </LinkButton>
                 </div>
             </section>
         );
