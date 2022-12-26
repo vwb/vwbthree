@@ -3,7 +3,7 @@
 import { useState, createContext, useContext, useMemo, useRef } from "react";
 import Link from "next/link";
 import { FiCheckCircle } from "react-icons/fi";
-import { useCartContext } from "../../../../../context/cart";
+import { useCartContext, addItemToCart } from "../../../../../context/cart";
 import { usePanelContext } from "../../../../../components/Panel";
 import DownArrow from "../../../../../components/DownArrrow";
 
@@ -47,7 +47,7 @@ const BUTTON_STYLES = {
 export function FooterContent({ photo }) {
     const [isOpen, setOpen] = usePanelContext();
     const { selectedItems, setSelectedItems } = usePurchaseViewContext();
-    const { setAndPersistCart } = useCartContext();
+    const { dispatch } = useCartContext();
     const addedItemsRef = useRef(null);
 
     const hasSelectedItems = !!Object.keys(selectedItems).length;
@@ -64,7 +64,7 @@ export function FooterContent({ photo }) {
     );
 
     const handleAddToCart = () => {
-        setAndPersistCart(photo, selectedItems);
+        addItemToCart(dispatch, { photo, items: selectedItems });
         addedItemsRef.current = itemCount;
         setSelectedItems({});
         setOpen(true);
@@ -170,7 +170,11 @@ const ProductSelect = ({ product }) => {
             <span style={{ paddingBottom: "4px" }}>
                 {getPriceDisplay(product.price)}
                 <span style={{ paddingRight: "8px" }} />
-                <select value={val} onChange={handleChange}>
+                <select
+                    value={val}
+                    onChange={handleChange}
+                    style={{ padding: "8px" }}
+                >
                     {[0, 1, 2, 3, 4, 5].map(item => (
                         <option id={product.sku} key={item} value={item}>
                             {item}

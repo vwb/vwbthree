@@ -3,7 +3,7 @@ import {
     createContext,
     useEffect,
     useState,
-    useCallback
+    useReducer
 } from "react";
 export const CART_LOCAL_KEY = "vwbthree_photos_cart";
 
@@ -15,7 +15,81 @@ export const useCartContext = () => {
     return val;
 };
 
-function getPhotoCartItems(cartEntry, existingItem, photo) {
+const CART_ACTIONS = {
+    clearCart: "clearCart",
+    addItemToCart: "addItemToCart",
+    removeItemFromCart: "removeItemFromCart",
+    setCartItemCount: "setCartItemCount",
+    setCart: "setCart"
+};
+
+const cartReducer = (state, action) => {
+    switch (action.type) {
+        case CART_ACTIONS.clearCart:
+            return {};
+        case CART_ACTIONS.addItemToCart:
+            const photo = action.payload.photo;
+            const items = action.payload.items;
+            const currentItemsForPhoto = state?.[photo.photoName] || {};
+
+            return {
+                ...state,
+                [photo.photoName]: addPhotoCartItems(
+                    items,
+                    currentItemsForPhoto,
+                    photo
+                )
+            };
+        case CART_ACTIONS.setCartItemCount:
+            const photoName = action.payload.photoName;
+            const sku = action.payload.sku;
+            const count = action.payload.count;
+
+            return {
+                ...state,
+                [photoName]: {
+                    ...state[photoName],
+                    [sku]: {
+                        ...state[photoName][sku],
+                        count: count
+                    }
+                }
+            };
+        case CART_ACTIONS.removeItemFromCart:
+            const { [action.payload.sku]: removeSku, ...photoItems } = state[
+                action.payload.photoName
+            ];
+
+            const removedItemState = {
+                ...state,
+                [action.payload.photoName]: photoItems
+            };
+
+            const cleanedState = Object.keys(removedItemState).reduce(
+                (cleanState, key) => {
+                    const photo = removedItemState[key];
+
+                    if (!!Object.keys(photo).length) {
+                        return {
+                            ...cleanState,
+                            [key]: photo
+                        };
+                    } else {
+                        return cleanState;
+                    }
+                },
+                {}
+            );
+
+            return cleanedState;
+        case CART_ACTIONS.setCart:
+            return action.payload;
+        default:
+            return state;
+    }
+};
+
+function addPhotoCartItems(cartEntry, existingItem, photo) {
     return Object.keys(cartEntry).reduce((memo, sku) => {
         if (memo[sku]) {
             return {
@@ -31,49 +105,81 @@ function getPhotoCartItems(cartEntry, existingItem, photo) {
     }, existingItem);
 }
 
-//TODO: replace cart with a reducer
-//build out cart UI
+/**
+ * @param {*} dispatch
+ * @param {sku: string; photoName: string, count: number} item
+ */
+export const setCartItemCount = (dispatch, item) => {
+    if (parseInt(item.count, 10) === 0) {
+        console.log("removeitem");
+        dispatch({
+            type: CART_ACTIONS.removeItemFromCart,
+            payload: {
+                sku: item.sku,
+                photoName: item.photoName
+            }
+        });
+    } else {
+        dispatch({ type: CART_ACTIONS.setCartItemCount, payload: item });
+    }
+};
+
+/**
+ * @param {*} dispatch
+ */
+export const clearCart = dispatch => {
+    dispatch({ type: CART_ACTIONS.clearCart });
+};
+
+/**
+ *
+ * @param {*} dispatch
+ * @param {photoName: {sku: {item, photo}}} item
+ */
+export const addItemToCart = (dispatch, item) => {
+    dispatch({ type: CART_ACTIONS.addItemToCart, payload: item });
+};
+
+/**
+ *
+ * @param {*} dispatch
+ * @param {photoName: string; sku: string;} item
+ */
+export const removeItemFromCart = (dispatch, item) => {
+    dispatch({ type: CART_ACTIONS.removeItemFromCart, payload: item });
+};
+
+/**
+ *
+ * @param {} dispatch
+ * @param {} cart
+ */
+export const setCart = (dispatch, cart) => {
+    dispatch({ type: CART_ACTIONS.setCart, payload: cart });
+};
 
 export const CartContextProvider = props => {
-    const [cart, setCart] = useState({});
+    const [cart, dispatch] = useReducer(cartReducer, {});
+    const [initialized, setInitialized] = useState(false);
 
     useEffect(() => {
         const val = window.localStorage.getItem(CART_LOCAL_KEY)
             ? JSON.parse(window.localStorage.getItem(CART_LOCAL_KEY))
             : null;
 
-        if (val) setCart(val);
-    }, [setCart]);
+        if (val && !!Object.keys(val).length)
+            dispatch({ type: CART_ACTIONS.setCart, payload: val });
 
-    const setAndPersistCart = useCallback(
-        (photo, cartEntry) => {
-            const existingItem = cart?.[photo.photoName] || {};
+        setInitialized(true);
+    }, []);
 
-            const newCart = {
-                ...cart,
-                [photo.photoName]: getPhotoCartItems(
-                    cartEntry,
-                    existingItem,
-                    photo
-                )
-            };
-
-            setCart(newCart);
-            window.localStorage.setItem(
-                CART_LOCAL_KEY,
-                JSON.stringify(newCart)
-            );
-        },
-        [cart]
-    );
-
-    const clearCart = useCallback(() => {
-        setCart({});
-        window.localStorage.setItem(CART_LOCAL_KEY, JSON.stringify({}));
-    });
+    useEffect(() => {
+        if (initialized)
+            window.localStorage.setItem(CART_LOCAL_KEY, JSON.stringify(cart));
+    }, [cart, initialized]);
 
     return (
-        <CartContext.Provider value={{ cart, setAndPersistCart, clearCart }}>
+        <CartContext.Provider value={{ cart, dispatch, initialized }}>
             {props.children}
         </CartContext.Provider>
     );

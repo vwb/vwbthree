@@ -2,7 +2,40 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useCartContext } from "../../../../context/cart";
+import LinkButton from "../../../../components/LinkButton";
+import {
+    useCartContext,
+    clearCart,
+    setCartItemCount
+} from "../../../../context/cart";
+
+const CartItemCountSelector = ({ count, item, photo }) => {
+    const { dispatch } = useCartContext();
+
+    const handleChange = newCount => {
+        console.log(newCount);
+
+        setCartItemCount(dispatch, {
+            count: newCount,
+            photoName: photo.photoName,
+            sku: item.sku
+        });
+    };
+
+    return (
+        <select
+            value={count}
+            onChange={e => handleChange(e.target.value)}
+            style={{ padding: "8px" }}
+        >
+            {[0, 1, 2, 3, 4, 5].map(item => (
+                <option id={item.sku} key={item} value={item}>
+                    {item}
+                </option>
+            ))}
+        </select>
+    );
+};
 
 const CartItem = ({ count, photo, item }) => {
     return (
@@ -13,24 +46,28 @@ const CartItem = ({ count, photo, item }) => {
                 justifyContent: "space-between"
             }}
         >
-            <div
-                style={{
-                    width: "110px",
-                    height: "160px",
-                    position: "relative",
-                    marginRight: "8px"
-                }}
-            >
-                <Image
-                    src={photo.url}
-                    fill
-                    sizes="200px"
+            <Link href={`/photos/${photo.displayName}--${photo.photoName}`}>
+                <div
                     style={{
-                        objectFit: "contain",
-                        filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.33))"
+                        width: "110px",
+                        height: "160px",
+                        position: "relative",
+                        marginRight: "8px"
                     }}
-                />
-            </div>
+                >
+                    <Image
+                        src={photo.url}
+                        fill
+                        alt={photo.displayName}
+                        sizes="200px"
+                        style={{
+                            objectFit: "contain",
+                            filter:
+                                "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.33))"
+                        }}
+                    />
+                </div>
+            </Link>
             <div
                 className="text-sm"
                 style={{ marginLeft: "8px", marginRight: "8px" }}
@@ -47,21 +84,45 @@ const CartItem = ({ count, photo, item }) => {
                     flexGrow: "1"
                 }}
             >
-                Quantity: {count}
+                <CartItemCountSelector
+                    count={count}
+                    item={item}
+                    photo={photo}
+                />
             </div>
         </li>
     );
 };
 
 export const CartItems = () => {
-    const { cart } = useCartContext();
+    const { cart, initialized } = useCartContext();
     const hasItems = !!Object.keys(cart).length;
+
+    if (!initialized) {
+        return <section></section>;
+    }
 
     if (!hasItems) {
         return (
-            <section style={{ paddingTop: "25%" }}>
-                <div>Looks like your cart is empty</div>
-                <Link href="/photos">Browse photos</Link>
+            <section
+                className="landing"
+                style={{
+                    paddingTop: "35%",
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "column"
+                }}
+            >
+                <div style={{ marginBottom: "24px" }}>
+                    Looks like your cart is empty
+                </div>
+                <div className="menu-visible" style={{ fontFamily: "Simsun" }}>
+                    <Link href="/photos" legacyBehavior>
+                        <LinkButton style="dark" passHref>
+                            browse photos
+                        </LinkButton>
+                    </Link>
+                </div>
             </section>
         );
     }
@@ -77,6 +138,7 @@ export const CartItems = () => {
                         const photoItem = photoItems[sku];
                         return (
                             <CartItem
+                                key={`${photoItem.photo.displayName}${photoItem.item.sku}`}
                                 count={photoItem.count}
                                 photo={photoItem.photo}
                                 item={photoItem.item}
@@ -108,7 +170,7 @@ function getPriceDisplay(cart) {
 }
 
 export const FooterContent = () => {
-    const { cart, clearCart } = useCartContext();
+    const { cart, dispatch } = useCartContext();
     const hasItems = !!Object.keys(cart).length;
 
     if (!hasItems) {
@@ -125,7 +187,7 @@ export const FooterContent = () => {
                 <div className="flex flex-col items-center pr-2">
                     <button
                         className="bg-teal-700 text-gray-200 rounded-full border border-gray-300 border-solid p-3 shadow-xl"
-                        onClick={clearCart}
+                        onClick={() => clearCart(dispatch)}
                     >
                         Checkout
                     </button>
