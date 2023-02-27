@@ -1,6 +1,8 @@
 const AWS = require("aws-sdk");
 
 const PHOTO_DYNAMO_TABLE = "vwbthree--photos--test";
+const ORDER_DYNAMO_TABLE = "vwbtrhee--photos--orders";
+
 AWS.config.update({
     accessKeyId: process.env.AWS_PHOTOS_DB_ACCESS_KEY, // Do NOT HARD-CODE your secret credentials here
     secretAccessKey: process.env.AWS_PHOTOS_DB_SECRET_KEY, // Do NOT HARD-CODE your secret credentials here
@@ -10,4 +12,4 @@ AWS.config.update({
 // Create DynamoDB service object
 const db = new AWS.DynamoDB.DocumentClient({ apiVersion: "latest" });
 
-module.exports = { db, PHOTO_DYNAMO_TABLE };
+module.exports = { db, PHOTO_DYNAMO_TABLE, ORDER_DYNAMO_TABLE };

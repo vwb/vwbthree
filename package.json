@@ -29,7 +29,8 @@
         "slugify": "^1.4.0",
         "stripe": "^11.5.0",
         "tailwindcss": "^1.4.0",
-        "throttle-debounce": "^2.1.0"
+        "throttle-debounce": "^2.1.0",
+        "uuid": "^9.0.0"
     },
     "devDependencies": {
         "@squoosh/lib": "^0.4.0",
