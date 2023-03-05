@@ -3,11 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import LinkButton from "../../../../components/LinkButton";
-import {
-    useCartContext,
-    clearCart,
-    setCartItemCount
-} from "../../../../context/cart";
+import { loadStripe } from "@stripe/stripe-js";
+import { useCartContext, setCartItemCount } from "../../../../context/cart";
+
+const stripePromise = loadStripe(
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+);
 
 const CartItemCountSelector = ({ count, item, photo }) => {
     const { dispatch } = useCartContext();
@@ -40,6 +41,7 @@ const CartItemCountSelector = ({ count, item, photo }) => {
 const CartItem = ({ count, photo, item }) => {
     return (
         <li
+            className="mb-4"
             style={{
                 display: "flex",
                 alignItems: "center",
@@ -175,6 +177,18 @@ export const FooterContent = () => {
         return null;
     }
 
+    const handleCheckout = async () => {
+        const res = await fetch("/api/checkout", {
+            method: "POST",
+            body: JSON.stringify(cart)
+        });
+
+        if (res.status === 200) {
+            const body = await res.json();
+            window.location.href = body.url;
+        }
+    };
+
     return (
         <div className="mx-4">
             <div className="flex items-center justify-between pt-2">
@@ -185,7 +199,7 @@ export const FooterContent = () => {
                 <div className="flex flex-col items-center pr-2">
                     <button
                         className="bg-teal-700 text-gray-200 rounded-full border border-gray-300 border-solid p-3 shadow-xl"
-                        onClick={() => clearCart(dispatch)}
+                        onClick={() => handleCheckout()}
                     >
                         Checkout
                     </button>

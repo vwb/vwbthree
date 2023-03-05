@@ -19,9 +19,19 @@ const PRIVATE_BUCKET = "vwbthree-photos--private";
 const DYNAMO_TABLE = "vwbthree--photos--test";
 const getImageUrl = key => `https://d1vk060ez13nog.cloudfront.net/${key}`;
 
-/**takes a csv and directory. csv rows should match the photos. have following structure: */
 /**
+ * takes a csv and directory.
+ *
+ * csv rows should match the photos. have following structure:
  * filename | photoName | summary | collection
+ *
+ * call the script with `npm run upload_images`
+ *
+ * will access `website_photos_v2` directory and using the
+ * csv located there. It will then upload any photo marked with
+ * uploaded = "FALSE".
+ *
+ *
  */
 const main = async () => {
     const imageFolderPath = path.join(

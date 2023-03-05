@@ -1,28 +1,97 @@
-// const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+import { v1 as uuidv1 } from "uuid";
+import { getSkuPrices, getStripeLineItems } from "../../../utils/checkout";
 
-// export default async function handler(req, res) {
-//     if (req.method === "POST") {
-//         try {
-//             // Create Checkout Sessions from body params.
-//             const session = await stripe.checkout.sessions.create({
-//                 line_items: [
-//                     {
-//                         // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-//                         price: "price_1MF0y2JZzU9yu3SFyoLCqEr3",
-//                         quantity: 1
-//                     }
-//                 ],
-//                 mode: "payment",
-//                 success_url: `${req.headers.origin}/?success=true`,
-//                 cancel_url: `${req.headers.origin}/?canceled=true`,
-//                 automatic_tax: { enabled: true }
-//             });
-//             res.redirect(303, session.url);
-//         } catch (err) {
-//             res.status(err.statusCode || 500).json(err.message);
-//         }
-//     } else {
-//         res.setHeader("Allow", "POST");
-//         res.status(405).end("Method Not Allowed");
-//     }
-// }
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+/**
+ * interface PhotoMetaData {
+ *  filename: string;
+ *  height: number;
+ *  size: number;
+ *  width: number;
+ * }
+ *
+ * interface itemShape {
+ *  printSize: string;
+ *  ratio: number;
+ *  price: number;
+ *  sku: string;
+ * }
+ *
+ * interface photoShape {
+ *  collections: string;
+ *  displayName: number;
+ *  location: number;
+ *  metaData: photoMetaData;
+ *  orientation: 'portrait' | 'landscape';
+ *  ratio: number;
+ *  photoName: string;
+ *  summary: string;
+ *  url: string;
+ * }
+ *
+ * interface ParsedBody {
+ *  [photoId]: {
+ *      [skuId]: {
+ *          count: string;
+ *          item: itemShape;
+ *          photo: photoShape;
+ *      }
+ *  }
+ * }
+ *
+ * interface OrderItem {
+ *  sku: string; //GLOBAL_PAP_10x12
+ *  photoId: string; //DC12312
+ * }
+ *
+ * {
+ *  order_id: string;
+ *  items: OrderItem[];
+ *  total: number;
+ *  user: {};
+ *  status: '';
+ * }
+ */
+
+async function createOrder(orderId, lineItems) {
+    //
+}
+
+export default async function handler(req, res) {
+    if (req.method === "POST") {
+        const orderUUID = uuidv1();
+        const parsedBody = JSON.parse(req.body);
+        const skuPrices = await getSkuPrices(parsedBody);
+        const lineItems = getStripeLineItems(parsedBody, skuPrices);
+
+        await createOrder(orderUUID, lineItems);
+
+        try {
+            // Create Checkout Sessions from body params.
+            const session = await stripe.checkout.sessions.create({
+                line_items: lineItems,
+                mode: "payment",
+                billing_address_collection: "auto",
+                shipping_address_collection: {
+                    allowed_countries: ["US", "CA", "GB"]
+                },
+                success_url: `${req.headers.origin}/photos/orders/${orderUUID}?success=true`,
+                cancel_url: `${req.headers.origin}/photos/cart`,
+                automatic_tax: { enabled: true },
+                metadata: {
+                    orderId: orderUUID
+                }
+            });
+            res.json({ url: session.url });
+            res.status(200);
+        } catch (err) {
+            res.status(err.statusCode || 500).json(err.message);
+
+            //delete order
+        }
+    } else {
+        res.setHeader("Allow", "POST");
+        res.status(405).end("Method Not Allowed");
+    }
+}
