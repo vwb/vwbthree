@@ -1,4 +1,4 @@
-import { db, PHOTO_DYNAMO_TABLE } from "../../../../../db";
+import { db, PHOTO_DYNAMO_TABLE, PRODUCT_SKU_TABLE } from "../../../../../db";
 import PhotoPurchaseView from "./PhotoPurchaseView";
 
 export async function generateStaticParams() {
@@ -43,7 +43,7 @@ export async function getPhotoData(params) {
 export async function getProductData(imageRatio) {
     //TODO: Sort the returned params
     var params = {
-        TableName: "vwbthree--imageRatio--sku",
+        TableName: PRODUCT_SKU_TABLE,
         ExpressionAttributeValues: {
             ":ratio": imageRatio
         },
