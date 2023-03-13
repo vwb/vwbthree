@@ -1,7 +1,7 @@
 const AWS = require("aws-sdk");
 
 const PHOTO_DYNAMO_TABLE = "vwbthree--photos--test";
-const ORDER_DYNAMO_TABLE = "vwbtrhee--photos--orders";
+const ORDER_DYNAMO_TABLE = "vwbthree--photos--orders";
 const PRODUCT_SKU_TABLE = "vwbthree--imageRatio--sku";
 
 AWS.config.update({

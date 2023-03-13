@@ -1,10 +1,8 @@
 "use client";
-
-import Link from "next/link";
-import Image from "next/image";
 import LinkButton from "../../../../components/LinkButton";
 import { loadStripe } from "@stripe/stripe-js";
 import { useCartContext, setCartItemCount } from "../../../../context/cart";
+import { PhotoPreview } from "../../../../components/PhotoPreview";
 
 const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -48,28 +46,7 @@ const CartItem = ({ count, photo, item }) => {
                 justifyContent: "space-between"
             }}
         >
-            <Link href={`/photos/${photo.displayName}--${photo.photoName}`}>
-                <div
-                    style={{
-                        width: "110px",
-                        height: "160px",
-                        position: "relative",
-                        marginRight: "8px"
-                    }}
-                >
-                    <Image
-                        src={photo.url}
-                        fill
-                        alt={photo.displayName}
-                        sizes="200px"
-                        style={{
-                            objectFit: "contain",
-                            filter:
-                                "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.33))"
-                        }}
-                    />
-                </div>
-            </Link>
+            <PhotoPreview photo={photo} />
             <div
                 className="text-sm"
                 style={{ marginLeft: "8px", marginRight: "8px" }}
