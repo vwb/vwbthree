@@ -54,7 +54,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
  *  items: OrderItem[];
  *  total: number;
  *  user: {};
- *  status: '';
+ *  status: 'received' | 'fulfillment' | 'shipped' | 'delivered' ;
  * }
  */
 
@@ -64,11 +64,15 @@ export default async function handler(req, res) {
         const parsedBody = JSON.parse(req.body);
         const skuPrices = await getSkuPrices(parsedBody);
         const lineItems = getStripeLineItems(parsedBody, skuPrices);
-
         try {
             await createOrder(orderUUID, lineItems);
-            // Create Checkout Sessions from body params.
+        } catch (err) {
+            //unable to generate order
+            res.status(err.statusCode || 500).json(err.message);
+        }
 
+        try {
+            // Create Checkout Sessions from body params.
             const session = await stripe.checkout.sessions.create({
                 line_items: lineItems,
                 mode: "payment",
