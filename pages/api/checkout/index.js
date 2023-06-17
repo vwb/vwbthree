@@ -69,6 +69,7 @@ export default async function handler(req, res) {
         } catch (err) {
             //unable to generate order
             res.status(err.statusCode || 500).json(err.message);
+            return;
         }
 
         try {
@@ -93,6 +94,7 @@ export default async function handler(req, res) {
         } catch (err) {
             await deleteOrder(orderUUID);
             res.status(err.statusCode || 500).json(err.message);
+            return;
         }
     } else {
         res.setHeader("Allow", "POST");
