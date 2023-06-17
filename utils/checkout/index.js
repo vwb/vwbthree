@@ -80,7 +80,8 @@ export function getStripeLineItems(parsedBody, skuPrices) {
                                 sku,
                                 photoId,
                                 photoName: photo.displayName,
-                                itemPrintSize: item.printSize
+                                itemPrintSize: item.printSize,
+                                photoUrl: photo.url
                             }
                         }
                     }

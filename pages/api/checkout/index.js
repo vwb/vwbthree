@@ -1,5 +1,6 @@
 import { v1 as uuidv1 } from "uuid";
 import { getSkuPrices, getStripeLineItems } from "../../../utils/checkout";
+import { createOrder, deleteOrder } from "../../../utils/order";
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
@@ -43,6 +44,9 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
  * interface OrderItem {
  *  sku: string; //GLOBAL_PAP_10x12
  *  photoId: string; //DC12312
+ *  photoUrl: string;
+ *  photoName: string;
+ *  itemPrintSize: string;
  * }
  *
  * {
@@ -50,13 +54,9 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
  *  items: OrderItem[];
  *  total: number;
  *  user: {};
- *  status: '';
+ *  status: 'received' | 'fulfillment' | 'shipped' | 'delivered' ;
  * }
  */
-
-async function createOrder(orderId, lineItems) {
-    //
-}
 
 export default async function handler(req, res) {
     if (req.method === "POST") {
@@ -64,8 +64,13 @@ export default async function handler(req, res) {
         const parsedBody = JSON.parse(req.body);
         const skuPrices = await getSkuPrices(parsedBody);
         const lineItems = getStripeLineItems(parsedBody, skuPrices);
-
-        await createOrder(orderUUID, lineItems);
+        try {
+            await createOrder(orderUUID, lineItems);
+        } catch (err) {
+            //unable to generate order
+            res.status(err.statusCode || 500).json(err.message);
+            return;
+        }
 
         try {
             // Create Checkout Sessions from body params.
@@ -76,19 +81,20 @@ export default async function handler(req, res) {
                 shipping_address_collection: {
                     allowed_countries: ["US", "CA", "GB"]
                 },
-                success_url: `${req.headers.origin}/photos/orders/${orderUUID}?success=true`,
+                success_url: `${req.headers.origin}/photos/orders/${orderUUID}`,
                 cancel_url: `${req.headers.origin}/photos/cart`,
                 automatic_tax: { enabled: true },
                 metadata: {
                     orderId: orderUUID
                 }
             });
+
             res.json({ url: session.url });
             res.status(200);
         } catch (err) {
+            await deleteOrder(orderUUID);
             res.status(err.statusCode || 500).json(err.message);
-
-            //delete order
+            return;
         }
     } else {
         res.setHeader("Allow", "POST");
