@@ -33,8 +33,6 @@ const verifyStripeWebhook = (buf, originalRequest) => {
 export default async function handler(req, res) {
     if (req.method === "POST") {
         const buf = await buffer(req);
-        console.log("webhook triggered");
-
         let event;
 
         try {
