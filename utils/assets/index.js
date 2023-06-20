@@ -21,7 +21,7 @@ const createPresignedUrlWithClient = ({
  * Generates a presigned URL to full quality
  * photo for use by downstream.
  *
- * @param {*} assetId string
+ * @param {*} assetId string. Should end in .jpg
  * @returns string
  */
 export async function createSignedDownloadUrlForAsset(assetId) {

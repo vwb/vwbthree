@@ -37,7 +37,6 @@ export default async function handler(req, res) {
 
         try {
             event = verifyStripeWebhook(buf, req);
-            console.log("Checkout update request verified");
         } catch (err) {
             console.log(
                 `⚠️  Webhook signature verification failed.`,
@@ -52,11 +51,13 @@ export default async function handler(req, res) {
                     await handleCompletedCheckout(event);
                     res.status(200);
                 } catch (e) {
-                    //todo: handle cancelling payment/order thats inflight
-                    console.error(
+                    await updateOrderStatus(orderUUID, "error");
+
+                    console.log(
                         "Error handling checkout.session_completed event",
                         e.message
                     );
+
                     res.status(500);
                 }
 

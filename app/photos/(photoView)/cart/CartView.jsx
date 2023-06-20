@@ -12,8 +12,6 @@ const CartItemCountSelector = ({ count, item, photo }) => {
     const { dispatch } = useCartContext();
 
     const handleChange = newCount => {
-        console.log(newCount);
-
         setCartItemCount(dispatch, {
             count: newCount,
             photoName: photo.photoName,
