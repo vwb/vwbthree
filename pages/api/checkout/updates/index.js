@@ -1,5 +1,6 @@
 import { buffer } from "micro";
 import { handleCompletedCheckout } from "../../../../utils/fulfillment";
+import { updateOrderStatus } from "../../../../utils/order";
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
