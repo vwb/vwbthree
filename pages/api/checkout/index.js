@@ -64,10 +64,11 @@ export default async function handler(req, res) {
         const parsedBody = JSON.parse(req.body);
         const skuPrices = await getSkuPrices(parsedBody);
         const lineItems = getStripeLineItems(parsedBody, skuPrices);
+
         try {
             await createOrder(orderUUID, lineItems);
         } catch (err) {
-            //unable to generate order
+            //unable to generate order for checkout
             res.status(err.statusCode || 500).json(err.message);
             return;
         }
@@ -85,12 +86,13 @@ export default async function handler(req, res) {
                 cancel_url: `${req.headers.origin}/photos/cart`,
                 automatic_tax: { enabled: true },
                 metadata: {
-                    orderId: orderUUID
+                    orderId: orderUUID,
+                    test: "test"
                 }
             });
 
-            res.json({ url: session.url });
             res.status(200);
+            res.json({ url: session.url });
         } catch (err) {
             await deleteOrder(orderUUID);
             res.status(err.statusCode || 500).json(err.message);
@@ -98,6 +100,6 @@ export default async function handler(req, res) {
         }
     } else {
         res.setHeader("Allow", "POST");
-        res.status(405).end("Method Not Allowed");
+        res.status(405).send("Method Not Allowed");
     }
 }
