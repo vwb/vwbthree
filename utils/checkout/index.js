@@ -77,8 +77,8 @@ export function getStripeLineItems(parsedBody, skuPrices) {
                             name: `${photo.displayName} -- ${item.printSize}`,
                             images: [photo.url],
                             metadata: {
-                                sku,
-                                photoId,
+                                photoId: photoId,
+                                sku: sku,
                                 photoName: photo.displayName,
                                 itemPrintSize: item.printSize,
                                 photoUrl: photo.url

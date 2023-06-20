@@ -9,6 +9,8 @@
         "upload_images": "node scripts/aws/upload_photos.js"
     },
     "dependencies": {
+        "@aws-sdk/client-s3": "^3.354.0",
+        "@aws-sdk/s3-request-presigner": "^3.354.0",
         "@fullhuman/postcss-purgecss": "^2.0.6",
         "@stripe/stripe-js": "^1.46.0",
         "autoprefixer": "^9.7.4",
@@ -27,6 +29,7 @@
         "react-virtualized-auto-sizer": "^1.0.3",
         "react-window": "^1.8.6",
         "sass": "^1.26.8",
+        "short-uuid": "^4.2.2",
         "slugify": "^1.4.0",
         "stripe": "^11.5.0",
         "tailwindcss": "^1.4.0",

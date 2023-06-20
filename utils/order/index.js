@@ -1,4 +1,5 @@
 import { db, ORDER_DYNAMO_TABLE } from "../../db";
+import shortUUID from "short-uuid";
 
 const defaultOrderParams = {
     TableName: ORDER_DYNAMO_TABLE
@@ -101,41 +102,74 @@ export async function getOrder(orderId) {
     }
 }
 
+function addAttributeToUpdateParams(params, key, value) {
+    const identifier = shortUUID("abcdefghijkmnopqrstuvwxyz").generate();
+    const expressionAttributeNameKey = `#${identifier.toUpperCase()}`;
+    const expressionAttributeValueKey = `:${identifier}`;
+
+    const initialUpdateExpression = `SET ${expressionAttributeNameKey} = ${expressionAttributeValueKey}`;
+
+    params = {
+        ...params,
+        UpdateExpression: !!params.UpdateExpression
+            ? `${params.UpdateExpression}, ${expressionAttributeNameKey} = ${expressionAttributeValueKey}`
+            : initialUpdateExpression,
+        ExpressionAttributeNames: {
+            ...params.ExpressionAttributeNames,
+            [expressionAttributeNameKey]: key
+        },
+        ExpressionAttributeValues: {
+            ...params.ExpressionAttributeValues,
+            [expressionAttributeValueKey]: value
+        }
+    };
+
+    return params;
+}
+
 /**
+ * metadata: {
+ *  user: UserObject;
+ *  stripeCheckoutSessionId: string;
+ *  prodigiOrderId: string;
+ * }
+ *
  *
  * @param {*} orderId string
  * @param {*} status 'received' | 'processing' | 'cancelled' | 'shipped' | 'completed'
- * @param {*} user UserObject
+ * @param {*} metadata UserObject
  */
-export async function updateOrderStatus(orderId, status, user) {
+export async function updateOrderStatus(orderId, status, metadata = {}) {
     let params = {
         ...defaultOrderParams,
         Key: {
             order_id: orderId
         },
-        UpdateExpression: "SET #S = :s",
-        ExpressionAttributeNames: {
-            "#S": "status"
-        },
-        ExpressionAttributeValues: {
-            ":s": status
-        }
+        UpdateExpression: "",
+        ExpressionAttributeNames: {},
+        ExpressionAttributeValues: {}
     };
 
-    // Add user params if passed in
-    if (user) {
-        params = {
-            ...params,
-            UpdateExpression: `${params.UpdateExpression}, #U = :u`,
-            ExpressionAttributeNames: {
-                ...params.ExpressionAttributeNames,
-                "#U": "user"
-            },
-            ExpressionAttributeValues: {
-                ...params.ExpressionAttributeValues,
-                ":u": user
-            }
-        };
+    params = addAttributeToUpdateParams(params, "status", status);
+
+    if (metadata.user) {
+        params = addAttributeToUpdateParams(params, "user", metadata.user);
+    }
+
+    if (metadata.prodigiOrderId) {
+        params = addAttributeToUpdateParams(
+            params,
+            "prodigiOrderId",
+            metadata.prodigiOrderId
+        );
+    }
+
+    if (metadata.stripeCheckoutSessionId) {
+        params = addAttributeToUpdateParams(
+            params,
+            "stripeCheckoutSessionId",
+            metadata.stripeCheckoutSessionId
+        );
     }
 
     try {

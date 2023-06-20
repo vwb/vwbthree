@@ -5,6 +5,7 @@ export const ClearCart = props => {
     const { orderData } = props;
     const photoStringFromOrder = orderData.items
         .map(item => item.photoId)
+        .sort()
         .toString();
 
     useEffect(() => {
@@ -15,7 +16,9 @@ export const ClearCart = props => {
         if (itemsFromLocaleStorage) {
             const keysFromLocalStorage = Object.keys(
                 JSON.parse(itemsFromLocaleStorage)
-            ).toString();
+            )
+                .sort()
+                .toString();
 
             if (photoStringFromOrder === keysFromLocalStorage) {
                 localStorage.removeItem("vwbthree_photos_cart");
