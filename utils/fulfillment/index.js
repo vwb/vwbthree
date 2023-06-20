@@ -21,16 +21,11 @@ export async function handleCompletedCheckout(event) {
         throw new Error("Missing shipping information");
     }
 
-    //call prodigi and create order here
-    let prodigiOrder;
-
-    try {
-        prodigiOrder = await createProdigiOrder(event);
-    } catch (e) {
-        throw e;
-    }
-
+    const prodigiOrder = await createProdigiOrder(event);
     const prodigiOrderId = prodigiOrder.order.id;
+
+    console.log("updating order status");
+
     await updateOrderStatus(orderId, "processing", {
         user: userData,
         stripeCheckoutSessionId: event.data.object.id,
@@ -61,6 +56,8 @@ async function createProdigiOrder(event) {
             }
         );
         const prodigiOrderContent = await prodigiOrderRequest.json();
+
+        console.log("ProdigiOrderStatusCode: ", prodigiOrderRequest.status);
 
         if (prodigiOrderRequest.status >= 400) {
             throw new Error(
