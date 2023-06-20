@@ -9,8 +9,7 @@ export const config = {
     }
 };
 
-const endpointSecret =
-    "whsec_9095a706cfe328363afa7388e858ed47ce84322365d46fa0349ef0c221169b2a";
+const endpointSecret = process.env.STRIPE_WEBHOOK_KEY;
 
 /**
  *
@@ -50,15 +49,6 @@ export default async function handler(req, res) {
         }
 
         switch (event.type) {
-            case "payment_intent.succeeded":
-                const paymentIntent = event.data.object;
-                console.log(
-                    `PaymentIntent for ${paymentIntent.amount} was successful!`
-                );
-                res.status(200);
-
-                break;
-
             case "checkout.session.completed":
                 try {
                     await handleCompletedCheckout(event);
@@ -73,7 +63,23 @@ export default async function handler(req, res) {
                 }
 
                 break;
+
+            case "checkout.session.expired":
+                const orderUUID = event?.data?.object?.metadata?.orderId;
+
+                if (orderId) {
+                    console.log(
+                        "Checkout expired. Deleting created order:",
+                        orderUUID
+                    );
+                    await deleteOrder(orderUUID);
+                }
+
+                res.status(200);
+                break;
             default:
+                console.log("Unsupported event");
+                res.status(400);
                 break;
         }
 
