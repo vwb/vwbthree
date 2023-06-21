@@ -14,7 +14,7 @@ const createPresignedUrlWithClient = ({
         }
     });
     const command = new GetObjectCommand({ Bucket: bucket, Key: key });
-    return getSignedUrl(client, command, { expiresIn: 120 });
+    return getSignedUrl(client, command, { expiresIn: 60 * 15 });
 };
 
 /**

@@ -1,3 +1,4 @@
+import { v1 as uuidv1 } from "uuid";
 import { updateOrderStatus } from "../order";
 import { createSignedDownloadUrlForAsset } from "../assets";
 import { getStripeSDK } from "../stripe";
@@ -40,7 +41,8 @@ async function createProdigiOrder(event) {
     const order = {
         recipient,
         items: products,
-        shippingMethod: "Budget"
+        shippingMethod: "Budget",
+        idempotencyKey: uuidv1()
     };
 
     try {
