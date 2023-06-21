@@ -1,4 +1,3 @@
-import { v1 as uuidv1 } from "uuid";
 import { updateOrderStatus } from "../order";
 import { createSignedDownloadUrlForAsset } from "../assets";
 import { getStripeSDK } from "../stripe";
@@ -25,8 +24,6 @@ export async function handleCompletedCheckout(event) {
     const prodigiOrder = await createProdigiOrder(event);
     const prodigiOrderId = prodigiOrder.order.id;
 
-    console.log("updating order status");
-
     await updateOrderStatus(orderId, "processing", {
         user: userData,
         stripeCheckoutSessionId: event.data.object.id,
@@ -35,6 +32,7 @@ export async function handleCompletedCheckout(event) {
 }
 
 async function createProdigiOrder(event) {
+    const orderId = event.data.object.id;
     const products = await getCheckoutSessionLineItems(event.data.object.id);
     const recipient = constructRecipient(event);
 
@@ -42,10 +40,15 @@ async function createProdigiOrder(event) {
         recipient,
         items: products,
         shippingMethod: "Budget",
-        idempotencyKey: uuidv1()
+        idempotencyKey: orderId
     };
 
     try {
+        console.log(
+            "Creating prodigi order for: ",
+            event.data.object.metadata.orderId
+        );
+
         const prodigiOrderRequest = await fetch(
             `https://${process.env.PRODIGI_ROOT_URL}/v4.0/Orders`,
             {
@@ -63,6 +66,15 @@ async function createProdigiOrder(event) {
             console.log("ProdigiOrderStatusCode: ", prodigiOrderRequest.status);
             throw new Error(prodigiOrderContent);
         }
+
+        console.log(
+            "Successfully created order: ",
+            prodigiOrderContent.order.id
+        );
+        console.log(
+            "Prodigi order success outcome: ",
+            prodigiOrderContent.outcome
+        );
 
         return prodigiOrderContent;
     } catch (e) {

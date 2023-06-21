@@ -48,6 +48,9 @@ export default async function handler(req, res) {
 
         switch (event.type) {
             case "checkout.session.completed":
+                console.log("In checkout session completed callback");
+                console.log(event.data.object.id);
+
                 try {
                     await handleCompletedCheckout(event);
                     res.status(200);
