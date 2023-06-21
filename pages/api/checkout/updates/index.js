@@ -67,7 +67,7 @@ export default async function handler(req, res) {
             case "checkout.session.expired":
                 const orderUUID = event?.data?.object?.metadata?.orderId;
 
-                if (orderId) {
+                if (orderUUID) {
                     console.log(
                         "Checkout expired. Deleting created order:",
                         orderUUID
