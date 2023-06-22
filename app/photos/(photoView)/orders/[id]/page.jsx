@@ -2,6 +2,12 @@ import { getOrder } from "../../../../../utils/order";
 import { PhotoPreview } from "../../../../../components/PhotoPreview";
 import { ClearCart } from "./ClearCart";
 
+// events to handle render state for:
+//received
+// processing
+// cancelled
+// shipped
+
 export default async function Page({ params }) {
     const orderId = params.id;
     const orderData = await getOrder(orderId);
