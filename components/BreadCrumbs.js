@@ -22,7 +22,7 @@ export const BreadCrumbs = props => (
                     flex: "0 0 auto"
                 }}
             >
-                {CRUMB_BLOCK_LIST.includes(crumb) ? (
+                {CRUMB_BLOCK_LIST.includes(crumb.display) ? (
                     <>
                         {crumb.display}
                         <Divider
