@@ -24,6 +24,8 @@ export async function handleCompletedCheckout(event) {
     const prodigiOrder = await createProdigiOrder(event);
     const prodigiOrderId = prodigiOrder.order.id;
 
+    //trigger email
+
     await updateOrderStatus(orderId, "processing", {
         user: userData,
         stripeCheckoutSessionId: event.data.object.id,
@@ -32,7 +34,7 @@ export async function handleCompletedCheckout(event) {
 }
 
 async function createProdigiOrder(event) {
-    const orderId = event.data.object.id;
+    const orderId = event?.data?.object?.metadata?.orderId;
     const products = await getCheckoutSessionLineItems(event.data.object.id);
     const recipient = constructRecipient(event);
 
@@ -44,10 +46,7 @@ async function createProdigiOrder(event) {
     };
 
     try {
-        console.log(
-            "Creating prodigi order for: ",
-            event.data.object.metadata.orderId
-        );
+        console.log("Creating prodigi order for: ", orderId);
 
         const prodigiOrderRequest = await fetch(
             `https://${process.env.PRODIGI_ROOT_URL}/v4.0/Orders`,

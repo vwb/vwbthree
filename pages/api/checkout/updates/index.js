@@ -1,6 +1,6 @@
 import { buffer } from "micro";
 import { handleCompletedCheckout } from "../../../../utils/fulfillment";
-import { updateOrderStatus } from "../../../../utils/order";
+import { updateOrderStatus, deleteOrder } from "../../../../utils/order";
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
@@ -63,7 +63,7 @@ export default async function handler(req, res) {
                         e.message
                     );
 
-                    res.status(500);
+                    res.status(200);
                 }
 
                 break;
