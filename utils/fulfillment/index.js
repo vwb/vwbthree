@@ -64,7 +64,7 @@ async function createProdigiOrder(event) {
 
         if (prodigiOrderRequest.status >= 400) {
             console.log("ProdigiOrderStatusCode: ", prodigiOrderRequest.status);
-            throw new Error(prodigiOrderContent);
+            throw new Error(JSON.stringify(prodigiOrderContent));
         }
 
         console.log(
