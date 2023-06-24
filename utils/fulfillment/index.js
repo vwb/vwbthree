@@ -1,15 +1,9 @@
-import { updateOrderStatus } from "../order";
+import { updateOrderStatus, getOrder } from "../order";
 import { createSignedDownloadUrlForAsset } from "../assets";
-import { getStripeSDK } from "../stripe";
+import { sendOrderConfirmationEmail } from "../email";
 
 export async function handleCompletedCheckout(event) {
     const orderId = event?.data?.object?.metadata?.orderId;
-
-    const userData = {
-        email: event?.data?.object?.customer_details?.email,
-        name: event?.data?.object?.customer_details?.name,
-        shipping_address: event?.data?.object?.shipping
-    };
 
     if (!orderId) {
         throw new Error(
@@ -17,30 +11,54 @@ export async function handleCompletedCheckout(event) {
         );
     }
 
-    if (!userData.shipping_address) {
+    if (!event?.data?.object?.shipping) {
         throw new Error("Missing shipping information");
     }
 
-    const prodigiOrder = await createProdigiOrder(event);
-    const prodigiOrderId = prodigiOrder.order.id;
+    const userData = {
+        email: event?.data?.object?.customer_details?.email,
+        name: event?.data?.object?.customer_details?.name,
+        shipping_address: event?.data?.object?.shipping
+    };
 
-    //trigger email
+    const order = await getOrder(orderId);
+    const orderData = order.items;
+
+    if (!orderData) {
+        throw new Error("Missing order information");
+    }
+
+    const prodigiOrder = await createProdigiOrder(orderId, userData, orderData);
+    const prodigiOrderId = prodigiOrder.order.id;
 
     await updateOrderStatus(orderId, "processing", {
         user: userData,
         stripeCheckoutSessionId: event.data.object.id,
         prodigiOrderId
     });
+
+    await sendOrderConfirmationEmail({
+        recipient: userData.email,
+        recipientName: userData.name,
+        orderId: orderId,
+        orderData: orderData
+    });
 }
 
-async function createProdigiOrder(event) {
-    const orderId = event?.data?.object?.metadata?.orderId;
-    const products = await getCheckoutSessionLineItems(event.data.object.id);
-    const recipient = constructRecipient(event);
+async function createProdigiOrder(orderId, userData, orderData) {
+    let formattedProducts;
+    let recipient;
+
+    try {
+        formattedProducts = await constructProducts(orderData);
+        recipient = constructRecipient(userData);
+    } catch (e) {
+        throw e;
+    }
 
     const order = {
         recipient,
-        items: products,
+        items: formattedProducts,
         shippingMethod: "Budget",
         idempotencyKey: orderId
     };
@@ -83,67 +101,38 @@ async function createProdigiOrder(event) {
 }
 
 /**
- * /**
- * StripeVwbthreePhotoItem {
- *  id: string;
- *  object: string; //item
- *  amount_discount
- * }
+ * OrderItems {
+ *  itemPrintSize: string
+ *  photoId: string
+ *  photoName: string
+ *  photoUrl: string
+ *  quantity: number
+ *  sku: string
+ * }[]
  *
- * StripeItems {
- *  object: 'list';
- *  data: StripeVwbthreePhotoItem[];
- *  has_more: boolean;
- *  url: string;
- * }
- *
- * ProdigiItem {
- *  sku: string;
- *  copies: number;
- *  sizing: fillPrintArea | string;
- *  assets: ProdigiAsset[]
- * }
- *
- * ProdigiAsset {
- *  printArea: default | string;
- *  url: string //signed URL
- * }
- *
- * Gets the line items associated to the passed in checkout session
- *
- * @param {*} checkoutId string Checkout session ID
+ * @param {*} orderLineItems: OrderItems
  */
-async function getCheckoutSessionLineItems(checkoutId) {
-    const signedUrlMap = {};
+async function constructProducts(orderLineItems) {
     const prodigiItems = [];
-    const stripeSdk = await getStripeSDK();
-    const lineItems = await stripeSdk.checkout.sessions.listLineItems(
-        checkoutId,
-        {
-            limit: 50
-        }
-    );
+    const signedUrlMap = new Map();
 
-    for (const item of lineItems.data) {
+    for (const item of orderLineItems) {
         let signedAssetUrl;
         const quantity = item.quantity;
 
-        const product = await stripeSdk.products.retrieve(item.price.product);
-        const photoId = product.metadata.photoId;
-
-        if (signedUrlMap[photoId]) {
-            signedAssetUrl = signedUrlMap[photoId];
+        if (signedUrlMap.has(item.photoId)) {
+            signedAssetUrl = signedUrlMap.get(item.photoId);
         } else {
             signedAssetUrl = await createSignedDownloadUrlForAsset(
-                `${product.metadata.photoId}.jpg`
+                `${item.photoId}.jpg`
             );
-            signedUrlMap[photoId] = signedAssetUrl;
+            signedUrlMap.set(item.photoId, signedAssetUrl);
         }
 
         prodigiItems.push({
             sizing: "fillPrintArea",
             copies: quantity,
-            sku: product.metadata.sku,
+            sku: item.sku,
             assets: [
                 {
                     url: signedAssetUrl,
@@ -174,23 +163,17 @@ async function getCheckoutSessionLineItems(checkoutId) {
  * 
  * @param {*} event 
  */
-function constructRecipient(event) {
-    const userData = {
-        email: event?.data?.object?.customer_details?.email,
-        name: event?.data?.object?.customer_details?.name,
-        shipping: event?.data?.object?.shipping
-    };
-
+function constructRecipient(userData) {
     return {
-        name: userData.shipping.name,
+        name: userData.shipping_address.name,
         email: userData.email,
         address: {
-            line1: userData.shipping.address.line1,
-            line2: userData.shipping.address.line2,
-            postalOrZipCode: userData.shipping.address.postal_code,
-            countryCode: userData.shipping.address.country,
-            townOrCity: userData.shipping.address.city,
-            stateOrCounty: userData.shipping.address.state
+            line1: userData.shipping_address.address.line1,
+            line2: userData.shipping_address.address.line2,
+            postalOrZipCode: userData.shipping_address.address.postal_code,
+            countryCode: userData.shipping_address.address.country,
+            townOrCity: userData.shipping_address.address.city,
+            stateOrCounty: userData.shipping_address.address.state
         }
     };
 }

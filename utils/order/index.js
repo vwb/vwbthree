@@ -136,7 +136,7 @@ function addAttributeToUpdateParams(params, key, value) {
  *
  *
  * @param {*} orderId string
- * @param {*} status 'received' | 'processing' | 'cancelled' | 'shipped' | 'completed'
+ * @param {*} status 'received' | 'processing' | 'cancelled' | 'shipped' | 'completed' | 'error'
  * @param {*} metadata UserObject
  */
 export async function updateOrderStatus(orderId, status, metadata = {}) {
