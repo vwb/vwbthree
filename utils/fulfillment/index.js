@@ -2,25 +2,18 @@ import { updateOrderStatus, getOrder } from "../order";
 import { createSignedDownloadUrlForAsset } from "../assets";
 import { sendOrderConfirmationEmail } from "../email";
 
-export async function handleCompletedCheckout(event) {
-    const orderId = event?.data?.object?.metadata?.orderId;
-
-    if (!orderId) {
+function validateCheckoutSuccess(event) {
+    if (!event?.data?.object?.metadata?.orderId) {
         throw new Error(
             "Missing order id for checkout session. Abandoning order"
         );
     }
-
     if (!event?.data?.object?.shipping) {
         throw new Error("Missing shipping information");
     }
+}
 
-    const userData = {
-        email: event?.data?.object?.customer_details?.email,
-        name: event?.data?.object?.customer_details?.name,
-        shipping_address: event?.data?.object?.shipping
-    };
-
+async function getOrderItems(orderId) {
     const order = await getOrder(orderId);
     const orderData = order.items;
 
@@ -28,6 +21,20 @@ export async function handleCompletedCheckout(event) {
         throw new Error("Missing order information");
     }
 
+    return orderData;
+}
+
+export async function handleCompletedCheckout(event) {
+    validateCheckoutSuccess(event);
+
+    const orderId = event?.data?.object?.metadata?.orderId;
+    const userData = {
+        email: event?.data?.object?.customer_details?.email,
+        name: event?.data?.object?.customer_details?.name,
+        shipping_address: event?.data?.object?.shipping
+    };
+
+    const orderData = await getOrderItems(orderId);
     const prodigiOrder = await createProdigiOrder(orderId, userData, orderData);
     const prodigiOrderId = prodigiOrder.order.id;
 
@@ -53,15 +60,12 @@ async function createProdigiOrder(orderId, userData, orderData) {
         formattedProducts = await constructProducts(orderData);
         recipient = constructRecipient(userData);
     } catch (e) {
+        console.error(
+            "Error constructing prodigi order body for order: ",
+            orderId
+        );
         throw e;
     }
-
-    const order = {
-        recipient,
-        items: formattedProducts,
-        shippingMethod: "Budget",
-        idempotencyKey: orderId
-    };
 
     try {
         console.log("Creating prodigi order for: ", orderId);
@@ -74,18 +78,26 @@ async function createProdigiOrder(orderId, userData, orderData) {
                     "Content-Type": "application/json",
                     "X-API-Key": `${process.env.PRODIGI_API_KEY}`
                 },
-                body: JSON.stringify(order)
+                body: JSON.stringify({
+                    recipient,
+                    items: formattedProducts,
+                    shippingMethod: "Budget",
+                    idempotencyKey: orderId
+                })
             }
         );
         const prodigiOrderContent = await prodigiOrderRequest.json();
 
         if (prodigiOrderRequest.status >= 400) {
-            console.log("ProdigiOrderStatusCode: ", prodigiOrderRequest.status);
+            console.error(
+                "ProdigiOrderStatusCode: ",
+                prodigiOrderRequest.status
+            );
             throw new Error(JSON.stringify(prodigiOrderContent));
         }
 
         console.log(
-            "Successfully created order: ",
+            "Successfully created prodigiorder: ",
             prodigiOrderContent.order.id
         );
         console.log(
@@ -95,7 +107,7 @@ async function createProdigiOrder(orderId, userData, orderData) {
 
         return prodigiOrderContent;
     } catch (e) {
-        console.log("Error creating order with Prodigi:", e.message);
+        console.log("Error creating order with Prodigi for order: ", orderId);
         throw e;
     }
 }
