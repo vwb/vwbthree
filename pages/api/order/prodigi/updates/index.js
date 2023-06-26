@@ -1,8 +1,10 @@
-import { updateOrderStatus } from "../../../../../utils/order";
+import { updateOrderStatus, getOrder } from "../../../../../utils/order";
+import { sendOrderShippedEmail } from "../../../../../utils/email";
 
 const PRODIGI_STATUS_MAP = {
-    Complete: "shipped",
-    Cancelled: "cancelled"
+    Complete: { status: "shipped", emailTrigger: sendOrderShippedEmail },
+    //TODO: add email template for cancelling an order
+    Cancelled: { status: "cancelled" }
 };
 
 export default async function handler(req, res) {
@@ -13,8 +15,15 @@ export default async function handler(req, res) {
 
         try {
             if (!!statusUpdate) {
-                updateOrderStatus(orderId, statusUpdate);
-                //trigger email
+                await updateOrderStatus(orderId, statusUpdate.status);
+
+                if (statusUpdate.emailTrigger) {
+                    const order = await getOrder(orderId);
+                    await statusUpdate?.emailTrigger?.({
+                        recipient: order.user.email,
+                        orderId: orderId
+                    });
+                }
             }
         } catch (e) {
             console.error("Error updating order status", e.message);

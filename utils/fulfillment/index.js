@@ -1,49 +1,71 @@
-import { updateOrderStatus } from "../order";
+import { updateOrderStatus, getOrder } from "../order";
 import { createSignedDownloadUrlForAsset } from "../assets";
-import { getStripeSDK } from "../stripe";
+import { sendOrderConfirmationEmail } from "../email";
+
+function validateCheckoutSuccess(event) {
+    if (!event?.data?.object?.metadata?.orderId) {
+        throw new Error(
+            "Missing order id for checkout session. Abandoning order"
+        );
+    }
+    if (!event?.data?.object?.shipping) {
+        throw new Error("Missing shipping information");
+    }
+}
+
+async function getOrderItems(orderId) {
+    const order = await getOrder(orderId);
+    const orderData = order.items;
+
+    if (!orderData) {
+        throw new Error("Missing order information");
+    }
+
+    return orderData;
+}
 
 export async function handleCompletedCheckout(event) {
-    const orderId = event?.data?.object?.metadata?.orderId;
+    validateCheckoutSuccess(event);
 
+    const orderId = event?.data?.object?.metadata?.orderId;
     const userData = {
         email: event?.data?.object?.customer_details?.email,
         name: event?.data?.object?.customer_details?.name,
         shipping_address: event?.data?.object?.shipping
     };
 
-    if (!orderId) {
-        throw new Error(
-            "Missing order id for checkout session. Abandoning order"
-        );
-    }
-
-    if (!userData.shipping_address) {
-        throw new Error("Missing shipping information");
-    }
-
-    const prodigiOrder = await createProdigiOrder(event);
+    const orderData = await getOrderItems(orderId);
+    const prodigiOrder = await createProdigiOrder(orderId, userData, orderData);
     const prodigiOrderId = prodigiOrder.order.id;
-
-    //trigger email
 
     await updateOrderStatus(orderId, "processing", {
         user: userData,
         stripeCheckoutSessionId: event.data.object.id,
         prodigiOrderId
     });
+
+    await sendOrderConfirmationEmail({
+        recipient: userData.email,
+        recipientName: userData.name,
+        orderId: orderId,
+        orderData: orderData
+    });
 }
 
-async function createProdigiOrder(event) {
-    const orderId = event?.data?.object?.metadata?.orderId;
-    const products = await getCheckoutSessionLineItems(event.data.object.id);
-    const recipient = constructRecipient(event);
+async function createProdigiOrder(orderId, userData, orderData) {
+    let formattedProducts;
+    let recipient;
 
-    const order = {
-        recipient,
-        items: products,
-        shippingMethod: "Budget",
-        idempotencyKey: orderId
-    };
+    try {
+        formattedProducts = await constructProducts(orderData);
+        recipient = constructRecipient(userData);
+    } catch (e) {
+        console.error(
+            "Error constructing prodigi order body for order: ",
+            orderId
+        );
+        throw e;
+    }
 
     try {
         console.log("Creating prodigi order for: ", orderId);
@@ -56,18 +78,26 @@ async function createProdigiOrder(event) {
                     "Content-Type": "application/json",
                     "X-API-Key": `${process.env.PRODIGI_API_KEY}`
                 },
-                body: JSON.stringify(order)
+                body: JSON.stringify({
+                    recipient,
+                    items: formattedProducts,
+                    shippingMethod: "Budget",
+                    idempotencyKey: orderId
+                })
             }
         );
         const prodigiOrderContent = await prodigiOrderRequest.json();
 
         if (prodigiOrderRequest.status >= 400) {
-            console.log("ProdigiOrderStatusCode: ", prodigiOrderRequest.status);
+            console.error(
+                "ProdigiOrderStatusCode: ",
+                prodigiOrderRequest.status
+            );
             throw new Error(JSON.stringify(prodigiOrderContent));
         }
 
         console.log(
-            "Successfully created order: ",
+            "Successfully created prodigiorder: ",
             prodigiOrderContent.order.id
         );
         console.log(
@@ -77,73 +107,44 @@ async function createProdigiOrder(event) {
 
         return prodigiOrderContent;
     } catch (e) {
-        console.log("Error creating order with Prodigi:", e.message);
+        console.log("Error creating order with Prodigi for order: ", orderId);
         throw e;
     }
 }
 
 /**
- * /**
- * StripeVwbthreePhotoItem {
- *  id: string;
- *  object: string; //item
- *  amount_discount
- * }
+ * OrderItems {
+ *  itemPrintSize: string
+ *  photoId: string
+ *  photoName: string
+ *  photoUrl: string
+ *  quantity: number
+ *  sku: string
+ * }[]
  *
- * StripeItems {
- *  object: 'list';
- *  data: StripeVwbthreePhotoItem[];
- *  has_more: boolean;
- *  url: string;
- * }
- *
- * ProdigiItem {
- *  sku: string;
- *  copies: number;
- *  sizing: fillPrintArea | string;
- *  assets: ProdigiAsset[]
- * }
- *
- * ProdigiAsset {
- *  printArea: default | string;
- *  url: string //signed URL
- * }
- *
- * Gets the line items associated to the passed in checkout session
- *
- * @param {*} checkoutId string Checkout session ID
+ * @param {*} orderLineItems: OrderItems
  */
-async function getCheckoutSessionLineItems(checkoutId) {
-    const signedUrlMap = {};
+async function constructProducts(orderLineItems) {
     const prodigiItems = [];
-    const stripeSdk = await getStripeSDK();
-    const lineItems = await stripeSdk.checkout.sessions.listLineItems(
-        checkoutId,
-        {
-            limit: 50
-        }
-    );
+    const signedUrlMap = new Map();
 
-    for (const item of lineItems.data) {
+    for (const item of orderLineItems) {
         let signedAssetUrl;
         const quantity = item.quantity;
 
-        const product = await stripeSdk.products.retrieve(item.price.product);
-        const photoId = product.metadata.photoId;
-
-        if (signedUrlMap[photoId]) {
-            signedAssetUrl = signedUrlMap[photoId];
+        if (signedUrlMap.has(item.photoId)) {
+            signedAssetUrl = signedUrlMap.get(item.photoId);
         } else {
             signedAssetUrl = await createSignedDownloadUrlForAsset(
-                `${product.metadata.photoId}.jpg`
+                `${item.photoId}.jpg`
             );
-            signedUrlMap[photoId] = signedAssetUrl;
+            signedUrlMap.set(item.photoId, signedAssetUrl);
         }
 
         prodigiItems.push({
             sizing: "fillPrintArea",
             copies: quantity,
-            sku: product.metadata.sku,
+            sku: item.sku,
             assets: [
                 {
                     url: signedAssetUrl,
@@ -174,23 +175,17 @@ async function getCheckoutSessionLineItems(checkoutId) {
  * 
  * @param {*} event 
  */
-function constructRecipient(event) {
-    const userData = {
-        email: event?.data?.object?.customer_details?.email,
-        name: event?.data?.object?.customer_details?.name,
-        shipping: event?.data?.object?.shipping
-    };
-
+function constructRecipient(userData) {
     return {
-        name: userData.shipping.name,
+        name: userData.shipping_address.name,
         email: userData.email,
         address: {
-            line1: userData.shipping.address.line1,
-            line2: userData.shipping.address.line2,
-            postalOrZipCode: userData.shipping.address.postal_code,
-            countryCode: userData.shipping.address.country,
-            townOrCity: userData.shipping.address.city,
-            stateOrCounty: userData.shipping.address.state
+            line1: userData.shipping_address.address.line1,
+            line2: userData.shipping_address.address.line2,
+            postalOrZipCode: userData.shipping_address.address.postal_code,
+            countryCode: userData.shipping_address.address.country,
+            townOrCity: userData.shipping_address.address.city,
+            stateOrCounty: userData.shipping_address.address.state
         }
     };
 }
