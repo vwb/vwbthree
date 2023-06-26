@@ -1,4 +1,9 @@
 import nodemailer from "nodemailer";
+import {
+    OrderConfirmationEmail,
+    OrderShippedEmail
+} from "../../email_templates";
+import { render } from "@react-email/render";
 import * as aws from "@aws-sdk/client-ses";
 
 const SENDER = "vwbthree <vwbthree.photos@gmail.com>";
@@ -35,14 +40,50 @@ export async function sendOrderConfirmationEmail(config) {
      *  orderUUID
      *  lineItemsImages
      */
-    const emailContent = `Your order been received and it being processed. You can follow along with your order status at https://vwbthree.me/photos/orders/${config.orderId}`;
 
+    const emailHtml = render(
+        <OrderConfirmationEmail orderId={config.orderId} />
+    );
     const mailConfiguration = {
         from: SENDER,
         to: config.recipient,
         subject: "Order Received",
-        text: emailContent,
-        html: `<div>${emailContent}</div>`
+        html: emailHtml
+    };
+
+    try {
+        await transporter.sendMail(mailConfiguration);
+    } catch (e) {
+        console.error("Error sending email for order: ", congif.orderId);
+        console.error(e.message);
+    }
+}
+
+/**
+ * SendEmailConfig {
+ *  recipient: string;
+ *  template: string;
+ *  templateData: Object;
+ * }
+ *
+ * @param {*} config
+ */
+export async function sendOrderShippedEmail(config) {
+    /**
+     * need:
+     *  name
+     *  email
+     *  orderUUID
+     *  lineItemsImages
+     */
+
+    const emailHtml = render(<OrderShippedEmail orderId={config.orderId} />);
+
+    const mailConfiguration = {
+        from: SENDER,
+        to: config.recipient,
+        subject: "Order Shipped",
+        html: emailHtml
     };
 
     try {
