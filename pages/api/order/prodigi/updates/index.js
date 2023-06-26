@@ -9,12 +9,20 @@ const PRODIGI_STATUS_MAP = {
 
 export default async function handler(req, res) {
     if (req.method === "POST") {
-        const orderId = req.body.data.order.idempotencyKey;
+        console.log("handling prodigi update");
+        console.log(JSON.stringify(req.body));
+
+        const orderId = req?.body?.data?.order?.idempotencyKey;
         const prodigiStatus = req.body.data.order.status.stage;
         const statusUpdate = PRODIGI_STATUS_MAP[prodigiStatus];
 
         try {
-            if (!!statusUpdate) {
+            if (!!statusUpdate && orderId) {
+                console.log(
+                    "Update prodigi order status: ",
+                    statusUpdate.status
+                );
+
                 await updateOrderStatus(orderId, statusUpdate.status);
 
                 if (statusUpdate.emailTrigger) {
