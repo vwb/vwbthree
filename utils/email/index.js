@@ -47,7 +47,7 @@ export async function sendOrderConfirmationEmail(config) {
     const mailConfiguration = {
         from: SENDER,
         to: config.recipient,
-        subject: "Order Received",
+        subject: `Order Received`,
         html: emailHtml
     };
 
@@ -82,7 +82,7 @@ export async function sendOrderShippedEmail(config) {
     const mailConfiguration = {
         from: SENDER,
         to: config.recipient,
-        subject: "Order Shipped",
+        subject: `Order Shipped!`,
         html: emailHtml
     };
 

@@ -23,7 +23,8 @@ export const OrderConfirmationEmail = props => {
         <Html>
             <Head />
             <Preview>
-                🎉 Your order has been received and it is being processed.
+                🎉 Order {props.orderId} has been received and is being
+                processed.
             </Preview>
             <Body style={main}>
                 <Container style={container}>
@@ -31,6 +32,7 @@ export const OrderConfirmationEmail = props => {
                         Order Received!
                         <div style={{ marginTop: "24px" }}>🎉</div>
                     </Heading>
+                    <Text style={{ ...text }}>Order # {props.orderId}</Text>
                     <Text
                         style={{
                             ...text,

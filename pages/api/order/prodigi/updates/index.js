@@ -20,16 +20,20 @@ export default async function handler(req, res) {
                     "Update prodigi order status: ",
                     statusUpdate.status
                 );
+                const order = await getOrder(orderId);
 
-                await updateOrderStatus(orderId, statusUpdate.status);
-
-                if (statusUpdate.emailTrigger) {
-                    const order = await getOrder(orderId);
-                    await statusUpdate?.emailTrigger?.({
+                if (
+                    order.status !== "shipped" &&
+                    statusUpdate.status === "shipped"
+                ) {
+                    await updateOrderStatus(orderId, statusUpdate.status);
+                    await sendOrderShippedEmail({
                         recipient: order.user.email,
                         orderId: orderId
                     });
                 }
+
+                //handle cancelled order here
             }
         } catch (e) {
             console.error("Error updating order status", e.message);
