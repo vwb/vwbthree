@@ -13,7 +13,9 @@ const LandingBackground = props => {
 
     return (
         <section
-            className="landing-background fixed"
+            className={`landing-background fixed ${
+                props.shouldBlur ? "blur" : ""
+            }`}
             style={{
                 marginTop: "-120px",
                 width: "100vw",
@@ -62,7 +64,7 @@ const Home = () => {
 
     return (
         <div
-            className={`landing ${isMenuVisible ? "blur" : ""}`}
+            className={`landing`}
             style={{ backgroundColor: "#1B1B1B", height: "100vh" }}
         >
             <Layout
@@ -70,7 +72,7 @@ const Home = () => {
                 navClass="t-0 l-10 bg-transparent"
                 textColor="text-white"
             >
-                <LandingBackground />
+                <LandingBackground shouldBlur={isMenuVisible} />
                 <FadeIn>
                     <Menu isVisible={isMenuVisible}>
                         <section className="flex items-center flex-col w-full">
