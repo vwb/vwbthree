@@ -1,9 +1,10 @@
-import { v1 as uuidv1 } from "uuid";
+import shortUUID from "short-uuid";
 import { getSkuPrices, getStripeLineItems } from "../../../utils/checkout";
 import { createOrder, deleteOrder } from "../../../utils/order";
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-
+const ORDER_ID_CHARACTER_SET =
+    "abcdefghijklmnopABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 /**
  * interface PhotoMetaData {
  *  filename: string;
@@ -60,7 +61,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
     if (req.method === "POST") {
-        const orderUUID = uuidv1();
+        const orderUUID = shortUUID(ORDER_ID_CHARACTER_SET).generate();
         const parsedBody = JSON.parse(req.body);
         const skuPrices = await getSkuPrices(parsedBody);
         const lineItems = getStripeLineItems(parsedBody, skuPrices);

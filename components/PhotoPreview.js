@@ -6,8 +6,8 @@ export const PhotoPreview = ({ photo }) => {
         <Link href={`/photos/${photo.displayName}--${photo.photoName}`}>
             <div
                 style={{
-                    width: "110px",
-                    height: "160px",
+                    width: "120px",
+                    height: "120px",
                     position: "relative"
                 }}
             >

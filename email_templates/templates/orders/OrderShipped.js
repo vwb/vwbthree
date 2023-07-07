@@ -22,11 +22,13 @@ export const OrderShippedEmail = props => {
     return (
         <Html>
             <Head />
-            <Preview>🚚 Your order has been shipped and is on its way.</Preview>
+            <Preview>
+                🚚 Order {props.orderId} has been shipped and is on its way.
+            </Preview>
             <Body style={main}>
                 <Container style={container}>
                     <Heading>
-                        Order Shipped!
+                        Order {props.orderId} Shipped!
                         <div style={{ marginTop: "24px" }}>🚚</div>
                     </Heading>
                     <Text
