@@ -17,7 +17,6 @@
         "@fullhuman/postcss-purgecss": "^2.0.6",
         "@react-email/components": "^0.0.7",
         "@stripe/stripe-js": "^1.46.0",
-        "autoprefixer": "^9.7.4",
         "aws-sdk": "^2.1043.0",
         "dotenv": "^16.0.1",
         "eslint-config-next": "^13.0.6",
@@ -38,12 +37,14 @@
         "short-uuid": "^4.2.2",
         "slugify": "^1.4.0",
         "stripe": "^11.5.0",
-        "tailwindcss": "^1.4.0",
         "throttle-debounce": "^2.1.0",
         "uuid": "^9.0.0"
     },
     "devDependencies": {
         "@squoosh/lib": "^0.4.0",
-        "csvtojson": "^2.0.10"
+        "autoprefixer": "^10.4.14",
+        "csvtojson": "^2.0.10",
+        "postcss": "^8.4.25",
+        "tailwindcss": "^3.3.2"
     }
 }
