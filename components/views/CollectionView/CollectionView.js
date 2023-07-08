@@ -8,7 +8,7 @@ const PhotoGroupCard = props => {
         : `/photos/collections/${props.slug}`;
 
     return (
-        <div className="pt-6 px-4 object-center sm:w-1/3 lg:w-1/4 w-1/2 h-80 md:h-96">
+        <div className="pt-6 px-4 object-center sm:w-1/3 lg:w-1/4 w-1/2 h-64 md:h-96">
             <Link href={href}>
                 <NavCard
                     blur={false}
