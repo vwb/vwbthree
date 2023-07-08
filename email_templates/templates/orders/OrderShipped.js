@@ -28,9 +28,10 @@ export const OrderShippedEmail = props => {
             <Body style={main}>
                 <Container style={container}>
                     <Heading>
-                        Order {props.orderId} Shipped!
+                        Order Shipped!
                         <div style={{ marginTop: "24px" }}>🚚</div>
                     </Heading>
+                    <Text style={{ ...text }}>Order # {props.orderId}</Text>
                     <Text
                         style={{
                             ...text,
