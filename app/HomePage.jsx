@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 
-import Link from "next/link";
 import Layout from "../components/Layout";
 import FadeIn from "../components/FadeIn";
 import LinkButton from "../components/LinkButton";
@@ -14,7 +13,9 @@ const LandingBackground = props => {
 
     return (
         <section
-            className="landing-background fixed"
+            className={`landing-background fixed ${
+                props.shouldBlur ? "blur" : ""
+            }`}
             style={{
                 marginTop: "-120px",
                 width: "100vw",
@@ -63,7 +64,7 @@ const Home = () => {
 
     return (
         <div
-            className={`landing ${isMenuVisible ? "blur" : ""}`}
+            className={`landing`}
             style={{ backgroundColor: "#1B1B1B", height: "100vh" }}
         >
             <Layout
@@ -71,7 +72,7 @@ const Home = () => {
                 navClass="t-0 l-10 bg-transparent"
                 textColor="text-white"
             >
-                <LandingBackground />
+                <LandingBackground shouldBlur={isMenuVisible} />
                 <FadeIn>
                     <Menu isVisible={isMenuVisible}>
                         <section className="flex items-center flex-col w-full">
@@ -80,18 +81,15 @@ const Home = () => {
                                 style={{
                                     height: "200px",
                                     width: "200px",
-                                    fontFamily: "Simsun"
+                                    fontFamily: "Simsun",
+                                    justifyContent: "space-evenly"
                                 }}
                             >
-                                <Link legacyBehavior href="/photos">
-                                    <LinkButton passHref>
-                                        Photography
-                                    </LinkButton>
-                                </Link>
+                                <LinkButton href={"/photos"}>
+                                    Photography
+                                </LinkButton>
                                 <div className="fade-in border border-solid border-gray-200 w-6" />
-                                <Link legacyBehavior href="/about">
-                                    <LinkButton passHref>About</LinkButton>
-                                </Link>
+                                <LinkButton href="/about">About</LinkButton>
                             </div>
                         </section>
                     </Menu>

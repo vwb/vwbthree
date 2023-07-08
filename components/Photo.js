@@ -25,11 +25,7 @@ const Photo = props => {
     };
 
     const image = (
-        <ImageWrapper
-            url={props.photo.url}
-            title={props.photo.displayName}
-            isRaised={true}
-        />
+        <ImageWrapper url={props.photo.url} title={props.photo.displayName} />
     );
 
     return (

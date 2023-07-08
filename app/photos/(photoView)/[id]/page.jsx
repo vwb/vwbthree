@@ -1,5 +1,6 @@
 import PhotoItemView from "./PhotoItemView";
 import { db, PHOTO_DYNAMO_TABLE } from "../../../../db";
+import { createSignedDownloadUrlForAsset } from "../../../../utils/assets";
 
 export async function generateStaticParams() {
     var params = {
@@ -16,6 +17,27 @@ export async function generateStaticParams() {
     return paths;
 }
 
+/**
+ * 
+ * @param {} params 
+ * @returns
+ * {
+  displayName: 'oak-in-yosemite',
+  summary: 'Wouldya look at that.',
+  location: 'california#yosemite',
+  metaData: {
+    width: 3704,
+    fileName: 'DSC09372.jpg',
+    size: 15335180,
+    height: 4545
+  },
+  ratio: 1.2,
+  collections: '#california#yosemite#halfdome#winter',
+  photoName: 'DSC09372',
+  orientation: 'portait',
+  url: 'https://d1vk060ez13nog.cloudfront.net/DSC09372.jpg'
+} 
+ */
 export async function getPhotoData(params) {
     const id = params.id.split("--")[1];
 

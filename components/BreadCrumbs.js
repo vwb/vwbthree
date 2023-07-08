@@ -1,11 +1,16 @@
 import React from "react";
 import Link from "next/link";
 
+const CRUMB_BLOCK_LIST = ["orders"];
+
 const Divider = ({ currentIndex, crumbLength, children }) =>
     currentIndex < crumbLength - 1 ? children : null;
 
 export const BreadCrumbs = props => (
-    <ul className="flex justify-start pl-5" style={{ overflowX: "scroll" }}>
+    <ul
+        className="flex justify-start pl-5"
+        style={{ overflowX: "scroll", flexGrow: "1" }}
+    >
         {props.crumbs.map((crumb, index) => (
             <li
                 key={crumb.route}
@@ -17,15 +22,27 @@ export const BreadCrumbs = props => (
                     flex: "0 0 auto"
                 }}
             >
-                <Link href={crumb.route}>
-                    {crumb.display}
-                    <Divider
-                        currentIndex={index}
-                        crumbLength={props.crumbs.length}
-                    >
-                        <span className="px-1">/</span>
-                    </Divider>
-                </Link>
+                {CRUMB_BLOCK_LIST.includes(crumb.display) ? (
+                    <>
+                        {crumb.display}
+                        <Divider
+                            currentIndex={index}
+                            crumbLength={props.crumbs.length}
+                        >
+                            <span className="px-1">/</span>
+                        </Divider>
+                    </>
+                ) : (
+                    <Link href={crumb.route}>
+                        {crumb.display}
+                        <Divider
+                            currentIndex={index}
+                            crumbLength={props.crumbs.length}
+                        >
+                            <span className="px-1">/</span>
+                        </Divider>
+                    </Link>
+                )}
             </li>
         ))}
     </ul>
