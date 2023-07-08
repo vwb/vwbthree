@@ -62,7 +62,7 @@ export const OrderShippedEmail = props => {
                     >
                         <Text style={text}>
                             Keep up to date with latest photos, sales, and more
-                            on my instagram{" "}
+                            via instagram:{" "}
                             <Link
                                 href="https://www.instagram.com/vwbthree/"
                                 style={{

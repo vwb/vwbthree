@@ -66,7 +66,7 @@ export const OrderConfirmationEmail = props => {
                         <Text style={text}>
                             Thank you for ordering from vwbthree photography.
                             Keep up to date with latest photos, sales, and more
-                            on my instagram{" "}
+                            via instagram:{" "}
                             <Link
                                 href="https://www.instagram.com/vwbthree/"
                                 style={{
