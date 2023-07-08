@@ -8,7 +8,7 @@ const PhotoGroupCard = props => {
         : `/photos/collections/${props.slug}`;
 
     return (
-        <div className="pt-6 px-4 object-center sm:w-1/3 lg:w-1/4 w-1/2 h-64 md:h-96">
+        <div className="pt-6 px-2 object-center sm:w-1/3 lg:w-1/4 w-1/2 h-64 md:h-96">
             <Link href={href}>
                 <NavCard
                     blur={false}
@@ -42,7 +42,7 @@ const PhotoGroupCard = props => {
 const PhotosIndex = props => {
     return (
         <main className="pt-12 pb-6 max-w-screen-xl mx-auto">
-            <div className="flex justify-center flex-wrap">
+            <div className="flex justify-center flex-wrap px-2">
                 {Object.keys(props.collections).map(data => (
                     <PhotoGroupCard
                         key={data}
