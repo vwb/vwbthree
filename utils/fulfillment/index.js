@@ -45,12 +45,19 @@ export async function handleCompletedCheckout(event) {
         prodigiOrderId
     });
 
-    await sendOrderConfirmationEmail({
-        recipient: userData.email,
-        recipientName: userData.name,
-        orderId: orderId,
-        orderData: orderData
-    });
+    //Wrap the order confirmation email in a
+    //standalone try catch to not fail the entire order.
+
+    try {
+        await sendOrderConfirmationEmail({
+            recipient: userData.email,
+            recipientName: userData.name,
+            orderId: orderId,
+            orderData: orderData
+        });
+    } catch (e) {
+        console.error(e);
+    }
 }
 
 async function createProdigiOrder(orderId, userData, orderData) {

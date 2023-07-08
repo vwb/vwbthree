@@ -4,26 +4,23 @@ import Link from "next/link";
 import { PhotoPreview } from "../../../../../components/PhotoPreview";
 import { ClearCart } from "./ClearCart";
 
-// events to handle render state for:
-//received
-// processing
-// cancelled
-// shipped
-
-const PROCESSING_CONTENT = `Your order is being processed. Tracking information will be here when available.`;
-
 const ORDER_STATUS_CONTENT_MAP = {
     processing: {
         emoji: "🛠",
-        content: contentConfig => <p className="mx-12">{PROCESSING_CONTENT}</p>,
+        content: () => (
+            <section className="mx-12">
+                <p>Your order is being processed.</p>
+                <p>Tracking information will be here when available.</p>
+            </section>
+        ),
         header: "Processing"
     },
     shipped: {
         emoji: "🚚",
         header: "Shipped",
-        content: contentConfig => (
+        content: ({ prodigiShipping }) => (
             <>
-                {contentConfig.map(shipment => (
+                {prodigiShipping.map(shipment => (
                     <div className="mt-5" key={shipment.id}>
                         <Link
                             className="text-blue-700 underline text-lg"
@@ -46,6 +43,27 @@ const ORDER_STATUS_CONTENT_MAP = {
         header: "Received",
         emoji: "🎉",
         content: () => null
+    },
+    error: {
+        header: "Error: Oops!",
+        emoji: "✖︎",
+        content: ({ orderId }) => (
+            <section className="mx-20">
+                <p>There has been an issue processing your order.</p>
+                <p className="my-4">Check back here for updates.</p>
+
+                <p>
+                    If you'd like to request a refund, contact us{" "}
+                    <Link
+                        className="text-blue-700 underline text-lg"
+                        href={`mailto:vwbthree.photos@gmail.com?subject=Refund%20Request%20Order%20${orderId}`}
+                    >
+                        here
+                    </Link>{" "}
+                    and we'll get right on it.
+                </p>
+            </section>
+        )
     }
 };
 
@@ -63,7 +81,7 @@ const OrderStatus = props => {
                 <p className="text-gray-800 text-xs"># {props.orderId}</p>
             </section>
             <h2 className="text-5xl py-3">{orderStatus.emoji}</h2>
-            {orderStatus.content(props.prodigiOrderShipping)}
+            {orderStatus.content(props.dynamicContent)}
         </section>
     );
 };
@@ -113,7 +131,8 @@ const Support = props => {
 
     return (
         <p className="mx-12">
-            Something not look right? Reach out{" "}
+            Something not look right? Didn't receive a confirmation email? Reach
+            out{" "}
             <Link className="text-blue-700 underline text-lg" href={mailToLink}>
                 here
             </Link>{" "}
@@ -145,7 +164,10 @@ export default async function Page({ params }) {
                 <ClearCart orderData={orderData} />
                 <OrderStatus
                     orderStatus={orderData.status}
-                    prodigiOrderShipping={prodigiOrder?.order?.shipments}
+                    dynamicContent={{
+                        prodigiShipping: prodigiOrder?.order?.shipments,
+                        orderId: orderId
+                    }}
                     orderId={orderId}
                 />
                 <Divider verticalMargin="3.5rem" />

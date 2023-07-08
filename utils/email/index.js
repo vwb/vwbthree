@@ -54,7 +54,7 @@ export async function sendOrderConfirmationEmail(config) {
     try {
         await transporter.sendMail(mailConfiguration);
     } catch (e) {
-        console.error("Error sending email for order: ", congif.orderId);
+        console.error("Error sending email for order: ", config.orderId);
         console.error(e.message);
     }
 }
@@ -89,7 +89,7 @@ export async function sendOrderShippedEmail(config) {
     try {
         await transporter.sendMail(mailConfiguration);
     } catch (e) {
-        console.error("Error sending email for order: ", congif.orderId);
+        console.error("Error sending email for order: ", config.orderId);
         console.error(e.message);
     }
 }
