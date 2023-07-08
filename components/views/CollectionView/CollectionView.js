@@ -8,10 +8,7 @@ const PhotoGroupCard = props => {
         : `/photos/collections/${props.slug}`;
 
     return (
-        <div
-            style={{ height: "450px", width: "400px" }}
-            className="pt-6 px-4 object-center"
-        >
+        <div className="pt-6 px-4 object-center sm:w-1/3 lg:w-1/4 w-1/2 h-80 md:h-96">
             <Link href={href}>
                 <NavCard
                     blur={false}
@@ -30,9 +27,7 @@ const PhotoGroupCard = props => {
                     <div
                         style={{
                             background: "black",
-                            padding: "8px",
-                            paddingLeft: "12px",
-                            paddingRight: "12px"
+                            padding: "6px 8px 6px 8px"
                         }}
                     >
                         {props.name}
