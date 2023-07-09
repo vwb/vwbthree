@@ -46,6 +46,9 @@ export default async function handler(req, res) {
             res.status(400);
         }
 
+        res.status(200);
+        res.json({ received: true });
+
         switch (event.type) {
             case "checkout.session.completed":
                 try {
@@ -86,7 +89,5 @@ export default async function handler(req, res) {
                 res.status(400);
                 break;
         }
-
-        res.json({ received: true });
     }
 }
