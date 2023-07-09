@@ -146,7 +146,7 @@ export default async function Page({ params }) {
     const orderData = await getOrder(orderId);
     let prodigiOrder;
 
-    if (orderData.status === "shipped") {
+    if (orderData.status === "shipped" && orderData.prodigiOrderId) {
         prodigiOrder = await getProdigiOrder(orderData.prodigiOrderId);
     }
 

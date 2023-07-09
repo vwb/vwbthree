@@ -1,66 +1,7 @@
-import { updateOrderStatus, getOrder } from "../order";
 import { createSignedDownloadUrlForAsset } from "../assets";
-import { sendOrderConfirmationEmail } from "../email";
 import { postProdigiOrder } from "../prodigi";
 
-function validateCheckoutSuccess(event) {
-    if (!event?.data?.object?.metadata?.orderId) {
-        throw new Error(
-            "Missing order id for checkout session. Abandoning order"
-        );
-    }
-    if (!event?.data?.object?.shipping) {
-        throw new Error("Missing shipping information");
-    }
-}
-
-async function getOrderItems(orderId) {
-    const order = await getOrder(orderId);
-    const orderData = order.items;
-
-    if (!orderData) {
-        throw new Error("Missing order information");
-    }
-
-    return orderData;
-}
-
-export async function handleCompletedCheckout(event) {
-    validateCheckoutSuccess(event);
-
-    const orderId = event?.data?.object?.metadata?.orderId;
-    const userData = {
-        email: event?.data?.object?.customer_details?.email,
-        name: event?.data?.object?.customer_details?.name,
-        shipping_address: event?.data?.object?.shipping
-    };
-
-    const orderData = await getOrderItems(orderId);
-    const prodigiOrder = await createProdigiOrder(orderId, userData, orderData);
-    const prodigiOrderId = prodigiOrder.order.id;
-
-    await updateOrderStatus(orderId, "processing", {
-        user: userData,
-        stripeCheckoutSessionId: event.data.object.id,
-        prodigiOrderId
-    });
-
-    //Wrap the order confirmation email in a
-    //standalone try catch to not fail the entire order.
-
-    try {
-        await sendOrderConfirmationEmail({
-            recipient: userData.email,
-            recipientName: userData.name,
-            orderId: orderId,
-            orderData: orderData
-        });
-    } catch (e) {
-        console.error(e);
-    }
-}
-
-async function createProdigiOrder(orderId, userData, orderData) {
+export async function createProdigiOrder(orderId, userData, orderData) {
     let formattedProducts;
     let recipient;
 

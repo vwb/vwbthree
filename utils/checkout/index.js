@@ -1,4 +1,6 @@
 import { db, PRODUCT_SKU_TABLE } from "../../db";
+import { updateOrderStatus } from "../order";
+import { sendOrderConfirmationEmail } from "../email";
 
 async function queryDbForSkus(skuSetArray) {
     const skuExpressionAttributeValues = skuSetArray.reduce(
@@ -91,4 +93,68 @@ export function getStripeLineItems(parsedBody, skuPrices) {
     }, []);
 
     return lineItems;
+}
+
+function validateCheckoutSuccess(event) {
+    if (!event?.data?.object?.metadata?.orderId) {
+        throw new Error(
+            "Missing order id for checkout session. Abandoning order"
+        );
+    }
+    if (!event?.data?.object?.shipping) {
+        throw new Error("Missing shipping information");
+    }
+}
+
+function getRootUrl() {
+    const path = process.env.VERCEL_URL;
+
+    if (path.includes("localhost:3000")) {
+        return `http://${path}`;
+    }
+
+    return `https://${path}`;
+}
+
+export async function handleCompletedCheckout(event) {
+    validateCheckoutSuccess(event);
+
+    const orderId = event?.data?.object?.metadata?.orderId;
+    const userData = {
+        email: event?.data?.object?.customer_details?.email,
+        name: event?.data?.object?.customer_details?.name,
+        shipping_address: event?.data?.object?.shipping
+    };
+
+    await updateOrderStatus(orderId, "received", {
+        user: userData,
+        stripeCheckoutSessionId: event.data.object.id
+    });
+
+    //call fullfillment endpoint.
+    //Don't wait for response.
+    const rootUrl = getRootUrl();
+    fetch(`${rootUrl}/api/orders/fulfillment`, {
+        method: "POST",
+        body: JSON.stringify({
+            orderId: orderId,
+            userData
+        })
+    });
+
+    // const prodigiOrder = await createProdigiOrder(orderId, userData, orderData);
+    // const prodigiOrderId = prodigiOrder.order.id;
+
+    // //Wrap the order confirmation email in a
+    // //standalone try catch to not fail the entire order.
+
+    try {
+        await sendOrderConfirmationEmail({
+            recipient: userData.email,
+            recipientName: userData.name,
+            orderId: orderId
+        });
+    } catch (e) {
+        console.error(e);
+    }
 }
