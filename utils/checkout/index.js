@@ -108,50 +108,39 @@ export function validateCheckoutSuccess(event) {
     }
 }
 
-export function handleCompletedCheckout(event) {
+export async function handleCompletedCheckout(event) {
     const orderId = event?.data?.object?.metadata?.orderId;
     const userData = {
         email: event?.data?.object?.customer_details?.email,
         name: event?.data?.object?.customer_details?.name,
         shipping_address: event?.data?.object?.shipping
     };
+    const order = await getOrder(orderId);
 
-    //Call API handler for fulfilling order;
-    const rootPath = getRootUrl();
-    fetch(`${rootPath}/api/order/fullfillment`, {
-        method: "POST",
-        body: JSON.stringify({
-            orderId,
-            userData
-        })
-    });
+    if (order.status === "received") {
+        try {
+            const prodigiOrder = await createProdigiOrder(
+                orderId,
+                userData,
+                orderItems
+            );
+            const prodigiOrderId = prodigiOrder.order.id;
 
-    // if (order.status === "received") {
-    //     //add user data to order and update to received in
-    //     //case prodigi step times out / fails.
-    //     try {
-    //         const prodigiOrder = await createProdigiOrder(
-    //             orderId,
-    //             userData,
-    //             orderItems
-    //         );
-    //         const prodigiOrderId = prodigiOrder.order.id;
+            await updateOrderStatus(orderId, "processing", {
+                prodigiOrderId
+            });
 
-    //         await updateOrderStatus(orderId, "processing", {
-    //             prodigiOrderId
-    //         });
-
-    //         try {
-    //             await sendOrderConfirmationEmail({
-    //                 recipient: userData.email,
-    //                 recipientName: userData.name,
-    //                 orderId: orderId
-    //             });
-    //         } catch (e) {
-    //             console.error(e);
-    //         }
-    //     } catch (e) {
-    //         console.error(e);
-    //     }
-    // }
+            try {
+                await sendOrderConfirmationEmail({
+                    recipient: userData.email,
+                    recipientName: userData.name,
+                    orderId: orderId
+                });
+            } catch (e) {
+                console.error(e);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
 }
