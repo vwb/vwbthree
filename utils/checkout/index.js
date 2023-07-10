@@ -118,7 +118,7 @@ export function handleCompletedCheckout(event) {
 
     //Call API handler for fulfilling order
     const rootPath = getRootPath();
-    fetch(`${rootPath}/api/order/fulfillment`, {
+    fetch(`${rootPath}/api/order/fullfillment`, {
         method: "POST",
         body: JSON.stringify({
             orderId,
