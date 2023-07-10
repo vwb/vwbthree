@@ -45,16 +45,19 @@ export default async function handler(req, res) {
             );
             res.status(400);
         }
+        let orderUUID;
 
         switch (event.type) {
             case "checkout.session.completed":
+                orderUUID = event?.data?.object?.metadata?.orderId;
+
                 const userData = {
                     email: event?.data?.object?.customer_details?.email,
                     name: event?.data?.object?.customer_details?.name,
                     shipping_address: event?.data?.object?.shipping
                 };
 
-                await updateOrderStatus(orderId, "received", {
+                await updateOrderStatus(orderUUID, "received", {
                     user: userData,
                     stripeCheckoutSessionId: event.data.object.id
                 });
@@ -65,7 +68,7 @@ export default async function handler(req, res) {
                 await handleCompletedCheckout(event);
                 return;
             case "checkout.session.expired":
-                const orderUUID = event?.data?.object?.metadata?.orderId;
+                orderUUID = event?.data?.object?.metadata?.orderId;
 
                 if (orderUUID) {
                     console.log(
