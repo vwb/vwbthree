@@ -62,12 +62,13 @@ export default async function handler(req, res) {
                     shipping_address: event?.data?.object?.shipping
                 };
 
-                //Add a lambda to my aws bucket
-                //that will call to update this thing
                 await updateOrderStatus(orderUUID, "received", {
                     user: userData,
                     stripeCheckoutSessionId: event.data.object.id
                 });
+
+                //Add a lambda to my aws bucket
+                //that will call to update this thing
                 await handleCompletedCheckout(event);
 
                 res.status(200);
