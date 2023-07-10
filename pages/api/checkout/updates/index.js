@@ -67,7 +67,9 @@ export default async function handler(req, res) {
                     stripeCheckoutSessionId: event.data.object.id
                 });
 
-                handleCompletedCheckout(event);
+                //Add a lambda to my aws bucket
+                //that will call to update this thing
+                await handleCompletedCheckout(event);
 
                 res.status(200);
                 res.json({ received: true });
