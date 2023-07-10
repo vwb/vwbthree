@@ -3,7 +3,11 @@ import {
     handleCompletedCheckout,
     validateCheckoutSuccess
 } from "../../../../utils/checkout";
-import { updateOrderStatus, deleteOrder } from "../../../../utils/order";
+import {
+    updateOrderStatus,
+    deleteOrder,
+    getOrder
+} from "../../../../utils/order";
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
@@ -62,14 +66,17 @@ export default async function handler(req, res) {
                     shipping_address: event?.data?.object?.shipping
                 };
 
-                await updateOrderStatus(orderUUID, "received", {
-                    user: userData,
-                    stripeCheckoutSessionId: event.data.object.id
-                });
+                const order = await getOrder(orderUUID);
 
-                //Add a lambda to my aws bucket
-                //that will call to update this thing
-                await handleCompletedCheckout(event);
+                if (order.status === "created") {
+                    await updateOrderStatus(orderUUID, "received", {
+                        user: userData,
+                        stripeCheckoutSessionId: event.data.object.id
+                    });
+
+                    //test fire and forget approach
+                    handleCompletedCheckout(event);
+                }
 
                 res.status(200);
                 res.json({ received: true });

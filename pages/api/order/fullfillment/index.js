@@ -5,7 +5,7 @@ import { sendOrderConfirmationEmail } from "../../../../utils/email";
 export default async function handler(req, res) {
     if (req.method === "POST") {
         try {
-            const parsedBody = JSON.parse(req.body);
+            const parsedBody = req.body;
             const userData = parsedBody.userData;
             const orderId = parsedBody.orderId;
             const order = await getOrder(orderId);

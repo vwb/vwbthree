@@ -1,8 +1,8 @@
 import { db, PRODUCT_SKU_TABLE } from "../../db";
-import { updateOrderStatus, getOrder } from "../order";
-import { sendOrderConfirmationEmail } from "../email";
 import { getRootUrl } from "../api";
-import { createProdigiOrder } from "../fulfillment";
+// import { updateOrderStatus, getOrder } from "../order";
+// import { sendOrderConfirmationEmail } from "../email";
+// import { createProdigiOrder } from "../fulfillment";
 
 async function queryDbForSkus(skuSetArray) {
     const skuExpressionAttributeValues = skuSetArray.reduce(
@@ -115,32 +115,57 @@ export async function handleCompletedCheckout(event) {
         name: event?.data?.object?.customer_details?.name,
         shipping_address: event?.data?.object?.shipping
     };
-    const order = await getOrder(orderId);
 
-    if (order.status === "received") {
-        try {
-            const prodigiOrder = await createProdigiOrder(
+    try {
+        fetch(`${getRootUrl()}/api/order/fullfillment`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
                 orderId,
-                userData,
-                order.items
-            );
-            const prodigiOrderId = prodigiOrder.order.id;
-
-            await updateOrderStatus(orderId, "processing", {
-                prodigiOrderId
-            });
-
-            try {
-                await sendOrderConfirmationEmail({
-                    recipient: userData.email,
-                    recipientName: userData.name,
-                    orderId: orderId
-                });
-            } catch (e) {
-                console.error(e);
-            }
-        } catch (e) {
-            console.error(e);
-        }
+                userData
+            })
+        });
+    } catch (e) {
+        console.error("Error fetching fullfillment endpoint.");
+        console.error(e.message);
     }
 }
+
+// export async function handleCompletedCheckout(event) {
+//     const orderId = event?.data?.object?.metadata?.orderId;
+//     const userData = {
+//         email: event?.data?.object?.customer_details?.email,
+//         name: event?.data?.object?.customer_details?.name,
+//         shipping_address: event?.data?.object?.shipping
+//     };
+//     const order = await getOrder(orderId);
+
+//     if (order.status === "received") {
+//         try {
+//             const prodigiOrder = await createProdigiOrder(
+//                 orderId,
+//                 userData,
+//                 order.items
+//             );
+//             const prodigiOrderId = prodigiOrder.order.id;
+
+//             await updateOrderStatus(orderId, "processing", {
+//                 prodigiOrderId
+//             });
+
+//             try {
+//                 await sendOrderConfirmationEmail({
+//                     recipient: userData.email,
+//                     recipientName: userData.name,
+//                     orderId: orderId
+//                 });
+//             } catch (e) {
+//                 console.error(e);
+//             }
+//         } catch (e) {
+//             console.error(e);
+//         }
+//     }
+// }
