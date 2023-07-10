@@ -1,5 +1,8 @@
 import { buffer } from "micro";
-import { handleCompletedCheckout } from "../../../../utils/checkout";
+import {
+    handleCompletedCheckout,
+    validateCheckoutSuccess
+} from "../../../../utils/checkout";
 import { updateOrderStatus, deleteOrder } from "../../../../utils/order";
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -49,6 +52,8 @@ export default async function handler(req, res) {
 
         switch (event.type) {
             case "checkout.session.completed":
+                validateCheckoutSuccess(event);
+
                 orderUUID = event?.data?.object?.metadata?.orderId;
 
                 const userData = {
@@ -62,10 +67,10 @@ export default async function handler(req, res) {
                     stripeCheckoutSessionId: event.data.object.id
                 });
 
+                handleCompletedCheckout(event);
+
                 res.status(200);
                 res.json({ received: true });
-
-                await handleCompletedCheckout(event);
                 return;
             case "checkout.session.expired":
                 orderUUID = event?.data?.object?.metadata?.orderId;
