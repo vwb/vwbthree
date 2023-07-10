@@ -1,6 +1,7 @@
 import { db, PRODUCT_SKU_TABLE } from "../../db";
 import { updateOrderStatus } from "../order";
 import { getRootUrl } from "../api";
+import { createProdigiOrder } from "../fulfillment";
 
 async function queryDbForSkus(skuSetArray) {
     const skuExpressionAttributeValues = skuSetArray.reduce(
@@ -117,19 +118,34 @@ export async function handleCompletedCheckout(event) {
         shipping_address: event?.data?.object?.shipping
     };
 
-    await updateOrderStatus(orderId, "received", {
+    const updateStatusPromise = updateOrderStatus(orderId, "received", {
         user: userData,
         stripeCheckoutSessionId: event.data.object.id
     });
+    const orderPromise = getOrder(orderId);
 
-    //call fullfillment endpoint.
-    //Don't wait for response.
+    const [order] = await Promise.all([orderPromise, updateStatusPromise]);
 
-    fetch(`${rootUrl}/api/orders/fulfillment`, {
-        method: "POST",
-        body: JSON.stringify({
-            orderId: orderId,
-            userData
-        })
-    });
+    if (order.status === "received") {
+        const prodigiOrder = await createProdigiOrder(
+            orderId,
+            userData,
+            orderItems
+        );
+        const prodigiOrderId = prodigiOrder.order.id;
+
+        await updateOrderStatus(orderId, "processing", {
+            prodigiOrderId
+        });
+
+        try {
+            await sendOrderConfirmationEmail({
+                recipient: userData.email,
+                recipientName: userData.name,
+                orderId: orderId
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    }
 }
