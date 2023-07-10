@@ -111,22 +111,12 @@ export async function handleCompletedCheckout(event) {
     validateCheckoutSuccess(event);
 
     const orderId = event?.data?.object?.metadata?.orderId;
-    const userData = {
-        email: event?.data?.object?.customer_details?.email,
-        name: event?.data?.object?.customer_details?.name,
-        shipping_address: event?.data?.object?.shipping
-    };
     const order = await getOrder(orderId);
 
-    if (order.status === "created") {
+    if (order.status === "received") {
         //add user data to order and update to received in
         //case prodigi step times out / fails.
         try {
-            await updateOrderStatus(orderId, "received", {
-                user: userData,
-                stripeCheckoutSessionId: event.data.object.id
-            });
-
             const prodigiOrder = await createProdigiOrder(
                 orderId,
                 userData,
