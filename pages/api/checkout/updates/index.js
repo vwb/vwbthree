@@ -51,24 +51,7 @@ export default async function handler(req, res) {
 
         switch (event.type) {
             case "checkout.session.completed":
-                try {
-                    await handleCompletedCheckout(event);
-                } catch (e) {
-                    const orderUUID = event?.data?.object?.metadata?.orderId;
-
-                    try {
-                        await updateOrderStatus(orderUUID, "error");
-                        console.error(
-                            "Error handling checkout.session_completed event. Order status updated for: ",
-                            orderUUID
-                        );
-                    } catch (error) {
-                        console.error(error);
-                    }
-
-                    console.error(e.message);
-                }
-
+                await handleCompletedCheckout(event);
                 res.status(200);
                 break;
             case "checkout.session.expired":

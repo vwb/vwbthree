@@ -1,6 +1,6 @@
 import { db, PRODUCT_SKU_TABLE } from "../../db";
 import { updateOrderStatus } from "../order";
-import { sendOrderConfirmationEmail } from "../email";
+import { getRootUrl } from "../api";
 
 async function queryDbForSkus(skuSetArray) {
     const skuExpressionAttributeValues = skuSetArray.reduce(
@@ -106,17 +106,8 @@ function validateCheckoutSuccess(event) {
     }
 }
 
-function getRootUrl() {
-    const path = process.env.VERCEL_URL;
-
-    if (path.includes("localhost:3000")) {
-        return `http://${path}`;
-    }
-
-    return `https://${path}`;
-}
-
 export async function handleCompletedCheckout(event) {
+    const rootUrl = getRootUrl();
     validateCheckoutSuccess(event);
 
     const orderId = event?.data?.object?.metadata?.orderId;
@@ -133,7 +124,7 @@ export async function handleCompletedCheckout(event) {
 
     //call fullfillment endpoint.
     //Don't wait for response.
-    const rootUrl = getRootUrl();
+
     fetch(`${rootUrl}/api/orders/fulfillment`, {
         method: "POST",
         body: JSON.stringify({
@@ -141,20 +132,4 @@ export async function handleCompletedCheckout(event) {
             userData
         })
     });
-
-    // const prodigiOrder = await createProdigiOrder(orderId, userData, orderData);
-    // const prodigiOrderId = prodigiOrder.order.id;
-
-    // //Wrap the order confirmation email in a
-    // //standalone try catch to not fail the entire order.
-
-    try {
-        await sendOrderConfirmationEmail({
-            recipient: userData.email,
-            recipientName: userData.name,
-            orderId: orderId
-        });
-    } catch (e) {
-        console.error(e);
-    }
 }
