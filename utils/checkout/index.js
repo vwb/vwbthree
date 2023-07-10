@@ -1,6 +1,6 @@
 import { db, PRODUCT_SKU_TABLE } from "../../db";
-import { updateOrderStatus } from "../order";
-
+import { updateOrderStatus, getOrder } from "../order";
+import { sendOrderConfirmationEmail } from "../email";
 import { createProdigiOrder } from "../fulfillment";
 
 async function queryDbForSkus(skuSetArray) {
