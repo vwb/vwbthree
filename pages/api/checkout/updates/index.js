@@ -35,6 +35,8 @@ const verifyStripeWebhook = (buf, originalRequest) => {
             endpointSecret
         );
         return event;
+    } else {
+        throw new Error("No endpoint secret defined. Unable to verify event.");
     }
 };
 
@@ -52,6 +54,7 @@ export default async function handler(req, res) {
             );
             res.status(400);
         }
+
         let orderUUID;
 
         switch (event.type) {
