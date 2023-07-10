@@ -1,6 +1,7 @@
 import { db, PRODUCT_SKU_TABLE } from "../../db";
 import { updateOrderStatus } from "../order";
-import { getRootUrl } from "../api";
+
+import { createProdigiOrder } from "../fulfillment";
 
 async function queryDbForSkus(skuSetArray) {
     const skuExpressionAttributeValues = skuSetArray.reduce(
@@ -107,7 +108,6 @@ function validateCheckoutSuccess(event) {
 }
 
 export async function handleCompletedCheckout(event) {
-    const rootUrl = getRootUrl();
     validateCheckoutSuccess(event);
 
     const orderId = event?.data?.object?.metadata?.orderId;
@@ -116,20 +116,39 @@ export async function handleCompletedCheckout(event) {
         name: event?.data?.object?.customer_details?.name,
         shipping_address: event?.data?.object?.shipping
     };
+    const order = await getOrder(orderId);
 
-    await updateOrderStatus(orderId, "received", {
-        user: userData,
-        stripeCheckoutSessionId: event.data.object.id
-    });
+    if (order.status === "created") {
+        //add user data to order and update to received in
+        //case prodigi step times out / fails.
+        try {
+            await updateOrderStatus(orderId, "received", {
+                user: userData,
+                stripeCheckoutSessionId: event.data.object.id
+            });
 
-    //call fullfillment endpoint.
-    //Don't wait for response.
+            const prodigiOrder = await createProdigiOrder(
+                orderId,
+                userData,
+                orderItems
+            );
+            const prodigiOrderId = prodigiOrder.order.id;
 
-    fetch(`${rootUrl}/api/orders/fulfillment`, {
-        method: "POST",
-        body: JSON.stringify({
-            orderId: orderId,
-            userData
-        })
-    });
+            await updateOrderStatus(orderId, "processing", {
+                prodigiOrderId
+            });
+
+            try {
+                await sendOrderConfirmationEmail({
+                    recipient: userData.email,
+                    recipientName: userData.name,
+                    orderId: orderId
+                });
+            } catch (e) {
+                console.error(e);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
 }
