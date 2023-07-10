@@ -3,7 +3,11 @@ import {
     handleCompletedCheckout,
     validateCheckoutSuccess
 } from "../../../../utils/checkout";
-import { updateOrderStatus, deleteOrder } from "../../../../utils/order";
+import {
+    updateOrderStatus,
+    deleteOrder,
+    getOrder
+} from "../../../../utils/order";
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
@@ -31,6 +35,8 @@ const verifyStripeWebhook = (buf, originalRequest) => {
             endpointSecret
         );
         return event;
+    } else {
+        throw new Error("No endpoint secret defined. Unable to verify event.");
     }
 };
 
@@ -48,6 +54,7 @@ export default async function handler(req, res) {
             );
             res.status(400);
         }
+
         let orderUUID;
 
         switch (event.type) {
@@ -62,17 +69,26 @@ export default async function handler(req, res) {
                     shipping_address: event?.data?.object?.shipping
                 };
 
-                await updateOrderStatus(orderUUID, "received", {
-                    user: userData,
-                    stripeCheckoutSessionId: event.data.object.id
-                });
+                const order = await getOrder(orderUUID);
 
-                //Add a lambda to my aws bucket
-                //that will call to update this thing
-                await handleCompletedCheckout(event);
+                if (order.status === "created") {
+                    await updateOrderStatus(orderUUID, "received", {
+                        user: userData,
+                        stripeCheckoutSessionId: event.data.object.id
+                    });
+
+                    handleCompletedCheckout(event);
+                }
+
+                async function delayResp() {
+                    return setTimeout(() => {
+                        res.json({ received: true });
+                    }, 400);
+                }
 
                 res.status(200);
-                res.json({ received: true });
+                await delayResp();
+
                 return;
             case "checkout.session.expired":
                 orderUUID = event?.data?.object?.metadata?.orderId;
