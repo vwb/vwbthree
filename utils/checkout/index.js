@@ -1,7 +1,8 @@
 import { db, PRODUCT_SKU_TABLE } from "../../db";
 import { updateOrderStatus, getOrder } from "../order";
 import { sendOrderConfirmationEmail } from "../email";
-import { createProdigiOrder } from "../fulfillment";
+import { getRootUrl } from "../api";
+// import { createProdigiOrder } from "../fulfillment";
 
 async function queryDbForSkus(skuSetArray) {
     const skuExpressionAttributeValues = skuSetArray.reduce(
@@ -96,7 +97,7 @@ export function getStripeLineItems(parsedBody, skuPrices) {
     return lineItems;
 }
 
-function validateCheckoutSuccess(event) {
+export function validateCheckoutSuccess(event) {
     if (!event?.data?.object?.metadata?.orderId) {
         throw new Error(
             "Missing order id for checkout session. Abandoning order"
@@ -107,38 +108,50 @@ function validateCheckoutSuccess(event) {
     }
 }
 
-export async function handleCompletedCheckout(event) {
-    validateCheckoutSuccess(event);
-
+export function handleCompletedCheckout(event) {
     const orderId = event?.data?.object?.metadata?.orderId;
-    const order = await getOrder(orderId);
+    const userData = {
+        email: event?.data?.object?.customer_details?.email,
+        name: event?.data?.object?.customer_details?.name,
+        shipping_address: event?.data?.object?.shipping
+    };
 
-    if (order.status === "received") {
-        //add user data to order and update to received in
-        //case prodigi step times out / fails.
-        try {
-            const prodigiOrder = await createProdigiOrder(
-                orderId,
-                userData,
-                orderItems
-            );
-            const prodigiOrderId = prodigiOrder.order.id;
+    //Call API handler for fulfilling order
+    const rootPath = getRootPath();
+    fetch(`${rootPath}/api/order/fulfillment`, {
+        method: "POST",
+        body: JSON.stringify({
+            orderId,
+            userData
+        })
+    });
 
-            await updateOrderStatus(orderId, "processing", {
-                prodigiOrderId
-            });
+    // if (order.status === "received") {
+    //     //add user data to order and update to received in
+    //     //case prodigi step times out / fails.
+    //     try {
+    //         const prodigiOrder = await createProdigiOrder(
+    //             orderId,
+    //             userData,
+    //             orderItems
+    //         );
+    //         const prodigiOrderId = prodigiOrder.order.id;
 
-            try {
-                await sendOrderConfirmationEmail({
-                    recipient: userData.email,
-                    recipientName: userData.name,
-                    orderId: orderId
-                });
-            } catch (e) {
-                console.error(e);
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    }
+    //         await updateOrderStatus(orderId, "processing", {
+    //             prodigiOrderId
+    //         });
+
+    //         try {
+    //             await sendOrderConfirmationEmail({
+    //                 recipient: userData.email,
+    //                 recipientName: userData.name,
+    //                 orderId: orderId
+    //             });
+    //         } catch (e) {
+    //             console.error(e);
+    //         }
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    // }
 }
