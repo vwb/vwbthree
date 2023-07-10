@@ -57,7 +57,7 @@ export async function createOrder(orderId, lineItems) {
         Item: {
             order_id: orderId,
             items: getItemsFromLineItems(lineItems),
-            status: "received"
+            status: "created"
         }
     };
     try {

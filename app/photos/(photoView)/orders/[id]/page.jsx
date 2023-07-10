@@ -44,6 +44,11 @@ const ORDER_STATUS_CONTENT_MAP = {
         emoji: "🎉",
         content: () => null
     },
+    created: {
+        header: "Created",
+        emoji: "🎉",
+        content: () => null
+    },
     error: {
         header: "Error: Oops!",
         emoji: "✖︎",
