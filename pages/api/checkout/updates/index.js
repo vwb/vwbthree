@@ -46,14 +46,24 @@ export default async function handler(req, res) {
             res.status(400);
         }
 
-        res.status(200);
-        res.json({ received: true });
-
         switch (event.type) {
             case "checkout.session.completed":
-                await handleCompletedCheckout(event);
+                const userData = {
+                    email: event?.data?.object?.customer_details?.email,
+                    name: event?.data?.object?.customer_details?.name,
+                    shipping_address: event?.data?.object?.shipping
+                };
+
+                await updateOrderStatus(orderId, "received", {
+                    user: userData,
+                    stripeCheckoutSessionId: event.data.object.id
+                });
+
                 res.status(200);
-                break;
+                res.json({ received: true });
+
+                await handleCompletedCheckout(event);
+                return;
             case "checkout.session.expired":
                 const orderUUID = event?.data?.object?.metadata?.orderId;
 
@@ -66,10 +76,12 @@ export default async function handler(req, res) {
                 }
 
                 res.status(200);
+                res.json({ received: true });
                 break;
             default:
                 console.log("Unsupported event");
                 res.status(400);
+                res.json({ received: true });
                 break;
         }
     }
