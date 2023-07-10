@@ -2,7 +2,7 @@ import { db, PRODUCT_SKU_TABLE } from "../../db";
 import { updateOrderStatus, getOrder } from "../order";
 import { sendOrderConfirmationEmail } from "../email";
 import { getRootUrl } from "../api";
-// import { createProdigiOrder } from "../fulfillment";
+import { createProdigiOrder } from "../fulfillment";
 
 async function queryDbForSkus(skuSetArray) {
     const skuExpressionAttributeValues = skuSetArray.reduce(
