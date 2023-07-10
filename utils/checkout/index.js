@@ -1,4 +1,6 @@
 import { db, PRODUCT_SKU_TABLE } from "../../db";
+import { updateOrderStatus } from "../order";
+import { getRootUrl } from "../api";
 
 async function queryDbForSkus(skuSetArray) {
     const skuExpressionAttributeValues = skuSetArray.reduce(
@@ -91,4 +93,43 @@ export function getStripeLineItems(parsedBody, skuPrices) {
     }, []);
 
     return lineItems;
+}
+
+function validateCheckoutSuccess(event) {
+    if (!event?.data?.object?.metadata?.orderId) {
+        throw new Error(
+            "Missing order id for checkout session. Abandoning order"
+        );
+    }
+    if (!event?.data?.object?.shipping) {
+        throw new Error("Missing shipping information");
+    }
+}
+
+export async function handleCompletedCheckout(event) {
+    const rootUrl = getRootUrl();
+    validateCheckoutSuccess(event);
+
+    const orderId = event?.data?.object?.metadata?.orderId;
+    const userData = {
+        email: event?.data?.object?.customer_details?.email,
+        name: event?.data?.object?.customer_details?.name,
+        shipping_address: event?.data?.object?.shipping
+    };
+
+    await updateOrderStatus(orderId, "received", {
+        user: userData,
+        stripeCheckoutSessionId: event.data.object.id
+    });
+
+    //call fullfillment endpoint.
+    //Don't wait for response.
+
+    fetch(`${rootUrl}/api/orders/fulfillment`, {
+        method: "POST",
+        body: JSON.stringify({
+            orderId: orderId,
+            userData
+        })
+    });
 }

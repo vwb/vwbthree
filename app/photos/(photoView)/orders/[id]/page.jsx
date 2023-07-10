@@ -44,6 +44,11 @@ const ORDER_STATUS_CONTENT_MAP = {
         emoji: "🎉",
         content: () => null
     },
+    created: {
+        header: "Created",
+        emoji: "🎉",
+        content: () => null
+    },
     error: {
         header: "Error: Oops!",
         emoji: "✖︎",
@@ -146,7 +151,7 @@ export default async function Page({ params }) {
     const orderData = await getOrder(orderId);
     let prodigiOrder;
 
-    if (orderData.status === "shipped") {
+    if (orderData.status === "shipped" && orderData.prodigiOrderId) {
         prodigiOrder = await getProdigiOrder(orderData.prodigiOrderId);
     }
 
