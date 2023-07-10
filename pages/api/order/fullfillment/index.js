@@ -14,7 +14,7 @@ export default async function handler(req, res) {
                 const prodigiOrder = await createProdigiOrder(
                     orderId,
                     userData,
-                    orderItems
+                    order.items
                 );
                 const prodigiOrderId = prodigiOrder.order.id;
 

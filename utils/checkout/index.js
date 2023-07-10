@@ -122,7 +122,7 @@ export async function handleCompletedCheckout(event) {
             const prodigiOrder = await createProdigiOrder(
                 orderId,
                 userData,
-                orderItems
+                order.items
             );
             const prodigiOrderId = prodigiOrder.order.id;
 
