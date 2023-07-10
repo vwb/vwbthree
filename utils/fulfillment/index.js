@@ -48,6 +48,7 @@ async function constructProducts(orderLineItems) {
     const prodigiItems = [];
     const signedUrlMap = new Map();
 
+    //TODO: Update to do promise.all instead of sequential handler
     for (const item of orderLineItems) {
         let signedAssetUrl;
         const quantity = item.quantity;

@@ -108,7 +108,7 @@ export function validateCheckoutSuccess(event) {
     }
 }
 
-export async function handleCompletedCheckout(event) {
+export function handleCompletedCheckout(event) {
     const orderId = event?.data?.object?.metadata?.orderId;
     const userData = {
         email: event?.data?.object?.customer_details?.email,
@@ -116,26 +116,17 @@ export async function handleCompletedCheckout(event) {
         shipping_address: event?.data?.object?.shipping
     };
     const ROOT_URL = getRootUrl();
-    console.info(ROOT_URL);
 
-    try {
-        const resp = await fetch(`${getRootUrl()}/api/order/fullfillment`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                orderId,
-                userData
-            })
-        });
-
-        if (resp.status >= 400) {
-            throw new Error("Error calling fullfillment endpoint");
-        }
-    } catch (e) {
-        console.error(e.message);
-    }
+    fetch(`${ROOT_URL}/api/order/fullfillment`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            orderId,
+            userData
+        })
+    });
 }
 
 // export async function handleCompletedCheckout(event) {

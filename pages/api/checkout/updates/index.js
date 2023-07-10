@@ -77,11 +77,18 @@ export default async function handler(req, res) {
                         stripeCheckoutSessionId: event.data.object.id
                     });
 
-                    await handleCompletedCheckout(event);
+                    handleCompletedCheckout(event);
+                }
+
+                async function delayResp() {
+                    return setTimeout(() => {
+                        res.json({ received: true });
+                    }, 200);
                 }
 
                 res.status(200);
-                res.json({ received: true });
+                await delayResp();
+
                 return;
             case "checkout.session.expired":
                 orderUUID = event?.data?.object?.metadata?.orderId;
