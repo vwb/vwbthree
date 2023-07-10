@@ -83,7 +83,7 @@ export default async function handler(req, res) {
                 async function delayResp() {
                     return setTimeout(() => {
                         res.json({ received: true });
-                    }, 200);
+                    }, 400);
                 }
 
                 res.status(200);
