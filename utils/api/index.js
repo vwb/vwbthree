@@ -1,9 +1,9 @@
-export function getRootUrl() {
-    const path = process.env.VERCEL_URL;
+const PATH = process.env.VERCEL_URL;
 
-    if (path.includes("localhost:3000")) {
-        return `http://${path}`;
+export function getRootUrl() {
+    if (PATH.includes("localhost:3000")) {
+        return `http://${PATH}`;
     }
 
-    return `https://${path}`;
+    return `https://${PATH}`;
 }
