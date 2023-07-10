@@ -77,8 +77,7 @@ export default async function handler(req, res) {
                         stripeCheckoutSessionId: event.data.object.id
                     });
 
-                    //test fire and forget approach
-                    handleCompletedCheckout(event);
+                    await handleCompletedCheckout(event);
                 }
 
                 res.status(200);

@@ -115,9 +115,11 @@ export async function handleCompletedCheckout(event) {
         name: event?.data?.object?.customer_details?.name,
         shipping_address: event?.data?.object?.shipping
     };
+    const ROOT_URL = getRootUrl();
+    console.info(ROOT_URL);
 
     try {
-        fetch(`${getRootUrl()}/api/order/fullfillment`, {
+        const resp = await fetch(`${getRootUrl()}/api/order/fullfillment`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -127,8 +129,11 @@ export async function handleCompletedCheckout(event) {
                 userData
             })
         });
+
+        if (resp.status >= 400) {
+            throw new Error("Error calling fullfillment endpoint");
+        }
     } catch (e) {
-        console.error("Error fetching fullfillment endpoint.");
         console.error(e.message);
     }
 }
