@@ -17,7 +17,6 @@ export default async function handler(req, res) {
                     order.items
                 );
                 const prodigiOrderId = prodigiOrder.order.id;
-
                 await updateOrderStatus(orderId, "processing", {
                     prodigiOrderId
                 });

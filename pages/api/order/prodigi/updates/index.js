@@ -33,7 +33,12 @@ export default async function handler(req, res) {
                     });
                 }
 
-                //handle cancelled order here
+                if (
+                    order.status !== "cancelled" &&
+                    statusUpdate.status === "cancelled"
+                ) {
+                    await updateOrderStatus(orderId, statusUpdate.status);
+                }
             }
         } catch (e) {
             console.error("Error updating order status", e.message);

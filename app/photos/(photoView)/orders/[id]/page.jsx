@@ -69,6 +69,11 @@ const ORDER_STATUS_CONTENT_MAP = {
                 </p>
             </section>
         )
+    },
+    cancelled: {
+        header: "Cancelled",
+        emoji: "😵",
+        content: () => "Your order has been cancelled."
     }
 };
 
